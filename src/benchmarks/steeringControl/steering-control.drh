@@ -1,0 +1,62 @@
+// Hyst v1.17
+// Hybrid Automaton in dReach
+// Converted from file: Models/steeringmodels/vehicle_steering_zonotope_v3.xml
+// Command Line arguments: -dreach Models/steeringmodels/vehicle_steering_zonotope_v3.xml Models/steeringmodels/new_steering_zono_test.cfg -o test.drh
+
+
+//Vars
+[0, 60.0] time;
+[-1000,1000] x1;
+[-1000,1000] x2;
+[-1000,1000] k1;
+[-1000,1000] k2;
+[-1000,1000] clock;
+[-1000,1000] temp;
+[-1000,1000] hyst_urgent_clock;
+
+
+// start modes
+// loc1
+{
+  mode 1;
+  invt:
+    (clock <= 20.0);
+  flow:
+    d/dt[x1] = -0.1 * k1 * x1 + (1.0 - 0.1 * k2) * x2 + 0.1 * 0.25 * 1.0;
+    d/dt[x2] = -k1 * x1 - k2 * x2 + 0.25 * 1.0;
+    d/dt[k1] = 0.0;
+    d/dt[k2] = 0.0;
+    d/dt[clock] = 1.0;
+    d/dt[temp] = 0.0;
+    d/dt[hyst_urgent_clock] = 0.0;
+
+  jump:
+
+  // end loc1
+}
+
+// loc2
+{
+  mode 2;
+  invt:
+    (hyst_urgent_clock = 0.0);
+  flow:
+    d/dt[x1] = 0.0;
+    d/dt[x2] = 0.0;
+    d/dt[k1] = 0.0;
+    d/dt[k2] = 0.0;
+    d/dt[clock] = 0.0;
+    d/dt[temp] = 0.0;
+    d/dt[hyst_urgent_clock] = 1.0;
+
+  jump:
+
+  // end loc2
+}
+// end modes
+
+init:
+@1 (and (and (and (and (and (and (and (and (clock = 0.0) (x1 = 0.0)) (x2 = 0.0)) (0.0 <= k1)) (k1 <= 1.0)) (0.0 <= k2)) (k2 <= 1.0)) (temp = 0.0)) (hyst_urgent_clock = 0.0));
+
+goal:
+@1 (and (clock =20) (x1 <= 0.9));

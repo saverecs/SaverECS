@@ -1,0 +1,15 @@
+#!/bin/sh
+ 
+file=smallBenchmark_1.smt2.json
+#echo 'outputs/'$file
+#if [ -s outputs/$file ]
+#then 
+	
+	cp /outputs/$file ../ODE_visualization/
+	mv -f ../ODE_visualization/$file ../ODE_visualization/data.json
+	cd ../ODE_visualization/
+	nohup python3 -m http.server &
+	nohup xdg-open http://localhost:8000 &
+	nohup kill -9 $(lsof -ti:8000)
+#else echo "empty json file: $file"
+#fi

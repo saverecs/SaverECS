@@ -1,0 +1,179 @@
+/*----Control Variables-------SSA/SMT Variables ------------*/
+/*----------------------------------------------------------*/
+	on_ctr			
+	off_ctr
+	chatter_ctr
+	cmd			cmd_k_i
+	u
+
+/*----State Variables-------SSA/SMT Variables ------------*/
+/*----------------------------------------------------------*/
+	room_temp
+
+/*------------------- Part - 1 -----------------------*/
+/*------------ of Original Control Program -----------*/
+
+if(room_temp >= MED_TEMP && room_temp < MAX_TEMP)
+    command_to_heater = 2;
+else if(room_temp >= MAX_TEMP)
+    command_to_heater = 0;
+else if(room_temp < MED_TEMP)
+      command_to_heater = 1;
+else
+    command_to_heater = previous_command_to_heater;
+    
+/*-----------------------------------------------------*/    
+
+
+    
+/*------------------- SSA Conversion ------------------*/
+/*------------ of Original Control Program ------------*/
+   
+command_to_heater_0_1 = (room_temp_0_t >= MED_TEMP && room_temp_0_t < MAX_TEMP) ?
+			2 : ( (room_temp_0_t >= MAX_TEMP) ?
+			0 : ( (room_temp_0_t < MED_TEMP) ?
+			1 : command_to_heater_0_0) )
+
+/*-----------------------------------------------------*/    
+			
+			
+/*------------------- SMT Conversion -------------------*/
+/*------------ of Original Control Program -------------*/
+
+			
+(ite (and (>= room_temp_0_t 66.00) (< room_temp_0_t 70.00)) (= command_to_heater_0_1 2)
+ ((ite (>= room_temp_0_t 70.00) (= command_to_heater_0_1 0)
+ ((ite (< room_temp_0_t 66.00) (= command_to_heater_0_1 1)
+ (= command_to_heater_0_1 command_to_heater_0_0))))))	
+ 
+/*-----------------------------------------------------*/    
+			
+
+/*------------------- Part - 2 -----------------------*/
+/*------------ of Original Control Program ------------*/
+
+if(off_counter >= 5 || on_counter >= 5)
+    chatter_detect = 0;
+
+if(command_to_heater != previous_command_to_heater)
+    chatter_detect++;
+
+if(chatter_detect > chatter_limit)
+    command_to_heater = previous_command_to_heater;
+    
+/*------------------- SSA Conversion -----------------------*/
+/*------------ of Original Control Program -----------------*/
+   
+chatter_detect_0_1 = 	(off_counter_0_0 >= 5 || on_counter_0_0 >= 5) ? 
+    			0 : chatter_detect_0_0    
+
+chatter_detect_0_2 = 	(command_to_heater_0_1 != command_to_heater_0_0) ? 
+    			(chatter_detect_0_1 + 1) : chatter_detect_0_1        
+
+command_to_heater_0_2 = (chatter_detect_0_2 > chatter_limit) ?
+			command_to_heater_0_0 : command_to_heater_0_1
+
+/*----------------------------------------------------------*/    			
+
+/*------------------- SMT Conversion -----------------------*/
+/*------------ of Original Control Program -----------------*/
+    
+(ite (or (>= off_counter_0_0 5) (>= on_counter_0_0 5)
+ (= chatter_detect_0_1 0)
+ (= chatter_detect_0_1 chatter_detect_0_0)))
+
+(ite (or (> command_to_heater_0_1 command_to_heater_0_0) 
+ (< command_to_heater_0_1 command_to_heater_0_0))
+ (= chatter_detect_0_2 (chatter_detect_0_1 + 1) )
+ (= chatter_detect_0_2 chatter_detect_0_1 ) )
+
+(ite (> chatter_detect_0_2 2)
+ (= command_to_heater_0_2 command_to_heater_0_0)
+ (= command_to_heater_0_2 command_to_heater_0_1))
+ 
+/*----------------------------------------------------------*/    			
+
+/*------------------- Part - 3 -----------------------*/
+/*------------ of Original Control Program ------------*/
+
+if(command_to_heater == 0)
+  {
+    on_counter = 0;
+    off_counter++;
+  }
+  else
+  {
+    on_counter++;
+    off_counter = 0;
+}
+
+/*----------------------------------------------------------*/    			
+
+/*------------------- SSA Conversion -----------------------*/
+/*------------ of Original Control Program -----------------*/
+
+on_counter_0_1 = (command_to_heater_0_2 == 0) ?
+		 0 : (on_counter_0_0 + 1)
+		 
+off_counter_0_1 = (command_to_heater_0_2 == 0) ?
+		  (off_counter_0_0 + 1) : 0
+
+/*----------------------------------------------------------*/  
+
+/*------------------- SMT Conversion -----------------------*/
+/*------------ of Original Control Program -----------------*/
+  			
+
+(ite (= command_to_heater_0_2 0)
+ (and (= on_counter_0_1 0)
+ (= off_counter_0_1 (+ off_counter_0_0 1)))
+ (and (= on_counter_0_1 (+ on_counter_0_0 1))
+ (= off_counter_0_1 0)))
+
+
+/*----------------------------------------------------------*/    			
+
+/*------------------- Part - 4 -----------------------*/
+/*------------ of Original Control Program ------------*/
+
+if(command_to_heater == No_Heat) 
+	u = 20;
+else if(command_to_heater == Fast_Heat) 
+	u = 100;
+else if(command_to_heater == Normal_Heat) 
+	u = 70;
+else 
+	{ u = u; //No change 
+	}
+
+/*----------------------------------------------------------*/  
+
+/*------------------- SSA Conversion -----------------------*/
+/*------------ of Original Control Program -----------------*/
+
+u_0_1 = (command_to_heater_0_2 == 0) ? 
+	20 : ((command_to_heater_0_2 == 1) ?
+	100 : (command_to_heater_0_2 == 2) ?
+	70 : u_0_0 ) 			
+
+/*----------------------------------------------------------*/  
+
+/*------------------- SMT Conversion -----------------------*/
+/*------------ of Original Control Program -----------------*/
+
+
+(ite (= command_to_heater_0_2 0)
+ (= u_0_1 20) 
+ (ite (= command_to_heater_0_2 1) 
+ (= u_0_1 100) 
+ (ite (= command_to_heater_0_2 2) 
+ (= u_0_1 70) 
+ (= u_0_1 u_0_0))))
+ 
+ /*----------------------------------------------------------*/  
+
+/*------------------- SMT Assignments -----------------------*/
+
+(= command_to_heater_1_0 command_to_heater_0_2) (= off_counter_1_0 off_counter_0_1) (= on_counter_1_0 on_counter_0_1) (= u_1_0 u_0_1)
+
+ /*----------------------------------------------------------*/  

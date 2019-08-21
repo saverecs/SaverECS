@@ -1,0 +1,17 @@
+
+Usage:
+ kill [options] <pid> [...]
+
+Options:
+ <pid> [...]            send signal to every <pid> listed
+ -<signal>, -s, --signal <signal>
+                        specify the <signal> to be sent
+ -l, --list=[<signal>]  list all signal names, or convert one to a name
+ -L, --table            list all signal names in a nice table
+
+ -h, --help     display this help, and exit
+ -V, --version  output version information, and exit
+
+For more details, see kill(1).
+[16525:16544:0813/183607.034636:ERROR:browser_process_sub_thread.cc(221)] Waited 5 ms for network service
+Opening in existing browser session.

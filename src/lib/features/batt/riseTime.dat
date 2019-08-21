@@ -1,0 +1,8 @@
+feature riseTime;
+begin
+	var t1,t2;
+	(state==precharge) && @+(v>=0.1*Vterm),time=0, t1=$time 
+		##[0:$]
+			(state==constantCurrent) && @+(v>=0.9*Vterm),t2=$time
+	|-> riseTime = t2 -t1;
+end

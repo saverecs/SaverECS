@@ -1,0 +1,5 @@
+0 2 1
+Real state_x
+Real state_u
+Real next_u
+(= next_u  (-  state_u   state_x  ) )
