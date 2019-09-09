@@ -1,4 +1,4 @@
-file=anotherBenchmarkLyap_1.smt2.json
+file=anotherBenchmarkLyap_10.smt2.json
 
 #echo 'outputs/'$file
 if [ -s outputs/$file ]

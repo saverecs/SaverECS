@@ -1,0 +1,15 @@
+syntax: glob
+*/*.bin
+*/*.smt2
+*.smt2
+*/*.json
+*.json
+*/*.ipch
+*.ipch
+*/*.swp
+*.swp
+nohup.out
+*/.fuse*
+.vscode/
+.project
+/.vscode/

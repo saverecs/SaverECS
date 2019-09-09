@@ -1,5 +1,13 @@
-0 2 1
-Real state_x
-Real state_u
-Real next_u
-(= next_u  (-  state_u   state_x  ) )
+0 6 3
+Real state_p_engine_speed
+Real state_p_throttle_angle
+Real state_p_manifold_pressure
+Real state_p_airbyfuel_meas
+Real state_p_air_estimate
+Real state_p_pi
+Real next_c_commanded_fuel_gps
+Real next_p_air_estimate
+Real next_p_pi
+(= next_c_commanded_fuel_gps  (/  (*  (+  (*  (+  state_p_airbyfuel_meas  -14.7 ) 0.04 )  (+  state_p_pi  1 ) )  (+  (*  (*  state_p_engine_speed   (*  state_p_engine_speed  0.0001 ) )  state_p_air_estimate  )  (+  (+  (*  (*  state_p_engine_speed  0.08979 )  state_p_air_estimate  ) -0.366 )  (*  state_p_air_estimate   (*  (*  state_p_engine_speed  -0.0337 )  state_p_air_estimate  ) ) ) ) ) 14.7 ) )
+(= next_p_air_estimate  (+  state_p_air_estimate   (*  (-  (*  (*  (+  (+  (- 2.821  (*  state_p_throttle_angle  0.05231 ) )  (*  state_p_throttle_angle   (*  state_p_throttle_angle  0.10299 ) ) )  (*  state_p_throttle_angle   (*  state_p_throttle_angle   (*  state_p_throttle_angle  -0.00063 ) ) ) ) 2 )  (+  (+  (*  state_p_manifold_pressure  2.7799 )  (*  state_p_manifold_pressure   (*  state_p_manifold_pressure  -2.3421 ) ) ) -0.3273 ) )  (+  (*  (*  state_p_engine_speed   (*  state_p_engine_speed  0.0001 ) )  state_p_air_estimate  )  (+  (+  (*  (*  state_p_engine_speed  0.08979 )  state_p_air_estimate  ) -0.366 )  (*  state_p_air_estimate   (*  (*  state_p_engine_speed  -0.0337 )  state_p_air_estimate  ) ) ) ) ) 0.0041328 ) ) )
+(= next_p_pi  (+  state_p_pi   (*  (+  state_p_airbyfuel_meas  -14.7 ) 0.0014 ) ) )

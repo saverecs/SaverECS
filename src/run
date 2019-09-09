@@ -24,8 +24,9 @@
 
 #./SaVerECS -g "benchmarks/thermostat/thermostat.cfg" --plant-file "benchmarks/thermostat/thermostat.ha" --controller-file "benchmarks/thermostat/thermostat.c" -o outputs/thermostat
 #./SaVerECS -g "benchmarks/powerTrainSimple/powertrain.cfg"  --plant-file "benchmarks/powerTrainSimple/powertrain.ha" --controller-file "benchmarks/powerTrainSimple/afc_simple.c" -o outputs/powerTrainSimple
+./SaVerECS -g "benchmarks/powerTrain/powertrain.cfg"  --plant-file "benchmarks/powerTrain/powertrain.ha" --controller-file "benchmarks/powerTrainSimple/afc.c" -o outputs/powerTrain
 #./SaVerECS -g "benchmarks/GlycemicControl/glecemicControl.cfg"  --plant-file "benchmarks/GlycemicControl/glecemicControl.ha" --controller-file "benchmarks/GlycemicControl/controller.c" -o outputs/GlycemicControl
-#./SaVerECS -g "benchmarks/doubleIntegrator/doubleintg.cfg"  --plant-file "benchmarks/doubleIntegrator/doubleintg.ha" --controller-file "benchmarks/doubleIntegrator/doubleintg.c" -o outputs/GlycemicControl/GlycemicControl
+#./SaVerECS -g "benchmarks/doubleIntegrator/doubleintg.cfg"  --plant-file "benchmarks/doubleIntegrator/doubleintg.ha" --controller-file "benchmarks/doubleIntegrator/doubleintg.c" -o outputs/doubleIntegrator
 
 #small benchmark Model
 
@@ -33,4 +34,4 @@
 
 #./SaVerECS -g "benchmarks/smallBenchmarkLyap/smallBenchmarkLyap.cfg"  --plant-file "benchmarks/smallBenchmarkLyap/smallBenchmarkLyap.ha" --controller-file "benchmarks/smallBenchmarkLyap/smallBenchmarkLyap.c" -o outputs/smallBenchmarkLyap
 
-./SaVerECS -g "benchmarks/anotherBenchmarkLyap/anotherBenchmarkLyap.cfg"  --plant-file "benchmarks/anotherBenchmarkLyap/anotherBenchmarkLyap.ha" --controller-file "benchmarks/anotherBenchmarkLyap/anotherBenchmarkLyap.c" -o outputs/anotherBenchmarkLyap
+#./SaVerECS -g "benchmarks/anotherBenchmarkLyap/anotherBenchmarkLyap.cfg"  --plant-file "benchmarks/anotherBenchmarkLyap/anotherBenchmarkLyap.ha" --controller-file "benchmarks/anotherBenchmarkLyap/anotherBenchmarkLyap.c" -o outputs/anotherBenchmarkLyap

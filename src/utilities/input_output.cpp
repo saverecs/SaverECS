@@ -109,7 +109,7 @@ int call_dReal(user_inputs::ptr user_Inputs, std::string fileName) {
 	//st1 = user_Inputs->getOutputFilename();
 	st1 = fileName;
 	cmd1.append(st1);
-	st1 = " --visualize --precision ";
+	st1 = " --visualize --precision --verbose";
 	cmd1.append(st1);
 	st1 = std::to_string(user_Inputs->getPrecision());
 	cmd1.append(st1);
