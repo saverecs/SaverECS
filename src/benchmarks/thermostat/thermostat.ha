@@ -10,8 +10,10 @@ module thermostat(temperature,u)
 	initial begin 
 		set begin
 			mode == loc;
-			temperature == 69.9;
-			u == 100;
+			temperature >= 55;
+			temperature <= 75;
+			u <= 100;
+			u >= 20;
 		end
 	end
 

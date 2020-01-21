@@ -2,7 +2,7 @@
  * controller_parser.h
  *
  *  Created on: 08-Jun-2018
- *      Author: amit
+ *  Author: amit
  */
 
 #ifndef CORESYSTEM_CONTROLLER_PROGRAM_CONTROLLER_PARSER_H_
@@ -15,7 +15,5 @@
 void generate_ssaFile(user_inputs::ptr& user_Inputs);
 
 void read_ssaFile(controller_program::ptr& control_prog, user_inputs::ptr& user_Inputs);
-
-
 
 #endif /* CORESYSTEM_CONTROLLER_PROGRAM_CONTROLLER_PARSER_H_ */

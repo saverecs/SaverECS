@@ -1,13 +1,42 @@
-0 6 3
-Real state_p_engine_speed
-Real state_p_throttle_angle
-Real state_p_manifold_pressure
-Real state_p_airbyfuel_meas
-Real state_p_air_estimate
-Real state_p_pi
-Real next_c_commanded_fuel_gps
-Real next_p_air_estimate
-Real next_p_pi
-(= next_c_commanded_fuel_gps  (/  (*  (+  (*  (+  state_p_airbyfuel_meas  -14.7 ) 0.04 )  (+  state_p_pi  1 ) )  (+  (*  (*  state_p_engine_speed   (*  state_p_engine_speed  0.0001 ) )  state_p_air_estimate  )  (+  (+  (*  (*  state_p_engine_speed  0.08979 )  state_p_air_estimate  ) -0.366 )  (*  state_p_air_estimate   (*  (*  state_p_engine_speed  -0.0337 )  state_p_air_estimate  ) ) ) ) ) 14.7 ) )
-(= next_p_air_estimate  (+  state_p_air_estimate   (*  (-  (*  (*  (+  (+  (- 2.821  (*  state_p_throttle_angle  0.05231 ) )  (*  state_p_throttle_angle   (*  state_p_throttle_angle  0.10299 ) ) )  (*  state_p_throttle_angle   (*  state_p_throttle_angle   (*  state_p_throttle_angle  -0.00063 ) ) ) ) 2 )  (+  (+  (*  state_p_manifold_pressure  2.7799 )  (*  state_p_manifold_pressure   (*  state_p_manifold_pressure  -2.3421 ) ) ) -0.3273 ) )  (+  (*  (*  state_p_engine_speed   (*  state_p_engine_speed  0.0001 ) )  state_p_air_estimate  )  (+  (+  (*  (*  state_p_engine_speed  0.08979 )  state_p_air_estimate  ) -0.366 )  (*  state_p_air_estimate   (*  (*  state_p_engine_speed  -0.0337 )  state_p_air_estimate  ) ) ) ) ) 0.0041328 ) ) )
-(= next_p_pi  (+  state_p_pi   (*  (+  state_p_airbyfuel_meas  -14.7 ) 0.0014 ) ) )
+9 6 1
+Int .
+Int command_to_heater.0
+Int spec.select
+Int inc
+Int spec.select83
+Int off_counter.0
+Int on_counter.0
+Real spec.select84
+Real uVal.0
+Real state_temperature
+Int chat_detect
+Int previous_cmd_to_heater
+Int on_count
+Int off_count
+Int cmd_to_heater
+Real next_u
+(=> (not  (and  (>=   state_temperature  66 )   (<   state_temperature  70 )  ) )
+(and 
+(=>  (<   state_temperature  70 )  
+(and 
+(ite  (<   state_temperature  66 )  (= . 2 )(= .  previous_cmd_to_heater  ) )
+ )
+ )
+ )
+ )
+(=>  (and  (>=   state_temperature  66 )   (<   state_temperature  70 )  ) (= command_to_heater.0 3 ))
+(=> (not  (<   state_temperature  70 )  ) (= command_to_heater.0 1 ))
+(=>  (<   state_temperature  70 )  (= command_to_heater.0 . ))
+(ite  (or  (>   on_count  4 )   (>   off_count  4 )  ) (= spec.select 0 )(= spec.select  chat_detect  ) )
+(ite  (not (=  command_to_heater.0  previous_cmd_to_heater  ))  (= inc 1 ) (= inc 0 ))
+(ite  (>   (+ spec.select inc ) 1 )  (= spec.select83  previous_cmd_to_heater  )(= spec.select83 command_to_heater.0 ) )
+(ite  (=  spec.select83 1 )  (= off_counter.0  (+  off_count  1 ) )(= off_counter.0 0 ) )
+(ite  (=  spec.select83 1 )  (= on_counter.0 0 )(= on_counter.0  (+  on_count  1 ) ) )
+(ite  (=  spec.select83 3 )  (= spec.select84 70 )(= spec.select84 100 ) )
+(ite  (=  spec.select83 1 )  (= uVal.0 20 )(= uVal.0 spec.select84 ) )
+(= next_u uVal.0 )
+(= cmd_to_heater spec.select83 )
+(= chat_detect  (+ spec.select inc ) )
+(= previous_cmd_to_heater spec.select83 )
+(= on_count on_counter.0 )
+(= off_count off_counter.0 )

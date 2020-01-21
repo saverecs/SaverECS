@@ -52,7 +52,7 @@ typedef struct{
 	double state_p_manifold_pressure;	
 	double state_p_airbyfuel_meas;		
 
-	//controller variables (to be maintained)
+	//controller variables 		(to be maintained)
 	double state_p_pi;			
 	double state_p_air_estimate;		
 

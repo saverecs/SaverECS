@@ -81,7 +81,6 @@ void generate_ssaFile(user_inputs::ptr& user_Inputs) {
 	//use system(cmd1) command to execute
 //	st = cmd3.c_str();
 //	system(st); //executing the bit code of the program. Not required for us
-
 }
 
 void read_ssaFile(controller_program::ptr& control_prog, user_inputs::ptr& user_Inputs) {
