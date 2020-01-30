@@ -1,3 +1,8 @@
+system=dcmotor
+echo ./SaVerECS -g "benchmarks/$system/$system.cfg" --plant-file "benchmarks/$system/$system.ha" --controller-file "benchmarks/$system/$system.c" -o outputs/$system
+./SaVerECS -g "benchmarks/$system/$system.cfg" --plant-file "benchmarks/$system/$system.ha" --controller-file "benchmarks/$system/$system.c" -o outputs/$system
+
+#########################################################################################################################################################################################################################################
 #./SaVerECS -m 100 -t 0.2 -r 0.1 -d 0.001 -u 7 -l 3 --time-horizon 3 --goal "temperature<52" --plant-file "benchmarks/thermostat/thermostat.ha" --controller-file "benchmarks/thermostat/thermostat.c" -o outputs/thermostat
 
 #./SaVerECS -m 100 -t 0.02 -r 0.01 -d 0.001 -u 4 -l 1 --time-horizon 3 --goal "gt>0.06" --plant-file "benchmarks/DCmotor/dcmotor.ha" --controller-file "benchmarks/DCmotor/dcmotor.c" -o outputs/dcmotor    ##check u-value not stopping
@@ -22,7 +27,7 @@
 
 # with config file:
 
-./SaVerECS -g "benchmarks/thermostat/thermostat.cfg" --plant-file "benchmarks/thermostat/thermostat.ha" --controller-file "benchmarks/thermostat/thermostat.c" -o outputs/thermostat
+#./SaVerECS -g "benchmarks/thermostat/thermostat.cfg" --plant-file "benchmarks/thermostat/thermostat.ha" --controller-file "benchmarks/thermostat/thermostat.c" -o outputs/thermostat
 #./SaVerECS -g "benchmarks/powerTrainSimple/powertrain.cfg"  --plant-file "benchmarks/powerTrainSimple/powertrain.ha" --controller-file "benchmarks/powerTrainSimple/afc_simple.c" -o outputs/powerTrainSimple
 #./SaVerECS -g "benchmarks/powerTrain/powertrain.cfg"  --plant-file "benchmarks/powerTrain/powertrain.ha" --controller-file "benchmarks/powerTrainSimple/afc.c" -o outputs/powerTrain
 #./SaVerECS -g "benchmarks/GlycemicControl/glecemicControl.cfg"  --plant-file "benchmarks/GlycemicControl/glecemicControl.ha" --controller-file "benchmarks/GlycemicControl/controller.c" -o outputs/GlycemicControl
@@ -36,3 +41,6 @@
 #./SaVerECS -g "benchmarks/smallBenchmarkLyap/smallBenchmarkLyap.cfg"  --plant-file "benchmarks/smallBenchmarkLyap/smallBenchmarkLyap.ha" --controller-file "benchmarks/smallBenchmarkLyap/smallBenchmarkLyap.c" -o outputs/smallBenchmarkLyap
 
 #./SaVerECS -g "benchmarks/anotherBenchmarkLyap/anotherBenchmarkLyap.cfg"  --plant-file "benchmarks/anotherBenchmarkLyap/anotherBenchmarkLyap.ha" --controller-file "benchmarks/anotherBenchmarkLyap/anotherBenchmarkLyap.c" -o outputs/anotherBenchmarkLyap
+
+#################################################################################################
+

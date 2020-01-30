@@ -245,6 +245,7 @@ total_runTime.start();//starting cpu timer to calculate total run time
 			std::cout << "\nOutput file(" << jsonFile
 					<< ") generated. Use Visualization to view the trace of counter example."
 					<< std::endl;
+//			string vis_cmd= 
 			break;
 		} else {
 			std::cout << "\nSystem is SAFE for unrolling(bound): " << bound
@@ -253,7 +254,7 @@ total_runTime.start();//starting cpu timer to calculate total run time
 	}
 	total_runTime.stop();
 
-	std::cout << "\nTotal Running Time (in seconds): "<<total_runTime.elapsed().wall/1000000<<std::endl;
+	std::cout << "\nTotal Running Time (in seconds): "<<total_runTime.elapsed().wall / 1000000;
 	return 0;
 } //end of function main
 

@@ -12,8 +12,7 @@ module thermostat(temperature,u)
 			mode == loc;
 			temperature >= 55;
 			temperature <= 75;
-			u <= 100;
-			u >= 20;
+			u == 70;
 		end
 	end
 
