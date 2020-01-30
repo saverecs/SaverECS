@@ -243,13 +243,17 @@ total_runTime.start();//starting cpu timer to calculate total run time
 					<< bound << std::endl;
 			string jsonFile = fileName + ".json";
 			std::cout << "\nOutput file(" << jsonFile
-					<< ") generated. Use Visualization to view the trace of counter example."
+					<< ") generated. To view the trace of counter example, visualize data.json in ODE_Visualization folder."
 					<< std::endl;
-//			string vis_cmd= 
+			string vis_cmd= "cp "+jsonFile+" ../ODE_visualization/data.json & cd ../ODE_visualization; ./run_websvr.sh & echo Open localhost:8000. Once visualized, run ./shut_websvr.sh";
+			int succ = system(vis_cmd.c_str());
+	
 			break;
 		} else {
 			std::cout << "\nSystem is SAFE for unrolling(bound): " << bound
 					<< std::endl;
+			string rm_json= "rm "+fileName + ".json";
+			system(rm_json.c_str);
 		}
 	}
 	total_runTime.stop();
