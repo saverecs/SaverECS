@@ -11,7 +11,7 @@ define dso_local i8* @controller(%struct.INPUT_VAL* nocapture %input, %struct.RE
 entry:
   call void @llvm.dbg.value(metadata %struct.INPUT_VAL* %input, metadata !30, metadata !DIExpression()), !dbg !42
   call void @llvm.dbg.value(metadata %struct.RETURN_VAL* %ret_val, metadata !31, metadata !DIExpression()), !dbg !43
-  call void @llvm.dbg.value(metadata i32 2, metadata !37, metadata !DIExpression()), !dbg !44
+  call void @llvm.dbg.value(metadata i32 0, metadata !37, metadata !DIExpression()), !dbg !44
   call void @llvm.dbg.value(metadata double 7.000000e+01, metadata !40, metadata !DIExpression()), !dbg !45
   call void @llvm.dbg.value(metadata double 6.600000e+01, metadata !41, metadata !DIExpression()), !dbg !46
   %state_temperature = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 0, !dbg !47
@@ -58,7 +58,7 @@ if.end9:                                          ; preds = %if.else4, %if.else,
   %inc = zext i1 %cmp14 to i32, !dbg !86
   %chatter_detect.1 = add nsw i32 %spec.select, %inc, !dbg !86
   call void @llvm.dbg.value(metadata i32 %chatter_detect.1, metadata !32, metadata !DIExpression()), !dbg !57
-  %cmp17 = icmp sgt i32 %chatter_detect.1, 1, !dbg !87
+  %cmp17 = icmp sgt i32 %chatter_detect.1, -1, !dbg !87
   %spec.select83 = select i1 %cmp17, i32 %2, i32 %command_to_heater.0, !dbg !89
   call void @llvm.dbg.value(metadata i32 %spec.select83, metadata !36, metadata !DIExpression()), !dbg !68
   %cmp20 = icmp eq i32 %spec.select83, 1, !dbg !90

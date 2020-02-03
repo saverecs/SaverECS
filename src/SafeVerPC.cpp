@@ -253,7 +253,7 @@ total_runTime.start();//starting cpu timer to calculate total run time
 			std::cout << "\nSystem is SAFE for unrolling(bound): " << bound
 					<< std::endl;
 			string rm_json= "rm "+fileName + ".json";
-			system(rm_json.c_str);
+			system(rm_json.c_str());
 		}
 	}
 	total_runTime.stop();

@@ -29,7 +29,7 @@ Real next_u
 (=>  (<   state_temperature  70 )  (= command_to_heater.0 . ))
 (ite  (or  (>   on_count  4 )   (>   off_count  4 )  ) (= spec.select 0 )(= spec.select  chat_detect  ) )
 (ite  (not (=  command_to_heater.0  previous_cmd_to_heater  ))  (= inc 1 ) (= inc 0 ))
-(ite  (>   (+ spec.select inc ) 1 )  (= spec.select83  previous_cmd_to_heater  )(= spec.select83 command_to_heater.0 ) )
+(ite  (>   (+ spec.select inc ) -1 )  (= spec.select83  previous_cmd_to_heater  )(= spec.select83 command_to_heater.0 ) )
 (ite  (=  spec.select83 1 )  (= off_counter.0  (+  off_count  1 ) )(= off_counter.0 0 ) )
 (ite  (=  spec.select83 1 )  (= on_counter.0 0 )(= on_counter.0  (+  on_count  1 ) ) )
 (ite  (=  spec.select83 3 )  (= spec.select84 70 )(= spec.select84 100 ) )

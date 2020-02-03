@@ -64,7 +64,7 @@ Real next_u
 (= cmp14 (not (=  command_to_heater.0 tmp2 )) )
 (ite cmp14 (= inc 1 ) (= inc 0 ))
 (= chatter_detect.1 (+ spec.select inc ))
-(= cmp17 (>  chatter_detect.1 1 ) )
+(= cmp17 (>  chatter_detect.1 -1 ) )
 (ite cmp17 (= spec.select83 tmp2 )(= spec.select83 command_to_heater.0 ) )
 (= cmp20 (=  spec.select83 1 ) )
 (= inc22 (+ tmp4 1 ))
