@@ -1,12 +1,12 @@
 9 6 1
 Int .
 Int command_to_heater.0
-Int spec.select
+Int chatter_detect.0
 Int inc
-Int spec.select83
+Int command_to_heater.1
 Int off_counter.0
 Int on_counter.0
-Real spec.select84
+Real spec.select85
 Real uVal.0
 Real state_temperature
 Int chat_detect
@@ -27,16 +27,16 @@ Real next_u
 (=>  (and  (>=   state_temperature  66 )   (<   state_temperature  70 )  ) (= command_to_heater.0 3 ))
 (=> (not  (<   state_temperature  70 )  ) (= command_to_heater.0 1 ))
 (=>  (<   state_temperature  70 )  (= command_to_heater.0 . ))
-(ite  (or  (>   on_count  4 )   (>   off_count  4 )  ) (= spec.select 0 )(= spec.select  chat_detect  ) )
+(ite  (or  (>   on_count  1 )   (>   off_count  1 )  ) (= chatter_detect.0 0 )(= chatter_detect.0  chat_detect  ) )
 (ite  (not (=  command_to_heater.0  previous_cmd_to_heater  ))  (= inc 1 ) (= inc 0 ))
-(ite  (>   (+ spec.select inc ) -1 )  (= spec.select83  previous_cmd_to_heater  )(= spec.select83 command_to_heater.0 ) )
-(ite  (=  spec.select83 1 )  (= off_counter.0  (+  off_count  1 ) )(= off_counter.0 0 ) )
-(ite  (=  spec.select83 1 )  (= on_counter.0 0 )(= on_counter.0  (+  on_count  1 ) ) )
-(ite  (=  spec.select83 3 )  (= spec.select84 70 )(= spec.select84 100 ) )
-(ite  (=  spec.select83 1 )  (= uVal.0 20 )(= uVal.0 spec.select84 ) )
+(ite  (>   (+ chatter_detect.0 inc ) 1 )  (= command_to_heater.1  previous_cmd_to_heater  )(= command_to_heater.1 command_to_heater.0 ) )
+(ite  (=  command_to_heater.1 1 )  (= off_counter.0  (+  off_count  1 ) )(= off_counter.0 0 ) )
+(ite  (=  command_to_heater.1 1 )  (= on_counter.0 0 )(= on_counter.0  (+  on_count  1 ) ) )
+(ite  (=  command_to_heater.1 3 )  (= spec.select85 70 )(= spec.select85 100 ) )
+(ite  (=  command_to_heater.1 1 )  (= uVal.0 20 )(= uVal.0 spec.select85 ) )
 (= next_u uVal.0 )
-(= cmd_to_heater spec.select83 )
-(= chat_detect  (+ spec.select inc ) )
-(= previous_cmd_to_heater spec.select83 )
+(= cmd_to_heater command_to_heater.1 )
+(= chat_detect  (+ chatter_detect.0 inc ) )
+(= previous_cmd_to_heater command_to_heater.1 )
 (= on_count on_counter.0 )
 (= off_count off_counter.0 )
