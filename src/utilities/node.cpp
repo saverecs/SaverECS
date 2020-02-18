@@ -1,6 +1,3 @@
-//
-// Created by fedor on 02/02/17.
-//
 
 #include "node.h"
 #include <sstream>

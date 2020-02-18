@@ -1,9 +1,3 @@
-/*
- * input_output.h
- *
- *  Created on: 03-Jul-2018
- *      Author: amit
- */
 
 #ifndef UTILITIES_INPUT_OUTPUT_H_
 #define UTILITIES_INPUT_OUTPUT_H_

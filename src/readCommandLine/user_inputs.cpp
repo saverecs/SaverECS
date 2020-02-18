@@ -98,6 +98,8 @@ void user_inputs::setConfigFilename(const std::string& configFilename) {
 			setReleaseTime(std::stod(args_value));
 		} else if (boost::iequals(args_name, "sampling-jitter")) {
 			setSamplingJitter((std::stod(args_value)));
+		} else if (boost::iequals(args_name, "sensing-time")) {
+			setSamplingJitter((std::stod(args_value)));
 		} else if (boost::iequals(args_name, "time-horizon")) {
 			setTimeHorizon(std::stod(args_value));
 		} else if (boost::iequals(args_name, "upper-bound")) {
@@ -290,10 +292,12 @@ void user_inputs::setSampleTime(double sampleTime) {
 }
 
 double user_inputs::getSamplingJitter() const {
+//	cout<< "Delay= "<<sensing_time<<"\n";
 	return sensing_time;
 }
 
 void user_inputs::setSamplingJitter(double sensingTime) {
+//	cout<< "Delay is= "<<sensing_time<<"\n";
 	sensing_time = sensingTime;
 }
 

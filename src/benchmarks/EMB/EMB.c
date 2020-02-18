@@ -10,10 +10,6 @@
 #define K_P 10000
 #define K_I 1000
 
-
-
-
-
 void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
 {
 	double out_Voltage;

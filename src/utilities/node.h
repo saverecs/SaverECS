@@ -1,6 +1,3 @@
-//
-// Created by fedor on 02/02/17.
-//
 
 #ifndef PROBREACH_NODE_H
 #define PROBREACH_NODE_H

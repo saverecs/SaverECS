@@ -2,7 +2,7 @@
  * smtScript.c
  *
  *  Created on: 24-May-2018
- *      Author: Jay Thakkar
+ *  Author: Jay Thakkar
  */
 #include <iterator>
 
@@ -224,7 +224,7 @@ void print_declaration(std::ofstream &outputfile, user_inputs::ptr& userInputs,
 		outputfile << "(declare-fun gt_" << index_var
 				<< "_t () Real [0.000000, " << userInputs->getTimeHorizon()
 				<< "])\n";
-
+		outputfile << ";; testing delay addition"<< Sampling_Jitter <<"\n";
 		//Jay: Last iteration time variable,
 		//rest all have value same as Sampling time
 

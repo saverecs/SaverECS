@@ -1,9 +1,3 @@
-/*
- * input_output.cpp
- *
- *  Created on: 03-Jul-2018
- *      Author: amit
- */
 
 #include "input_output.h"
 #include "utilities/datastructure_plant.h"

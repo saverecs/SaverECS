@@ -12,10 +12,10 @@ void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
 	int on_counter, off_counter;
 	int command_to_heater;
 //	int chatter_filter=1;
-	int chatter_limit=2;
+	int chatter_limit=5;
 	double uVal, room_temp;
 	double MAX_TEMP=70.0, MED_TEMP=66.0;
-	int NO_CHAT_FOR=2;
+	int NO_CHAT_FOR=4;
 //	int NO_HEAT=1, NORMAL_HEAT = 3, FAST_HEAT = 2;
 
  room_temp = input->state_temperature;
@@ -41,12 +41,9 @@ void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
 
 	if(command_to_heater != previous_command_to_heater)
 		chatter_detect++;								//detect chatter
-	//chatter filter
-//	if (chatter_filter==1){
-		chatter_limit=2;
-		if(chatter_detect >= chatter_limit)
+	if(chatter_detect >= chatter_limit)
 			command_to_heater = previous_command_to_heater;
-//	}														//mitigate chatter
+														//mitigate chatter
 	if(command_to_heater == 1) {
 		on_counter = 0;
 		off_counter++;									//heater off
