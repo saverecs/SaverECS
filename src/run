@@ -1,4 +1,4 @@
-system=thermostat_old
+system=thermostat
 
 echo ./SaVerECS -g "benchmarks/$system/$system.cfg" --plant-file "benchmarks/$system/$system.ha" --controller-file "benchmarks/$system/$system.c" -o "benchmarks/$system/outputs/$system"
 

@@ -224,24 +224,36 @@ void print_declaration(std::ofstream &outputfile, user_inputs::ptr& userInputs,
 		outputfile << "(declare-fun gt_" << index_var
 				<< "_t () Real [0.000000, " << userInputs->getTimeHorizon()
 				<< "])\n";
-		outputfile << ";; testing delay addition"<< Sampling_Jitter <<"\n";
+		//outputfile << ";; testing delay addition"<< Sampling_Jitter <<"\n";
 		//Jay: Last iteration time variable,
 		//rest all have value same as Sampling time
 
-		if (index_var == bound) {
+		// if (index_var == bound) {
 
-			outputfile << "(declare-fun time_" << index_var
-					<< " () Real [0.000000, "
-					<< (userInputs->getSampleTime() + Sampling_Jitter)
-					<< "])\n";
-		} else if (index_var == 0) {
-			outputfile << "(declare-fun time_" << index_var << " () Real ["
-					<< (userInputs->getReleaseTime() - Sampling_Jitter) << ", "
+		// 	outputfile << "(declare-fun time_" << index_var
+		// 			<< " () Real [0.000000, "
+		// 			<< (userInputs->getSampleTime() + Sampling_Jitter)
+		// 			<< "])\n";
+		// } else if (index_var == 0) {
+		// 	outputfile << "(declare-fun time_" << index_var << " () Real ["
+		// 			<< (userInputs->getReleaseTime() - Sampling_Jitter) << ", "
+		// 			<< (userInputs->getReleaseTime() + Sampling_Jitter)
+		// 			<< "])\n";
+		// } else {
+		// 	outputfile << "(declare-fun time_" << index_var << " () Real ["
+		// 			<< (userInputs->getSampleTime() - Sampling_Jitter) << ", "
+		// 			<< (userInputs->getSampleTime() + Sampling_Jitter)
+		// 			<< "])\n";
+
+		// }
+		//Sunandan: Corrected delay addition
+		if (index_var == 0) {
+			outputfile << "(declare-fun time_" << index_var << " () Real [0.000000, "
 					<< (userInputs->getReleaseTime() + Sampling_Jitter)
 					<< "])\n";
 		} else {
-			outputfile << "(declare-fun time_" << index_var << " () Real ["
-					<< (userInputs->getSampleTime() - Sampling_Jitter) << ", "
+			outputfile << "(declare-fun time_" << index_var
+					<< " () Real [0.000000, "
 					<< (userInputs->getSampleTime() + Sampling_Jitter)
 					<< "])\n";
 

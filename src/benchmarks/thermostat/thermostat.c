@@ -15,7 +15,7 @@ void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
 	int chatter_limit=5;
 	double uVal, room_temp;
 	double MAX_TEMP=70.0, MED_TEMP=66.0;
-	int NO_CHAT_FOR=4;
+	int NO_CHAT_FOR=5;
 //	int NO_HEAT=1, NORMAL_HEAT = 3, FAST_HEAT = 2;
 
  room_temp = input->state_temperature;
