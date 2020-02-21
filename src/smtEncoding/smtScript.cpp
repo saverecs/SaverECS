@@ -66,14 +66,21 @@ int smt_generator(hybrid_automata::ptr& my_ha, user_inputs::ptr& userInputs,
 	print_declaration(smtfile, userInputs, bound, plant_vars, control_prog);
 
 	print_flowEquation(my_ha, smtfile, plant_vars);
-
+	
+	//added comment
+	smtfile << "\n;;printing initial values of variables\n";
 	print_initialState(my_ha, smtfile, plant_vars, control_prog);
 
+	//added comment
+	smtfile << "\n;;printing first loop\n";
 	print_firstLoop(smtfile, my_ha, userInputs, plant_vars);
 
+	//added comment
+	smtfile << "\n;;printing next loops\n";
 	print_nextLoops(smtfile, my_ha, bound, userInputs, plant_vars,
 			control_prog);
-
+	//added comment
+	smtfile << "\n;;printing goal specs\n";
 	print_specification(smtfile, bound, userInputs, plant_vars);
 
 	print_footer(smtfile);
@@ -211,20 +218,30 @@ void print_declaration(std::ofstream &outputfile, user_inputs::ptr& userInputs,
 		}
 
 		//Jay: Time Variables
-
-		outputfile << "(declare-fun lt_" << index_var
+		//Sunandan: Adding block index_var=0 for initial 
+		if(index_var==0){
+					outputfile << "(declare-fun lt_" << index_var
 				<< "_0 () Real [0.000000, "
-				<< (userInputs->getSampleTime() + Sampling_Jitter) << "])\n";
+				<< (userInputs->getSampleTime() + userInputs->getReleaseTime()) << "])\n";
 		outputfile << "(declare-fun lt_" << index_var
 				<< "_t () Real [0.000000, "
+				<< (userInputs->getSampleTime() + userInputs->getReleaseTime()) << "])\n";
+
+		}else{
+			outputfile << "(declare-fun lt_" << index_var
+				<< "_0 () Real [0.000000, "
 				<< (userInputs->getSampleTime() + Sampling_Jitter) << "])\n";
+			outputfile << "(declare-fun lt_" << index_var
+				<< "_t () Real [0.000000, "
+				<< (userInputs->getSampleTime() + Sampling_Jitter) << "])\n";
+		}
 		outputfile << "(declare-fun gt_" << index_var
 				<< "_0 () Real [0.000000, " << userInputs->getTimeHorizon()
 				<< "])\n";
 		outputfile << "(declare-fun gt_" << index_var
 				<< "_t () Real [0.000000, " << userInputs->getTimeHorizon()
 				<< "])\n";
-		//outputfile << ";; testing delay addition"<< Sampling_Jitter <<"\n";
+		//outputfile << "\n;; testing delay addition"<< Sampling_Jitter <<"\n";
 		//Jay: Last iteration time variable,
 		//rest all have value same as Sampling time
 
@@ -249,7 +266,7 @@ void print_declaration(std::ofstream &outputfile, user_inputs::ptr& userInputs,
 		//Sunandan: Corrected delay addition
 		if (index_var == 0) {
 			outputfile << "(declare-fun time_" << index_var << " () Real [0.000000, "
-					<< (userInputs->getReleaseTime() + Sampling_Jitter)
+					<< (userInputs->getReleaseTime())
 					<< "])\n";
 		} else {
 			outputfile << "(declare-fun time_" << index_var
@@ -463,7 +480,8 @@ void print_firstLoop(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 //Flow()
 
 //Constraints for constant dynamics
-
+	//added comment
+	outputfile << "\n;;printing constant variables in first loop\n";
 	outputfile << "(= lt_0_t (+ lt_0_0 (* 1 " << userInputs->getReleaseTime()
 			<< "))) ";
 	outputfile << "(= gt_0_t (+ gt_0_0 (* 1 " << userInputs->getReleaseTime()
@@ -485,7 +503,8 @@ void print_firstLoop(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 		}
 
 	}
-
+	//added comment
+	outputfile << "\n;;printing incrementing of uncontrolled variables in first loop\n";
 	for (it_uncontrol_var = plant_vars.uncontrol_var.begin();
 			it_uncontrol_var != plant_vars.uncontrol_var.end();
 			++it_uncontrol_var) {
@@ -504,7 +523,8 @@ void print_firstLoop(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 	outputfile << "(= [gt_0_t lt_0_t ";
 
 //Controlled variable
-
+	//added comment
+	outputfile << "\n;;printing integration of controlled, uncontrolled variables in first loop\n";
 	for (it_control_var = plant_vars.control_var.begin();
 			it_control_var != plant_vars.control_var.end(); ++it_control_var) {
 		outputfile << (*it_control_var).var_name << "_0_t ";
@@ -525,7 +545,7 @@ void print_firstLoop(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 			it_control_var != plant_vars.control_var.end(); ++it_control_var) {
 		outputfile << (*it_control_var).var_name << "_0_0 ";
 	}
-
+	
 	for (it_uncontrol_var = plant_vars.uncontrol_var.begin();
 			it_uncontrol_var != plant_vars.uncontrol_var.end();
 			++it_uncontrol_var) {
@@ -577,7 +597,8 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 		//Transition
 
 		//outputfile << "(assert (and ";
-
+		//added comment
+		outputfile << "\n;;printing "<<i<< "th iteration guards in next loops\n";
 		//Guard Condition and resets
 		if (i == 1) {
 
@@ -632,8 +653,8 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 		}
 
 		//outputfile << " ))\n";
-		outputfile << " \n ";
-
+		outputfile << " \n ;; printing controller constraints \n";
+		//added comment
 		//Controller Execution: constraints in SSA form
 
 		print_ControllerConstraints(outputfile, i, plant_vars, control_prog);
@@ -651,7 +672,8 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 		//Flow()
 
 		//Constraints for constant dynamics
-
+		//added comment
+		outputfile << "\n;;printing constant variables in next loops\n";
 		outputfile << "(= lt_" << i << "_t (+ lt_" << i << "_0 (* 1 time_" << i
 				<< " ))) ";
 		outputfile << "(= gt_" << i << "_t (+ gt_" << i << "_0 (* 1 time_" << i
@@ -666,37 +688,39 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 					it != infix_deriv.end(); it++) {
 				if ((*it).isConstant_dynamic) {
 
-					if (i == bound) {
-						outputfile << "(= " << (*it).varName << "_" << i
-								<< "_t (+ " << (*it).varName << "_" << i
-								<< "_0 (* " << (*it).RHSexpression << " "
-								<< userInputs->getSampleTime() << " )))";
-					} else {
+					// if (i == bound) {
+					// 	outputfile << "(= " << (*it).varName << "_" << i
+					// 			<< "_t (+ " << (*it).varName << "_" << i
+					// 			<< "_0 (* " << (*it).RHSexpression << " "
+					// 			<< userInputs->getSampleTime() << " )))";
+					// } else {
 						outputfile << "(= " << (*it).varName << "_" << i
 								<< "_t (+ " << (*it).varName << "_" << i
 								<< "_0 (* " << (*it).RHSexpression << " time_"
 								<< i << " )))";
-					}
+//					}
+				//Sunandan: last iteration also with delay
 				}
 			}
 
 		}
-
+		//added comment
+		outputfile << "\n;;printing uncontrolled variables in next loops\n";
 		for (it_uncontrol_var = plant_vars.uncontrol_var.begin();
 				it_uncontrol_var != plant_vars.uncontrol_var.end();
 				++it_uncontrol_var) {
 
-			if (i == bound) {
+			//if (i == bound) {
 
-				outputfile << "(= " << (*it_uncontrol_var).var_name << "_" << i
-						<< "_t (+ " << (*it_uncontrol_var).var_name << "_" << i
-						<< "_0 (* 0 " << userInputs->getSampleTime() << " )))";
-			} else {
+			// 	outputfile << "(= " << (*it_uncontrol_var).var_name << "_" << i
+			// 			<< "_t (+ " << (*it_uncontrol_var).var_name << "_" << i
+			// 			<< "_0 (* 0 " << userInputs->getSampleTime() << " )))";
+			// } else {
 				outputfile << "(= " << (*it_uncontrol_var).var_name << "_" << i
 						<< "_t (+ " << (*it_uncontrol_var).var_name << "_" << i
 						<< "_0 (* 0 time_" << i << " )))";
-			}
-
+//			}
+//			Sunandan: last iteration also with delay
 		}
 
 		//outputfile << " ))\n";
@@ -707,7 +731,8 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 		outputfile << "(= [gt_" << i << "_t lt_" << i << "_t ";
 
 		//Controlled variable
-
+		//added comment
+		outputfile << "\n;;printing integration of controlled, uncontrolled variables in next loops\n";
 		for (it_control_var = plant_vars.control_var.begin();
 				it_control_var != plant_vars.control_var.end();
 				++it_control_var) {
@@ -726,6 +751,7 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 				<< i << "_0 ";
 
 		//Controlled variable
+		
 		for (it_control_var = plant_vars.control_var.begin();
 				it_control_var != plant_vars.control_var.end();
 				++it_control_var) {
@@ -762,7 +788,8 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 		}
 
 		//Condition -
-
+		//added comment
+		outputfile << "\n;;printing conditions in "<<i<<"th loop\n";
 		//(<= lt_1_t 0.2) (<= lt_1_0 0.2) (= mode_2 1)
 
 		//outputfile << "(assert (and ";
