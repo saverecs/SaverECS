@@ -1,42 +1,8 @@
-9 6 1
-Int .
-Int command_to_heater.0
-Int chatter_detect.0
-Int inc
-Int command_to_heater.1
-Int off_counter.0
-Int on_counter.0
-Real spec.select85
-Real uVal.0
-Real state_temperature
-Int chat_detect
-Int previous_cmd_to_heater
-Int on_count
-Int off_count
-Int cmd_to_heater
-Real next_u
-(=> (not  (and  (>=   state_temperature  66 )   (<   state_temperature  70 )  ) )
-(and 
-(=>  (<   state_temperature  70 )  
-(and 
-(ite  (<   state_temperature  66 )  (= . 2 )(= .  previous_cmd_to_heater  ) )
- )
- )
- )
- )
-(=>  (and  (>=   state_temperature  66 )   (<   state_temperature  70 )  ) (= command_to_heater.0 3 ))
-(=> (not  (<   state_temperature  70 )  ) (= command_to_heater.0 1 ))
-(=>  (<   state_temperature  70 )  (= command_to_heater.0 . ))
-(ite  (or  (>   on_count  4 )   (>   off_count  4 )  ) (= chatter_detect.0 0 )(= chatter_detect.0  chat_detect  ) )
-(ite  (not (=  command_to_heater.0  previous_cmd_to_heater  ))  (= inc 1 ) (= inc 0 ))
-(ite  (>   (+ chatter_detect.0 inc ) 4 )  (= command_to_heater.1  previous_cmd_to_heater  )(= command_to_heater.1 command_to_heater.0 ) )
-(ite  (=  command_to_heater.1 1 )  (= off_counter.0  (+  off_count  1 ) )(= off_counter.0 0 ) )
-(ite  (=  command_to_heater.1 1 )  (= on_counter.0 0 )(= on_counter.0  (+  on_count  1 ) ) )
-(ite  (=  command_to_heater.1 3 )  (= spec.select85 70 )(= spec.select85 100 ) )
-(ite  (=  command_to_heater.1 1 )  (= uVal.0 20 )(= uVal.0 spec.select85 ) )
-(= next_u uVal.0 )
-(= cmd_to_heater command_to_heater.1 )
-(= chat_detect  (+ chatter_detect.0 inc ) )
-(= previous_cmd_to_heater command_to_heater.1 )
-(= on_count on_counter.0 )
-(= off_count off_counter.0 )
+0 2 2
+Real state_Caliper_Position
+Real prev_Xc
+Real next_Xc
+Real next_Voltage
+(= prev_Xc  (+  prev_Xc   (*  (- 0.05  state_Caliper_Position  ) 0.001 ) ) )
+(= next_Xc  (+  prev_Xc   (*  (- 0.05  state_Caliper_Position  ) 0.001 ) ) )
+(= next_Voltage  (+  (*  (- 0.05  state_Caliper_Position  ) 10000 )  (*  (+  prev_Xc   (*  (- 0.05  state_Caliper_Position  ) 0.001 ) ) 1000 ) ) )

@@ -59,7 +59,7 @@ Detailed Command Line Interface (CLI):
 		-l [ --lower-bound ] arg     Set the depth or lower-bound of exploration for unrolling
 		-Z [ --time-horizon ] arg    Set the global time horizon of computation.
 		-F [ --goal ] arg            Goal property to test, syntax: 'expr-1 & 
-                                   expr-2'; For e.g. expr-1 is x>=2
+                                   expr-2'; For e.g. expr-1 is x>=2 expr-2 is x<=(-2)
 		--noise-params arg           Sets the noise injecting parameters, syntax: 
                                    'var1:[t1,t2]=>[n1,n2] & ...'where t1 and t2 are start and end time duration of 
                                    the noise on var1 and the noise values can be fix [n1,n1] or range [n1,n2]

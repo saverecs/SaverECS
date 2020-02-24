@@ -244,10 +244,15 @@ total_runTime.start();//starting cpu timer to calculate total run time
 			string jsonFile = fileName + ".json";
 			std::cout << "\nOutput file(" << jsonFile
 					<< ") generated. To view the trace of counter example, visualize data.json in ODE_Visualization folder."
-					<< std::endl;
-			string vis_cmd= "cp "+jsonFile+" ../ODE_visualization/data.json & cd ../ODE_visualization; ./run_websvr.sh & echo Open localhost:8000. Once visualized, run ./shut_websvr.sh";
-			int succ = system(vis_cmd.c_str());
-	
+					<< std::endl<<"Visualize counter example in localhost (Y/N)?";
+			string vis="N";
+			std::cin >> vis;
+			if (strcasecmp(vis.c_str(),"Y")||strcasecmp(vis.c_str(),"Yes")){
+				string vis_cmd= "cp "+jsonFile+" ../ODE_visualization/data.json & cd ../ODE_visualization; ./run_websvr.sh & echo Open localhost:8000. Once visualized, run ./shut_websvr.sh";
+				int succ = system(vis_cmd.c_str());
+			}else{
+				std::cout<<"run ./ODE_visualization/run_websvr.sh\n";
+			}
 			break;
 		} else {
 			std::cout << "\nSystem is SAFE for unrolling(bound): " << bound
@@ -258,7 +263,7 @@ total_runTime.start();//starting cpu timer to calculate total run time
 	}
 	total_runTime.stop();
 
-	std::cout << "\nTotal Running Time (in seconds): "<<total_runTime.elapsed().wall / 1000000;
+	std::cout << "\nTotal Running Time (in seconds): "<<total_runTime.elapsed().wall / 1000000<<"\n";
 	return 0;
 } //end of function main
 

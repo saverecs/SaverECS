@@ -1,4 +1,4 @@
-#include "controller_simple.h"
+#include "powerTrainSimple.h"
 typedef double real32_T;
 typedef unsigned char boolean_T;
 

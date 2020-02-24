@@ -16,7 +16,8 @@ module powertrain(p_engine_speed, p_throttle_angle, p_manifold_pressure, p_airby
 	initial begin 
 		set begin
 			mode == loc;
-			p_engine_speed == 95;
+			p_engine_speed >= 94.25;
+			p_engine_speed <= 115.19;
 			p_throttle_angle == 9.9;
 			p_manifold_pressure==0.7840;
 			p_airbyfuel_meas==14.7;

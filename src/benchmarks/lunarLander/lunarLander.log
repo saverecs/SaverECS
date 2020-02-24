@@ -1,0 +1,186 @@
+
+**** Running tool SaVerECS (Safety Verification of Embedded Control Software) ... ****
+
+Configuration File: parsing Done...
+[FV]: fileName = benchmarks/lunarLander/lunarLander.ha
+Model File Selected for reading!!
+HASLAC input model: parsing ... 
+--------------------AUTOMATON H1: Before Splitting ----------------------
+--------------------AUTOMATON H1: Printed Successfully ------------------
+--------------------Displaying user's input parameters ----------------------
+Maximum bound value for variables = 10000
+Sampling Time = 0.128
+Release Time = 0
+Sampling Jitter = 0
+Time horizon = 100
+Precision = 0.01
+Noise Data:
+List of Noise/Disturbance Parameters:
+Disturbance Data:
+List of Noise/Disturbance Parameters:
+Upper bound = 110
+Lower bound = 100
+deadline_miss : 0 out of 0
+List of MinMaxBounds Parameters:
+			position: [0,30]
+			velocity: [-10,10]
+			mass: [1000,2000]
+			FuelCommand: [2000,3000]
+			tempM: [1000,2000]
+			tempF: [2000,3000]
+Plant file name = benchmarks/lunarLander/lunarLander.ha
+Controller file name = benchmarks/lunarLander/lunarLander.c
+Configuration file name = benchmarks/lunarLander/lunarLander.cfg
+Goal constraints(Infix):
+			position==0
+			velocity>5
+			velocity<(-5)
+Goal constraints(Prefix):
+			 =  position 0
+			 >  velocity 5
+			 <  velocity (-5)
+output file name = benchmarks/lunarLander/outputs/lunarLander
+-------------Parameters Parsed Successfully -------------
+
+Plant model: parsing Done...
+List of Control Variables:
+		position  [0 , 30]
+		velocity  [-10 , 10]
+		mass  [1000 , 2000]
+		FuelCommand  [2000 , 3000]
+		tempM  [1000 , 2000]
+		tempF  [2000 , 3000]
+List of UnControl Variables:
+
+
+===================Displaying Plant Model===================
+Automaton name=lunarLander
+The variable to index mapping is:
+Variable name = FuelCommand Dimension index = 3
+Variable name = mass Dimension index = 2
+Variable name = position Dimension index = 0
+Variable name = tempF Dimension index = 5
+Variable name = tempM Dimension index = 4
+Variable name = velocity Dimension index = 1
+List of Locations of the automata
+loc_id=0 Loc Name=loc
+Invariants: 
+Flow Equations: 
+	 Infix: position' == velocity
+	 Infix: velocity' == FuelCommand / mass - 1.622
+	 Infix: mass' == -FuelCommand / 2800
+	 Infix: FuelCommand' == 0
+	 Infix: tempM' == 0
+	 Infix: tempF' == 0
+	 Prefix: (= d/dt[position]  velocity)
+	 Prefix: (= d/dt[velocity] (-(/ FuelCommand mass) 1.622))
+	 Prefix: (= d/dt[mass] (/(- FuelCommand) 2800))
+	 Prefix: (= d/dt[FuelCommand]  0)
+	 Prefix: (= d/dt[tempM]  0)
+	 Prefix: (= d/dt[tempF]  0)
+Transitions: 
+Assignment: it is kept empty now for controller-program 's output.
+
+Initial Symbolic state(s): 
+		 Initial Loc-ID: 0
+		 Initial Set (Infix): 
+				tempF == 0
+				tempM == 0
+				FuelCommand >= 2020
+				FuelCommand <= 2035
+				mass >= 1245
+				mass <= 1255
+				velocity >= -2.5
+				velocity <= -1.5
+				position >= 29.5
+				position <= 30.5
+
+		 Initial Set (Prefix): 
+				== tempF 0
+				== tempM 0
+				>= FuelCommand 2020
+				<= FuelCommand 2035
+				>= mass 1245
+				<= mass 1255
+				>= velocity -2.5
+				<= velocity -1.5
+				>= position 29.5
+				<= position 30.5
+
+Controller Program: parsing Done...
+
+Controller Program: 
+	Intermediate Variables: 
+
+	Input Variables: 
+		Real	state_velocity  [-10 , 10]
+		Real	state_tempM  [1000 , 2000]
+		Real	state_tempF  [2000 , 3000]
+
+	Output Variables: 
+		Real	next_tempM  [1000 , 2000]
+		Real	next_tempF  [2000 , 3000]
+		Real	next_FuelCommand  [2000 , 3000]
+
+
+	SSA Statements: 
+		(= next_tempM  (-  state_tempM   (*  state_tempF  4.57143e-05 ) ) )
+		(= next_tempF  (+  (*  (-  (-  state_tempM   (*  state_tempF  4.57143e-05 ) )  (*  state_tempF  4.571e-05 ) ) 1.622 )  (-  (*  (-  state_tempF   (*  (-  (-  state_tempM   (*  state_tempF  4.57143e-05 ) )  (*  state_tempF  4.571e-05 ) ) 1.622 ) ) -0.01 )  (*  (*  (+  state_velocity  2 ) 0.6 )  (-  (-  state_tempM   (*  state_tempF  4.57143e-05 ) )  (*  state_tempF  4.571e-05 ) ) ) ) ) )
+		(= next_FuelCommand  (+  (*  (-  (-  state_tempM   (*  state_tempF  4.57143e-05 ) )  (*  state_tempF  4.571e-05 ) ) 1.622 )  (-  (*  (-  state_tempF   (*  (-  (-  state_tempM   (*  state_tempF  4.57143e-05 ) )  (*  state_tempF  4.571e-05 ) ) 1.622 ) ) -0.01 )  (*  (*  (+  state_velocity  2 ) 0.6 )  (-  (-  state_tempM   (*  state_tempF  4.57143e-05 ) )  (*  state_tempF  4.571e-05 ) ) ) ) ) )
+
+File benchmarks/lunarLander/outputs/lunarLander_100.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 11.962
+System is SAFE for unrolling(bound): 100
+
+File benchmarks/lunarLander/outputs/lunarLander_101.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 12.079
+System is SAFE for unrolling(bound): 101
+
+File benchmarks/lunarLander/outputs/lunarLander_102.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 12.286
+System is SAFE for unrolling(bound): 102
+
+File benchmarks/lunarLander/outputs/lunarLander_103.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 12.202
+System is SAFE for unrolling(bound): 103
+
+File benchmarks/lunarLander/outputs/lunarLander_104.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 13.784
+System is SAFE for unrolling(bound): 104
+
+File benchmarks/lunarLander/outputs/lunarLander_105.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 13.054
+System is SAFE for unrolling(bound): 105
+
+File benchmarks/lunarLander/outputs/lunarLander_106.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 14.688
+System is SAFE for unrolling(bound): 106
+
+File benchmarks/lunarLander/outputs/lunarLander_107.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 13.864
+System is SAFE for unrolling(bound): 107
+
+File benchmarks/lunarLander/outputs/lunarLander_108.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 14.178
+System is SAFE for unrolling(bound): 108
+
+File benchmarks/lunarLander/outputs/lunarLander_109.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 15.133
+System is SAFE for unrolling(bound): 109
+
+File benchmarks/lunarLander/outputs/lunarLander_110.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 14.924
+System is SAFE for unrolling(bound): 110
+
+Total Running Time (in seconds): 149566

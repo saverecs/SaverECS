@@ -14,14 +14,10 @@ module lunarLander(position, velocity, mass, FuelCommand, tempM, tempF)
 	initial begin 
 		set begin
 			mode == loc;
-			position <=30.5;
-			position >=29.5;
-			velocity <= -1.5;
-			velocity >= -2.5;
-			mass <= 1255;
-			mass >= 1245;
-			FuelCommand <= 2035;
-			FuelCommand >= 2020;
+			position == 30;
+			velocity == -2;
+			mass == 1250 ;
+			FuelCommand == 2027.5;
 			tempM == 0 ;
 			tempF == 0 ;
 		end

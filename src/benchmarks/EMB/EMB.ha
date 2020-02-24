@@ -14,8 +14,8 @@ module doubleIntegrator(Motor_Current, Caliper_Position, Voltage, Xc)
 			Motor_Current==0;
 			Caliper_Position==0;	
 			Voltage==0;
-			Xc==0;				
+			Xc==0;
 		end
 	end
 
-endmodule	
+endmodule
