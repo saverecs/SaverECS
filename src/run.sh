@@ -1,4 +1,4 @@
-system=EMB
+system=steeringControl
 
 
 mkdir benchmarks/$system/outputs/

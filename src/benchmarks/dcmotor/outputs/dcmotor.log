@@ -1,0 +1,284 @@
+
+**** Running tool SaVerECS (Safety Verification of Embedded Control Software) ... ****
+
+Configuration File: parsing Done...
+[FV]: fileName = benchmarks/dcmotor/dcmotor.ha
+Model File Selected for reading!!
+HASLAC input model: parsing ... 
+--------------------AUTOMATON H1: Before Splitting ----------------------
+--------------------AUTOMATON H1: Printed Successfully ------------------
+--------------------Displaying user's input parameters ----------------------
+Maximum bound value for variables = 100
+Sampling Time = 0.02
+Release Time = 0.01
+Sampling Jitter = 0.001
+Time horizon = 3
+Precision = 0.001
+Noise Data:
+List of Noise/Disturbance Parameters:
+Disturbance Data:
+List of Noise/Disturbance Parameters:
+Upper bound = 40
+Lower bound = 1
+deadline_miss : 0 out of 0
+List of MinMaxBounds Parameters:
+			i: [0,2]
+			angval: [1,30]
+Plant file name = benchmarks/dcmotor/dcmotor.ha
+Controller file name = benchmarks/dcmotor/dcmotor.c
+Configuration file name = benchmarks/dcmotor/dcmotor.cfg
+Goal constraints(Infix):
+			i<=1.2
+			i>=1.0
+			angVal>=10
+			angVal<=11
+Goal constraints(Prefix):
+			 <=  i 1.2
+			 >=  i 1.0
+			 >=  angVal 10
+			 <=  angVal 11
+output file name = benchmarks/dcmotor/outputs/dcmotor
+-------------Parameters Parsed Successfully -------------
+
+Plant model: parsing Done...
+List of Control Variables:
+		angVal  [1 , 30]
+		i  [0 , 2]
+List of UnControl Variables:
+		voltage  [-100 , 100]
+
+
+===================Displaying Plant Model===================
+Automaton name=dcmotor
+The variable to index mapping is:
+Variable name = angVal Dimension index = 0
+Variable name = i Dimension index = 1
+Variable name = voltage Dimension index = 2
+List of Locations of the automata
+loc_id=0 Loc Name=loc
+Invariants: 
+Flow Equations: 
+	 Infix: angVal' == ( -0.1 / 0.01 ) * angVal + ( 0.01 / 0.01 ) * i
+	 Infix: i' == ( ( 0.01 / 0.5 ) * angVal - ( 1 / 0.5 ) * i ) + ( voltage / 0.5 )
+	 Prefix: (= d/dt[angVal] (+(*(/(- 0.1) 0.01) angVal)(*(/ 0.01 0.01) i)))
+	 Prefix: (= d/dt[i] (+(-(*(/ 0.01 0.5) angVal)(*(/ 1 0.5) i))(/ voltage 0.5)))
+Transitions: 
+Assignment: it is kept empty now for controller-program 's output.
+
+Initial Symbolic state(s): 
+		 Initial Loc-ID: 0
+		 Initial Set (Infix): 
+				voltage == 1.0
+				i == 0
+				angVal == 0
+
+		 Initial Set (Prefix): 
+				== voltage 1.0
+				== i 0
+				== angVal 0
+
+Controller Program: parsing Done...
+
+Controller Program: 
+	Intermediate Variables: 
+		Real	.add3  [-100 , 100]
+		Real	pid_op.0  [-100 , 100]
+
+	Input Variables: 
+		Real	state_angVal  [1 , 30]
+		Real	state_error_i_previous  [-100 , 100]
+
+	Output Variables: 
+		Real	next_voltage  [-100 , 100]
+
+
+	SSA Statements: 
+		(ite  (<   (+  (*  (- 1  state_angVal  ) 40 )  (+  (- 1  state_angVal  )  state_error_i_previous  ) ) -20 )  (= .add3 -20 )(= .add3  (+  (*  (- 1  state_angVal  ) 40 )  (+  (- 1  state_angVal  )  state_error_i_previous  ) ) ) )
+		(ite  (>   (+  (*  (- 1  state_angVal  ) 40 )  (+  (- 1  state_angVal  )  state_error_i_previous  ) ) 20 )  (= pid_op.0 20 )(= pid_op.0 .add3 ) )
+		(= next_voltage pid_op.0 )
+		(= state_error_i_previous  (+  (- 1  state_angVal  )  state_error_i_previous  ) )
+
+File benchmarks/dcmotor/outputs/dcmotor_1.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.006
+System is SAFE for unrolling(bound): 1
+
+File benchmarks/dcmotor/outputs/dcmotor_2.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.009
+System is SAFE for unrolling(bound): 2
+
+File benchmarks/dcmotor/outputs/dcmotor_3.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.016
+System is SAFE for unrolling(bound): 3
+
+File benchmarks/dcmotor/outputs/dcmotor_4.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.02
+System is SAFE for unrolling(bound): 4
+
+File benchmarks/dcmotor/outputs/dcmotor_5.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.028
+System is SAFE for unrolling(bound): 5
+
+File benchmarks/dcmotor/outputs/dcmotor_6.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.036
+System is SAFE for unrolling(bound): 6
+
+File benchmarks/dcmotor/outputs/dcmotor_7.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.048
+System is SAFE for unrolling(bound): 7
+
+File benchmarks/dcmotor/outputs/dcmotor_8.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.06
+System is SAFE for unrolling(bound): 8
+
+File benchmarks/dcmotor/outputs/dcmotor_9.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.073
+System is SAFE for unrolling(bound): 9
+
+File benchmarks/dcmotor/outputs/dcmotor_10.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.089
+System is SAFE for unrolling(bound): 10
+
+File benchmarks/dcmotor/outputs/dcmotor_11.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.107
+System is SAFE for unrolling(bound): 11
+
+File benchmarks/dcmotor/outputs/dcmotor_12.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.124
+System is SAFE for unrolling(bound): 12
+
+File benchmarks/dcmotor/outputs/dcmotor_13.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.145
+System is SAFE for unrolling(bound): 13
+
+File benchmarks/dcmotor/outputs/dcmotor_14.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.172
+System is SAFE for unrolling(bound): 14
+
+File benchmarks/dcmotor/outputs/dcmotor_15.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.192
+System is SAFE for unrolling(bound): 15
+
+File benchmarks/dcmotor/outputs/dcmotor_16.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.216
+System is SAFE for unrolling(bound): 16
+
+File benchmarks/dcmotor/outputs/dcmotor_17.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.245
+System is SAFE for unrolling(bound): 17
+
+File benchmarks/dcmotor/outputs/dcmotor_18.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.27
+System is SAFE for unrolling(bound): 18
+
+File benchmarks/dcmotor/outputs/dcmotor_19.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.307
+System is SAFE for unrolling(bound): 19
+
+File benchmarks/dcmotor/outputs/dcmotor_20.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.332
+System is SAFE for unrolling(bound): 20
+
+File benchmarks/dcmotor/outputs/dcmotor_21.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.365
+System is SAFE for unrolling(bound): 21
+
+File benchmarks/dcmotor/outputs/dcmotor_22.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.395
+System is SAFE for unrolling(bound): 22
+
+File benchmarks/dcmotor/outputs/dcmotor_23.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.433
+System is SAFE for unrolling(bound): 23
+
+File benchmarks/dcmotor/outputs/dcmotor_24.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.532
+System is SAFE for unrolling(bound): 24
+
+File benchmarks/dcmotor/outputs/dcmotor_25.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.528
+System is SAFE for unrolling(bound): 25
+
+File benchmarks/dcmotor/outputs/dcmotor_26.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.555
+System is SAFE for unrolling(bound): 26
+
+File benchmarks/dcmotor/outputs/dcmotor_27.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.592
+System is SAFE for unrolling(bound): 27
+
+File benchmarks/dcmotor/outputs/dcmotor_28.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.642
+System is SAFE for unrolling(bound): 28
+
+File benchmarks/dcmotor/outputs/dcmotor_29.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.669
+System is SAFE for unrolling(bound): 29
+
+File benchmarks/dcmotor/outputs/dcmotor_30.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.715
+System is SAFE for unrolling(bound): 30
+
+File benchmarks/dcmotor/outputs/dcmotor_31.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.789
+System is SAFE for unrolling(bound): 31
+
+File benchmarks/dcmotor/outputs/dcmotor_32.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 1.007
+System is SAFE for unrolling(bound): 32
+
+File benchmarks/dcmotor/outputs/dcmotor_33.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.908
+System is SAFE for unrolling(bound): 33
+
+File benchmarks/dcmotor/outputs/dcmotor_34.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.903
+System is SAFE for unrolling(bound): 34
+
+File benchmarks/dcmotor/outputs/dcmotor_35.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.957
+System is SAFE for unrolling(bound): 35
+
+File benchmarks/dcmotor/outputs/dcmotor_36.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 1.024
+Safety violation detected in unrolling(bound): 36
+
+Output file(benchmarks/dcmotor/outputs/dcmotor_36.smt2.json) generated. To view the trace of counter example, visualize data.json in ODE_Visualization folder.
+Open localhost:8000. Once visualized, run ./shut_websvr.sh
+
+Total Running Time (in seconds): 13930

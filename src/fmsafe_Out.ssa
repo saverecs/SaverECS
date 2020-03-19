@@ -1,24 +1,22 @@
-8 2 2
+8 2 1
 Real tmp
 Real tmp1
 Real sub
 Real mul
 Real add
+Real mul1
 Real mul2
-Real mul3
-Real add4
-Real state_Caliper_Position
-Real prev_Xc
-Real next_Xc
-Real next_Voltage
-(= tmp state_Caliper_Position )
-(= tmp1 prev_Xc )
-(= sub (- 0.05 tmp ))
-(= mul (* sub 0.001 ))
+Real add3
+Real state_v
+Real state_prev_error_i
+Real next_u
+(= tmp state_v )
+(= tmp1 state_prev_error_i )
+(= sub (- 10 tmp ))
+(= mul (* sub 40 ))
 (= add (+ tmp1 mul ))
-(= mul2 (* sub 10000 ))
-(= mul3 (* add 1000 ))
-(= add4 (+ mul2 mul3 ))
-(= prev_Xc add )
-(= next_Xc add )
-(= next_Voltage add4 )
+(= mul1 (* sub 800 ))
+(= mul2 (* add 40 ))
+(= add3 (+ mul1 mul2 ))
+(= next_u add3 )
+(= state_prev_error_i add )

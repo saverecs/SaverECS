@@ -1,37 +1,40 @@
-; ModuleID = 'benchmarks/EMB/EMB.c'
-source_filename = "benchmarks/EMB/EMB.c"
+; ModuleID = 'benchmarks/steeringControl/steeringControl.c'
+source_filename = "benchmarks/steeringControl/steeringControl.c"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-unknown-linux-gnu"
 
-%struct.INPUT_VAL = type { double, double, double }
-%struct.RETURN_VAL = type { double, double }
+%struct.INPUT_VAL = type { double, double }
+%struct.RETURN_VAL = type { double }
 
 ; Function Attrs: nounwind uwtable
 define dso_local noalias i8* @controller(%struct.INPUT_VAL* nocapture %input, %struct.RETURN_VAL* nocapture %ret_val) local_unnamed_addr #0 !dbg !9 {
 entry:
-  call void @llvm.dbg.value(metadata %struct.INPUT_VAL* %input, metadata !28, metadata !DIExpression()), !dbg !35
-  call void @llvm.dbg.value(metadata %struct.RETURN_VAL* %ret_val, metadata !29, metadata !DIExpression()), !dbg !36
-  call void @llvm.dbg.value(metadata %struct.INPUT_VAL* %input, metadata !32, metadata !DIExpression(DW_OP_deref)), !dbg !37
-  %state_Caliper_Position = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 1, !dbg !38
-  %0 = load double, double* %state_Caliper_Position, align 8, !dbg !38, !tbaa !39
-  call void @llvm.dbg.value(metadata double %0, metadata !33, metadata !DIExpression()), !dbg !44
-  %prev_Xc = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 2, !dbg !45
-  %1 = load double, double* %prev_Xc, align 8, !dbg !45, !tbaa !46
-  call void @llvm.dbg.value(metadata double %1, metadata !34, metadata !DIExpression()), !dbg !47
-  %sub = fsub double 5.000000e-02, %0, !dbg !48
-  %mul = fmul double %sub, 1.000000e-03, !dbg !49
-  %add = fadd double %1, %mul, !dbg !50
-  call void @llvm.dbg.value(metadata double %add, metadata !31, metadata !DIExpression()), !dbg !51
-  %mul2 = fmul double %sub, 1.000000e+04, !dbg !52
-  %mul3 = fmul double %add, 1.000000e+03, !dbg !53
-  %add4 = fadd double %mul2, %mul3, !dbg !54
-  call void @llvm.dbg.value(metadata double %add4, metadata !30, metadata !DIExpression()), !dbg !55
-  store double %add, double* %prev_Xc, align 8, !dbg !56, !tbaa !46
-  %next_Xc = getelementptr inbounds %struct.RETURN_VAL, %struct.RETURN_VAL* %ret_val, i64 0, i32 0, !dbg !57
-  store double %add, double* %next_Xc, align 8, !dbg !58, !tbaa !59
-  %next_Voltage = getelementptr inbounds %struct.RETURN_VAL, %struct.RETURN_VAL* %ret_val, i64 0, i32 1, !dbg !61
-  store double %add4, double* %next_Voltage, align 8, !dbg !62, !tbaa !63
-  ret i8* null, !dbg !64
+  call void @llvm.dbg.value(metadata %struct.INPUT_VAL* %input, metadata !26, metadata !DIExpression()), !dbg !36
+  call void @llvm.dbg.value(metadata %struct.RETURN_VAL* %ret_val, metadata !27, metadata !DIExpression()), !dbg !37
+  call void @llvm.dbg.value(metadata double 0.000000e+00, metadata !28, metadata !DIExpression()), !dbg !38
+  call void @llvm.dbg.value(metadata double 8.000000e+02, metadata !29, metadata !DIExpression()), !dbg !39
+  call void @llvm.dbg.value(metadata double 4.000000e+01, metadata !30, metadata !DIExpression()), !dbg !40
+  call void @llvm.dbg.value(metadata double 1.000000e+01, metadata !31, metadata !DIExpression()), !dbg !41
+  %state_v = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 0, !dbg !42
+  %0 = load double, double* %state_v, align 8, !dbg !42, !tbaa !43
+  call void @llvm.dbg.value(metadata double %0, metadata !34, metadata !DIExpression()), !dbg !48
+  %state_prev_error_i = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 1, !dbg !49
+  %1 = load double, double* %state_prev_error_i, align 8, !dbg !49, !tbaa !50
+  call void @llvm.dbg.value(metadata double %1, metadata !35, metadata !DIExpression()), !dbg !51
+  %sub = fsub double 1.000000e+01, %0, !dbg !52
+  call void @llvm.dbg.value(metadata double %sub, metadata !32, metadata !DIExpression()), !dbg !53
+  %mul = fmul double %sub, 4.000000e+01, !dbg !54
+  %add = fadd double %1, %mul, !dbg !55
+  call void @llvm.dbg.value(metadata double %add, metadata !33, metadata !DIExpression()), !dbg !56
+  call void @llvm.dbg.value(metadata double %add, metadata !35, metadata !DIExpression()), !dbg !51
+  %mul1 = fmul double %sub, 8.000000e+02, !dbg !57
+  %mul2 = fmul double %add, 4.000000e+01, !dbg !58
+  %add3 = fadd double %mul1, %mul2, !dbg !59
+  call void @llvm.dbg.value(metadata double %add3, metadata !28, metadata !DIExpression()), !dbg !38
+  %next_u = getelementptr inbounds %struct.RETURN_VAL, %struct.RETURN_VAL* %ret_val, i64 0, i32 0, !dbg !60
+  store double %add3, double* %next_u, align 8, !dbg !61, !tbaa !62
+  store double %add, double* %state_prev_error_i, align 8, !dbg !64, !tbaa !50
+  ret i8* null, !dbg !65
 }
 
 ; Function Attrs: nounwind readnone speculatable
@@ -45,7 +48,7 @@ attributes #1 = { nounwind readnone speculatable }
 !llvm.ident = !{!8}
 
 !0 = distinct !DICompileUnit(language: DW_LANG_C99, file: !1, producer: "clang version 7.0.0 ", isOptimized: true, runtimeVersion: 0, emissionKind: FullDebug, enums: !2, retainedTypes: !3)
-!1 = !DIFile(filename: "benchmarks/EMB/EMB.c", directory: "/media/sunandan/DATA/workspace/fmsafe_tool/src")
+!1 = !DIFile(filename: "benchmarks/steeringControl/steeringControl.c", directory: "/media/sunandan/DATA/fmsafe_tool/src")
 !2 = !{}
 !3 = !{!4}
 !4 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: null, size: 64)
@@ -53,59 +56,60 @@ attributes #1 = { nounwind readnone speculatable }
 !6 = !{i32 2, !"Debug Info Version", i32 3}
 !7 = !{i32 1, !"wchar_size", i32 4}
 !8 = !{!"clang version 7.0.0 "}
-!9 = distinct !DISubprogram(name: "controller", scope: !1, file: !1, line: 13, type: !10, isLocal: false, isDefinition: true, scopeLine: 14, flags: DIFlagPrototyped, isOptimized: true, unit: !0, retainedNodes: !27)
+!9 = distinct !DISubprogram(name: "controller", scope: !1, file: !1, line: 4, type: !10, isLocal: false, isDefinition: true, scopeLine: 5, flags: DIFlagPrototyped, isOptimized: true, unit: !0, retainedNodes: !25)
 !10 = !DISubroutineType(types: !11)
-!11 = !{!4, !12, !21}
+!11 = !{!4, !12, !20}
 !12 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !13, size: 64)
-!13 = !DIDerivedType(tag: DW_TAG_typedef, name: "INPUT_VAL", file: !14, line: 16, baseType: !15)
-!14 = !DIFile(filename: "benchmarks/EMB/EMB.h", directory: "/media/sunandan/DATA/workspace/fmsafe_tool/src")
-!15 = distinct !DICompositeType(tag: DW_TAG_structure_type, file: !14, line: 8, size: 192, elements: !16)
-!16 = !{!17, !19, !20}
-!17 = !DIDerivedType(tag: DW_TAG_member, name: "state_Motor_Current", scope: !15, file: !14, line: 10, baseType: !18, size: 64)
+!13 = !DIDerivedType(tag: DW_TAG_typedef, name: "INPUT_VAL", file: !14, line: 10, baseType: !15)
+!14 = !DIFile(filename: "benchmarks/steeringControl/steeringControl.h", directory: "/media/sunandan/DATA/fmsafe_tool/src")
+!15 = distinct !DICompositeType(tag: DW_TAG_structure_type, file: !14, line: 6, size: 128, elements: !16)
+!16 = !{!17, !19}
+!17 = !DIDerivedType(tag: DW_TAG_member, name: "state_v", scope: !15, file: !14, line: 7, baseType: !18, size: 64)
 !18 = !DIBasicType(name: "double", size: 64, encoding: DW_ATE_float)
-!19 = !DIDerivedType(tag: DW_TAG_member, name: "state_Caliper_Position", scope: !15, file: !14, line: 11, baseType: !18, size: 64, offset: 64)
-!20 = !DIDerivedType(tag: DW_TAG_member, name: "prev_Xc", scope: !15, file: !14, line: 13, baseType: !18, size: 64, offset: 128)
-!21 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !22, size: 64)
-!22 = !DIDerivedType(tag: DW_TAG_typedef, name: "RETURN_VAL", file: !14, line: 6, baseType: !23)
-!23 = distinct !DICompositeType(tag: DW_TAG_structure_type, file: !14, line: 2, size: 128, elements: !24)
-!24 = !{!25, !26}
-!25 = !DIDerivedType(tag: DW_TAG_member, name: "next_Xc", scope: !23, file: !14, line: 3, baseType: !18, size: 64)
-!26 = !DIDerivedType(tag: DW_TAG_member, name: "next_Voltage", scope: !23, file: !14, line: 4, baseType: !18, size: 64, offset: 64)
-!27 = !{!28, !29, !30, !31, !32, !33, !34}
-!28 = !DILocalVariable(name: "input", arg: 1, scope: !9, file: !1, line: 13, type: !12)
-!29 = !DILocalVariable(name: "ret_val", arg: 2, scope: !9, file: !1, line: 13, type: !21)
-!30 = !DILocalVariable(name: "out_Voltage", scope: !9, file: !1, line: 15, type: !18)
-!31 = !DILocalVariable(name: "out_Xc", scope: !9, file: !1, line: 16, type: !18)
-!32 = !DILocalVariable(name: "I_temp", scope: !9, file: !1, line: 18, type: !18)
-!33 = !DILocalVariable(name: "X_temp", scope: !9, file: !1, line: 18, type: !18)
-!34 = !DILocalVariable(name: "prev_Xc_temp", scope: !9, file: !1, line: 19, type: !18)
-!35 = !DILocation(line: 13, column: 29, scope: !9)
-!36 = !DILocation(line: 13, column: 48, scope: !9)
-!37 = !DILocation(line: 18, column: 9, scope: !9)
-!38 = !DILocation(line: 22, column: 18, scope: !9)
-!39 = !{!40, !41, i64 8}
-!40 = !{!"", !41, i64 0, !41, i64 8, !41, i64 16}
-!41 = !{!"double", !42, i64 0}
-!42 = !{!"omnipotent char", !43, i64 0}
-!43 = !{!"Simple C/C++ TBAA"}
-!44 = !DILocation(line: 18, column: 17, scope: !9)
-!45 = !DILocation(line: 24, column: 24, scope: !9)
-!46 = !{!40, !41, i64 16}
-!47 = !DILocation(line: 19, column: 9, scope: !9)
-!48 = !DILocation(line: 26, column: 42, scope: !9)
-!49 = !DILocation(line: 26, column: 36, scope: !9)
-!50 = !DILocation(line: 26, column: 24, scope: !9)
-!51 = !DILocation(line: 16, column: 9, scope: !9)
-!52 = !DILocation(line: 27, column: 19, scope: !9)
-!53 = !DILocation(line: 27, column: 39, scope: !9)
-!54 = !DILocation(line: 27, column: 34, scope: !9)
-!55 = !DILocation(line: 15, column: 9, scope: !9)
-!56 = !DILocation(line: 29, column: 17, scope: !9)
-!57 = !DILocation(line: 31, column: 13, scope: !9)
-!58 = !DILocation(line: 31, column: 21, scope: !9)
-!59 = !{!60, !41, i64 0}
-!60 = !{!"", !41, i64 0, !41, i64 8}
-!61 = !DILocation(line: 32, column: 13, scope: !9)
-!62 = !DILocation(line: 32, column: 26, scope: !9)
-!63 = !{!60, !41, i64 8}
-!64 = !DILocation(line: 34, column: 3, scope: !9)
+!19 = !DIDerivedType(tag: DW_TAG_member, name: "state_prev_error_i", scope: !15, file: !14, line: 8, baseType: !18, size: 64, offset: 64)
+!20 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !21, size: 64)
+!21 = !DIDerivedType(tag: DW_TAG_typedef, name: "RETURN_VAL", file: !14, line: 4, baseType: !22)
+!22 = distinct !DICompositeType(tag: DW_TAG_structure_type, file: !14, line: 2, size: 64, elements: !23)
+!23 = !{!24}
+!24 = !DIDerivedType(tag: DW_TAG_member, name: "next_u", scope: !22, file: !14, line: 3, baseType: !18, size: 64)
+!25 = !{!26, !27, !28, !29, !30, !31, !32, !33, !34, !35}
+!26 = !DILocalVariable(name: "input", arg: 1, scope: !9, file: !1, line: 4, type: !12)
+!27 = !DILocalVariable(name: "ret_val", arg: 2, scope: !9, file: !1, line: 4, type: !20)
+!28 = !DILocalVariable(name: "pid_op", scope: !9, file: !1, line: 6, type: !18)
+!29 = !DILocalVariable(name: "KP", scope: !9, file: !1, line: 7, type: !18)
+!30 = !DILocalVariable(name: "KI", scope: !9, file: !1, line: 8, type: !18)
+!31 = !DILocalVariable(name: "ref", scope: !9, file: !1, line: 9, type: !18)
+!32 = !DILocalVariable(name: "error", scope: !9, file: !1, line: 10, type: !18)
+!33 = !DILocalVariable(name: "error_i", scope: !9, file: !1, line: 10, type: !18)
+!34 = !DILocalVariable(name: "v", scope: !9, file: !1, line: 12, type: !18)
+!35 = !DILocalVariable(name: "prev_error_i", scope: !9, file: !1, line: 14, type: !18)
+!36 = !DILocation(line: 4, column: 29, scope: !9)
+!37 = !DILocation(line: 4, column: 48, scope: !9)
+!38 = !DILocation(line: 6, column: 10, scope: !9)
+!39 = !DILocation(line: 7, column: 10, scope: !9)
+!40 = !DILocation(line: 8, column: 10, scope: !9)
+!41 = !DILocation(line: 9, column: 10, scope: !9)
+!42 = !DILocation(line: 12, column: 23, scope: !9)
+!43 = !{!44, !45, i64 0}
+!44 = !{!"", !45, i64 0, !45, i64 8}
+!45 = !{!"double", !46, i64 0}
+!46 = !{!"omnipotent char", !47, i64 0}
+!47 = !{!"Simple C/C++ TBAA"}
+!48 = !DILocation(line: 12, column: 12, scope: !9)
+!49 = !DILocation(line: 14, column: 34, scope: !9)
+!50 = !{!44, !45, i64 8}
+!51 = !DILocation(line: 14, column: 12, scope: !9)
+!52 = !DILocation(line: 18, column: 17, scope: !9)
+!53 = !DILocation(line: 10, column: 10, scope: !9)
+!54 = !DILocation(line: 19, column: 35, scope: !9)
+!55 = !DILocation(line: 19, column: 28, scope: !9)
+!56 = !DILocation(line: 10, column: 17, scope: !9)
+!57 = !DILocation(line: 22, column: 20, scope: !9)
+!58 = !DILocation(line: 22, column: 35, scope: !9)
+!59 = !DILocation(line: 22, column: 25, scope: !9)
+!60 = !DILocation(line: 23, column: 14, scope: !9)
+!61 = !DILocation(line: 23, column: 21, scope: !9)
+!62 = !{!63, !45, i64 0}
+!63 = !{!"", !45, i64 0}
+!64 = !DILocation(line: 24, column: 31, scope: !9)
+!65 = !DILocation(line: 26, column: 5, scope: !9)
