@@ -1,12 +1,10 @@
-8 2 1
+6 2 1
 Real tmp
 Real tmp1
 Real sub
 Real mul
 Real add
-Real mul1
-Real mul2
-Real add3
+Real mul4
 Real state_v
 Real state_prev_error_i
 Real next_u
@@ -15,8 +13,6 @@ Real next_u
 (= sub (- 10 tmp ))
 (= mul (* sub 40 ))
 (= add (+ tmp1 mul ))
-(= mul1 (* sub 800 ))
-(= mul2 (* add 40 ))
-(= add3 (+ mul1 mul2 ))
-(= next_u add3 )
+(= mul4 (* tmp 451.11 ))
+(= next_u mul4 )
 (= state_prev_error_i add )

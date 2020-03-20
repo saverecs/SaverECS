@@ -9,10 +9,8 @@ module steeringControl(v,u)
     initial begin
         set begin
             mode == loc;
-            v >= 0;
-            v <= 100;
-            u >= (-90);
-            u <= 90;
+            v == 0;            
+            u == 500;
         end
     end
 endmodule

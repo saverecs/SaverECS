@@ -2,5 +2,5 @@
 Real state_v
 Real state_prev_error_i
 Real next_u
-(= next_u  (+  (*  (- 10  state_v  ) 800 )  (*  (+  state_prev_error_i   (*  (- 10  state_v  ) 40 ) ) 40 ) ) )
+(= next_u  (*  state_v  451.11 ) )
 (= state_prev_error_i  (+  state_prev_error_i   (*  (- 10  state_v  ) 40 ) ) )

@@ -9,7 +9,7 @@ HASLAC input model: parsing ...
 --------------------AUTOMATON H1: Printed Successfully ------------------
 --------------------Displaying user's input parameters ----------------------
 Maximum bound value for variables = 1000
-Sampling Time = 0.2
+Sampling Time = 0.02
 Release Time = 0.01
 Sampling Jitter = 0
 Time horizon = 100
@@ -18,20 +18,20 @@ Noise Data:
 List of Noise/Disturbance Parameters:
 Disturbance Data:
 List of Noise/Disturbance Parameters:
-Upper bound = 30
-Lower bound = 1
+Upper bound = 510
+Lower bound = 491
 deadline_miss : 0 out of 0
 List of MinMaxBounds Parameters:
 			v: [-1000,1000]
-			u: [-1000,1000]
+			u: [-10000,10000]
 Plant file name = benchmarks/steeringControl/steeringControl.ha
 Controller file name = benchmarks/steeringControl/steeringControl.c
 Configuration file name = benchmarks/steeringControl/steeringControl.cfg
 Goal constraints(Infix):
-			gt>=5
+			gt>=10
 			v>8
 Goal constraints(Prefix):
-			 >=  gt 5
+			 >=  gt 10
 			 >  v 8
 output file name = benchmarks/steeringControl/outputs/steeringControl
 -------------Parameters Parsed Successfully -------------
@@ -40,7 +40,7 @@ Plant model: parsing Done...
 List of Control Variables:
 		v  [-1000 , 1000]
 List of UnControl Variables:
-		u  [-1000 , 1000]
+		u  [-10000 , 10000]
 
 
 ===================Displaying Plant Model===================
@@ -60,16 +60,12 @@ Assignment: it is kept empty now for controller-program 's output.
 Initial Symbolic state(s): 
 		 Initial Loc-ID: 0
 		 Initial Set (Infix): 
-				u <= 90
-				u >= ( -90 )
-				v <= 100
-				v >= 0
+				u == 500
+				v == 0
 
 		 Initial Set (Prefix): 
-				<= u 90
-				>= u ( -90 )
-				<= v 100
-				>= v 0
+				== u 500
+				== v 0
 
 Controller Program: parsing Done...
 
@@ -81,132 +77,19 @@ Controller Program:
 		Real	state_prev_error_i  [-1000 , 1000]
 
 	Output Variables: 
-		Real	next_u  [-1000 , 1000]
+		Real	next_u  [-10000 , 10000]
 
 
 	SSA Statements: 
-		(= next_u  (+  (*  (- 10  state_v  ) 800 )  (*  (+  state_prev_error_i   (*  (- 10  state_v  ) 40 ) ) 40 ) ) )
+		(= next_u  (*  state_v  451.11 ) )
 		(= state_prev_error_i  (+  state_prev_error_i   (*  (- 10  state_v  ) 40 ) ) )
 
-File benchmarks/steeringControl/outputs/steeringControl_1.smt2 created .....
+File benchmarks/steeringControl/outputs/steeringControl_491.smt2 created .....
 Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.013
-System is SAFE for unrolling(bound): 1
+Boost/Wall clock time  taken: (in Seconds) = 317.762
+Safety violation detected in unrolling(bound): 491
 
-File benchmarks/steeringControl/outputs/steeringControl_2.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.015
-System is SAFE for unrolling(bound): 2
+Output file(benchmarks/steeringControl/outputs/steeringControl_491.smt2.json) generated. To view the trace of counter example, visualize data.json in ODE_Visualization folder.
+Open localhost:8000. Once visualized, run ./shut_websvr.sh
 
-File benchmarks/steeringControl/outputs/steeringControl_3.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.017
-System is SAFE for unrolling(bound): 3
-
-File benchmarks/steeringControl/outputs/steeringControl_4.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.02
-System is SAFE for unrolling(bound): 4
-
-File benchmarks/steeringControl/outputs/steeringControl_5.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.025
-System is SAFE for unrolling(bound): 5
-
-File benchmarks/steeringControl/outputs/steeringControl_6.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.03
-System is SAFE for unrolling(bound): 6
-
-File benchmarks/steeringControl/outputs/steeringControl_7.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.037
-System is SAFE for unrolling(bound): 7
-
-File benchmarks/steeringControl/outputs/steeringControl_8.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.047
-System is SAFE for unrolling(bound): 8
-
-File benchmarks/steeringControl/outputs/steeringControl_9.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.058
-System is SAFE for unrolling(bound): 9
-
-File benchmarks/steeringControl/outputs/steeringControl_10.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.064
-System is SAFE for unrolling(bound): 10
-
-File benchmarks/steeringControl/outputs/steeringControl_11.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.071
-System is SAFE for unrolling(bound): 11
-
-File benchmarks/steeringControl/outputs/steeringControl_12.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.089
-System is SAFE for unrolling(bound): 12
-
-File benchmarks/steeringControl/outputs/steeringControl_13.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.103
-System is SAFE for unrolling(bound): 13
-
-File benchmarks/steeringControl/outputs/steeringControl_14.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.127
-System is SAFE for unrolling(bound): 14
-
-File benchmarks/steeringControl/outputs/steeringControl_15.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.127
-System is SAFE for unrolling(bound): 15
-
-File benchmarks/steeringControl/outputs/steeringControl_16.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.152
-System is SAFE for unrolling(bound): 16
-
-File benchmarks/steeringControl/outputs/steeringControl_17.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.15
-System is SAFE for unrolling(bound): 17
-
-File benchmarks/steeringControl/outputs/steeringControl_18.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.17
-System is SAFE for unrolling(bound): 18
-
-File benchmarks/steeringControl/outputs/steeringControl_19.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.21
-System is SAFE for unrolling(bound): 19
-
-File benchmarks/steeringControl/outputs/steeringControl_20.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.229
-System is SAFE for unrolling(bound): 20
-
-File benchmarks/steeringControl/outputs/steeringControl_21.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.213
-System is SAFE for unrolling(bound): 21
-
-File benchmarks/steeringControl/outputs/steeringControl_22.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.254
-System is SAFE for unrolling(bound): 22
-
-File benchmarks/steeringControl/outputs/steeringControl_23.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.277
-System is SAFE for unrolling(bound): 23
-
-File benchmarks/steeringControl/outputs/steeringControl_24.smt2 created .....
-Running solver please wait ... 
-Boost/Wall clock time  taken: (in Seconds) = 0.271
-System is SAFE for unrolling(bound): 24
-
-File benchmarks/steeringControl/outputs/steeringControl_25.smt2 created .....
-Running solver please wait ... 
+Total Running Time (in seconds): 326638

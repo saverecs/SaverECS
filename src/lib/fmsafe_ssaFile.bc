@@ -9,31 +9,30 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: nounwind uwtable
 define dso_local noalias i8* @controller(%struct.INPUT_VAL* nocapture %input, %struct.RETURN_VAL* nocapture %ret_val) local_unnamed_addr #0 !dbg !9 {
 entry:
-  call void @llvm.dbg.value(metadata %struct.INPUT_VAL* %input, metadata !26, metadata !DIExpression()), !dbg !36
-  call void @llvm.dbg.value(metadata %struct.RETURN_VAL* %ret_val, metadata !27, metadata !DIExpression()), !dbg !37
-  call void @llvm.dbg.value(metadata double 0.000000e+00, metadata !28, metadata !DIExpression()), !dbg !38
-  call void @llvm.dbg.value(metadata double 8.000000e+02, metadata !29, metadata !DIExpression()), !dbg !39
-  call void @llvm.dbg.value(metadata double 4.000000e+01, metadata !30, metadata !DIExpression()), !dbg !40
-  call void @llvm.dbg.value(metadata double 1.000000e+01, metadata !31, metadata !DIExpression()), !dbg !41
-  %state_v = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 0, !dbg !42
-  %0 = load double, double* %state_v, align 8, !dbg !42, !tbaa !43
-  call void @llvm.dbg.value(metadata double %0, metadata !34, metadata !DIExpression()), !dbg !48
-  %state_prev_error_i = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 1, !dbg !49
-  %1 = load double, double* %state_prev_error_i, align 8, !dbg !49, !tbaa !50
-  call void @llvm.dbg.value(metadata double %1, metadata !35, metadata !DIExpression()), !dbg !51
-  %sub = fsub double 1.000000e+01, %0, !dbg !52
-  call void @llvm.dbg.value(metadata double %sub, metadata !32, metadata !DIExpression()), !dbg !53
-  %mul = fmul double %sub, 4.000000e+01, !dbg !54
-  %add = fadd double %1, %mul, !dbg !55
-  call void @llvm.dbg.value(metadata double %add, metadata !33, metadata !DIExpression()), !dbg !56
-  call void @llvm.dbg.value(metadata double %add, metadata !35, metadata !DIExpression()), !dbg !51
-  %mul1 = fmul double %sub, 8.000000e+02, !dbg !57
-  %mul2 = fmul double %add, 4.000000e+01, !dbg !58
-  %add3 = fadd double %mul1, %mul2, !dbg !59
-  call void @llvm.dbg.value(metadata double %add3, metadata !28, metadata !DIExpression()), !dbg !38
+  call void @llvm.dbg.value(metadata %struct.INPUT_VAL* %input, metadata !26, metadata !DIExpression()), !dbg !37
+  call void @llvm.dbg.value(metadata %struct.RETURN_VAL* %ret_val, metadata !27, metadata !DIExpression()), !dbg !38
+  call void @llvm.dbg.value(metadata double 0.000000e+00, metadata !28, metadata !DIExpression()), !dbg !39
+  call void @llvm.dbg.value(metadata double 0x407C31C432CA57A8, metadata !29, metadata !DIExpression()), !dbg !40
+  call void @llvm.dbg.value(metadata double 8.000000e+02, metadata !30, metadata !DIExpression()), !dbg !41
+  call void @llvm.dbg.value(metadata double 4.000000e+01, metadata !31, metadata !DIExpression()), !dbg !42
+  call void @llvm.dbg.value(metadata double 1.000000e+01, metadata !32, metadata !DIExpression()), !dbg !43
+  %state_v = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 0, !dbg !44
+  %0 = load double, double* %state_v, align 8, !dbg !44, !tbaa !45
+  call void @llvm.dbg.value(metadata double %0, metadata !35, metadata !DIExpression()), !dbg !50
+  %state_prev_error_i = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 1, !dbg !51
+  %1 = load double, double* %state_prev_error_i, align 8, !dbg !51, !tbaa !52
+  call void @llvm.dbg.value(metadata double %1, metadata !36, metadata !DIExpression()), !dbg !53
+  %sub = fsub double 1.000000e+01, %0, !dbg !54
+  call void @llvm.dbg.value(metadata double %sub, metadata !33, metadata !DIExpression()), !dbg !55
+  %mul = fmul double %sub, 4.000000e+01, !dbg !56
+  %add = fadd double %1, %mul, !dbg !57
+  call void @llvm.dbg.value(metadata double %add, metadata !34, metadata !DIExpression()), !dbg !58
+  call void @llvm.dbg.value(metadata double %add, metadata !36, metadata !DIExpression()), !dbg !53
+  %mul4 = fmul double %0, 0x407C31C432CA57A8, !dbg !59
+  call void @llvm.dbg.value(metadata double %mul4, metadata !28, metadata !DIExpression()), !dbg !39
   %next_u = getelementptr inbounds %struct.RETURN_VAL, %struct.RETURN_VAL* %ret_val, i64 0, i32 0, !dbg !60
-  store double %add3, double* %next_u, align 8, !dbg !61, !tbaa !62
-  store double %add, double* %state_prev_error_i, align 8, !dbg !64, !tbaa !50
+  store double %mul4, double* %next_u, align 8, !dbg !61, !tbaa !62
+  store double %add, double* %state_prev_error_i, align 8, !dbg !64, !tbaa !52
   ret i8* null, !dbg !65
 }
 
@@ -72,44 +71,44 @@ attributes #1 = { nounwind readnone speculatable }
 !22 = distinct !DICompositeType(tag: DW_TAG_structure_type, file: !14, line: 2, size: 64, elements: !23)
 !23 = !{!24}
 !24 = !DIDerivedType(tag: DW_TAG_member, name: "next_u", scope: !22, file: !14, line: 3, baseType: !18, size: 64)
-!25 = !{!26, !27, !28, !29, !30, !31, !32, !33, !34, !35}
+!25 = !{!26, !27, !28, !29, !30, !31, !32, !33, !34, !35, !36}
 !26 = !DILocalVariable(name: "input", arg: 1, scope: !9, file: !1, line: 4, type: !12)
 !27 = !DILocalVariable(name: "ret_val", arg: 2, scope: !9, file: !1, line: 4, type: !20)
 !28 = !DILocalVariable(name: "pid_op", scope: !9, file: !1, line: 6, type: !18)
-!29 = !DILocalVariable(name: "KP", scope: !9, file: !1, line: 7, type: !18)
-!30 = !DILocalVariable(name: "KI", scope: !9, file: !1, line: 8, type: !18)
-!31 = !DILocalVariable(name: "ref", scope: !9, file: !1, line: 9, type: !18)
-!32 = !DILocalVariable(name: "error", scope: !9, file: !1, line: 10, type: !18)
-!33 = !DILocalVariable(name: "error_i", scope: !9, file: !1, line: 10, type: !18)
-!34 = !DILocalVariable(name: "v", scope: !9, file: !1, line: 12, type: !18)
-!35 = !DILocalVariable(name: "prev_error_i", scope: !9, file: !1, line: 14, type: !18)
-!36 = !DILocation(line: 4, column: 29, scope: !9)
-!37 = !DILocation(line: 4, column: 48, scope: !9)
-!38 = !DILocation(line: 6, column: 10, scope: !9)
-!39 = !DILocation(line: 7, column: 10, scope: !9)
-!40 = !DILocation(line: 8, column: 10, scope: !9)
-!41 = !DILocation(line: 9, column: 10, scope: !9)
-!42 = !DILocation(line: 12, column: 23, scope: !9)
-!43 = !{!44, !45, i64 0}
-!44 = !{!"", !45, i64 0, !45, i64 8}
-!45 = !{!"double", !46, i64 0}
-!46 = !{!"omnipotent char", !47, i64 0}
-!47 = !{!"Simple C/C++ TBAA"}
-!48 = !DILocation(line: 12, column: 12, scope: !9)
-!49 = !DILocation(line: 14, column: 34, scope: !9)
-!50 = !{!44, !45, i64 8}
-!51 = !DILocation(line: 14, column: 12, scope: !9)
-!52 = !DILocation(line: 18, column: 17, scope: !9)
-!53 = !DILocation(line: 10, column: 10, scope: !9)
-!54 = !DILocation(line: 19, column: 35, scope: !9)
-!55 = !DILocation(line: 19, column: 28, scope: !9)
-!56 = !DILocation(line: 10, column: 17, scope: !9)
-!57 = !DILocation(line: 22, column: 20, scope: !9)
-!58 = !DILocation(line: 22, column: 35, scope: !9)
-!59 = !DILocation(line: 22, column: 25, scope: !9)
-!60 = !DILocation(line: 23, column: 14, scope: !9)
-!61 = !DILocation(line: 23, column: 21, scope: !9)
-!62 = !{!63, !45, i64 0}
-!63 = !{!"", !45, i64 0}
-!64 = !DILocation(line: 24, column: 31, scope: !9)
-!65 = !DILocation(line: 26, column: 5, scope: !9)
+!29 = !DILocalVariable(name: "K", scope: !9, file: !1, line: 7, type: !18)
+!30 = !DILocalVariable(name: "KP", scope: !9, file: !1, line: 8, type: !18)
+!31 = !DILocalVariable(name: "KI", scope: !9, file: !1, line: 9, type: !18)
+!32 = !DILocalVariable(name: "ref", scope: !9, file: !1, line: 10, type: !18)
+!33 = !DILocalVariable(name: "error", scope: !9, file: !1, line: 11, type: !18)
+!34 = !DILocalVariable(name: "error_i", scope: !9, file: !1, line: 11, type: !18)
+!35 = !DILocalVariable(name: "v", scope: !9, file: !1, line: 13, type: !18)
+!36 = !DILocalVariable(name: "prev_error_i", scope: !9, file: !1, line: 15, type: !18)
+!37 = !DILocation(line: 4, column: 29, scope: !9)
+!38 = !DILocation(line: 4, column: 48, scope: !9)
+!39 = !DILocation(line: 6, column: 10, scope: !9)
+!40 = !DILocation(line: 7, column: 10, scope: !9)
+!41 = !DILocation(line: 8, column: 10, scope: !9)
+!42 = !DILocation(line: 9, column: 10, scope: !9)
+!43 = !DILocation(line: 10, column: 10, scope: !9)
+!44 = !DILocation(line: 13, column: 23, scope: !9)
+!45 = !{!46, !47, i64 0}
+!46 = !{!"", !47, i64 0, !47, i64 8}
+!47 = !{!"double", !48, i64 0}
+!48 = !{!"omnipotent char", !49, i64 0}
+!49 = !{!"Simple C/C++ TBAA"}
+!50 = !DILocation(line: 13, column: 12, scope: !9)
+!51 = !DILocation(line: 15, column: 34, scope: !9)
+!52 = !{!46, !47, i64 8}
+!53 = !DILocation(line: 15, column: 12, scope: !9)
+!54 = !DILocation(line: 18, column: 17, scope: !9)
+!55 = !DILocation(line: 11, column: 10, scope: !9)
+!56 = !DILocation(line: 19, column: 35, scope: !9)
+!57 = !DILocation(line: 19, column: 28, scope: !9)
+!58 = !DILocation(line: 11, column: 17, scope: !9)
+!59 = !DILocation(line: 23, column: 15, scope: !9)
+!60 = !DILocation(line: 24, column: 14, scope: !9)
+!61 = !DILocation(line: 24, column: 21, scope: !9)
+!62 = !{!63, !47, i64 0}
+!63 = !{!"", !47, i64 0}
+!64 = !DILocation(line: 25, column: 31, scope: !9)
+!65 = !DILocation(line: 27, column: 5, scope: !9)
