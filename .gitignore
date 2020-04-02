@@ -9,8 +9,9 @@ syntax: glob
 */*.swp
 *.swp
 nohup.out
-*/.fuse*
+*/*.fuse_*
 */*.orig
 .vscode/
 .project
 /.vscode/
+*/*.out
