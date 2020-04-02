@@ -6,7 +6,6 @@ echo ./SaVerECS -g "benchmarks/$system/$system.cfg" --plant-file "benchmarks/$sy
 ./SaVerECS -g "benchmarks/$system/$system.cfg" --plant-file "benchmarks/$system/$system.ha" --controller-file "benchmarks/$system/$system.c" -o "benchmarks/$system/outputs/$system" >benchmarks/$system/outputs/$system.log &
 
 
-
 #########################################################################################################################################################################################################################################
 #./SaVerECS -m 100 -t 0.2 -r 0.1 -d 0.001 -u 70 -l 8 --time-horizon 3 --goal "temperature<52" --plant-file "benchmarks/thermostat/thermostat.ha" --controller-file "benchmarks/thermostat/thermostat.c" -o outputs/thermostat
 

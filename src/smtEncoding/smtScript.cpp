@@ -68,19 +68,19 @@ int smt_generator(hybrid_automata::ptr& my_ha, user_inputs::ptr& userInputs,
 	print_flowEquation(my_ha, smtfile, plant_vars);
 	
 	//added comment
-	smtfile << "\n;;printing initial values of variables\n";
+	//smtfile << "\n;;printing initial values of variables\n";
 	print_initialState(my_ha, smtfile, plant_vars, control_prog);
 
 	//added comment
-	smtfile << "\n;;printing first loop\n";
+	//smtfile << "\n;;printing first loop\n";
 	print_firstLoop(smtfile, my_ha, userInputs, plant_vars);
 
 	//added comment
-	smtfile << "\n;;printing next loops\n";
+	//smtfile << "\n;;printing next loops\n";
 	print_nextLoops(smtfile, my_ha, bound, userInputs, plant_vars,
 			control_prog);
 	//added comment
-	smtfile << "\n;;printing goal specs\n";
+	//smtfile << "\n;;printing goal specs\n";
 	print_specification(smtfile, bound, userInputs, plant_vars);
 
 	print_footer(smtfile);
@@ -481,7 +481,7 @@ void print_firstLoop(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 
 //Constraints for constant dynamics
 	//added comment
-	outputfile << "\n;;printing constant variables in first loop\n";
+	//outputfile << "\n;;printing constant variables in first loop\n";
 	outputfile << "(= lt_0_t (+ lt_0_0 (* 1 " << userInputs->getReleaseTime()
 			<< "))) ";
 	outputfile << "(= gt_0_t (+ gt_0_0 (* 1 " << userInputs->getReleaseTime()
@@ -504,7 +504,7 @@ void print_firstLoop(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 
 	}
 	//added comment
-	outputfile << "\n;;printing incrementing of uncontrolled variables in first loop\n";
+	//outputfile << "\n;;printing incrementing of uncontrolled variables in first loop\n";
 	for (it_uncontrol_var = plant_vars.uncontrol_var.begin();
 			it_uncontrol_var != plant_vars.uncontrol_var.end();
 			++it_uncontrol_var) {
@@ -524,7 +524,7 @@ void print_firstLoop(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 
 //Controlled variable
 	//added comment
-	outputfile << "\n;;printing integration of controlled, uncontrolled variables in first loop\n";
+	//outputfile << "\n;;printing integration of controlled, uncontrolled variables in first loop\n";
 	for (it_control_var = plant_vars.control_var.begin();
 			it_control_var != plant_vars.control_var.end(); ++it_control_var) {
 		outputfile << (*it_control_var).var_name << "_0_t ";
@@ -598,7 +598,7 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 
 		//outputfile << "(assert (and ";
 		//added comment
-		outputfile << "\n;;printing "<<i<< "th iteration guards in next loops\n";
+		//outputfile << "\n;;printing "<<i<< "th iteration guards in next loops\n";
 		//Guard Condition and resets
 		if (i == 1) {
 
@@ -653,7 +653,7 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 		}
 
 		//outputfile << " ))\n";
-		outputfile << " \n ;; printing controller constraints \n";
+		//outputfile << " \n ;; printing controller constraints \n";
 		//added comment
 		//Controller Execution: constraints in SSA form
 
@@ -673,7 +673,7 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 
 		//Constraints for constant dynamics
 		//added comment
-		outputfile << "\n;;printing constant variables in next loops\n";
+		//outputfile << "\n;;printing constant variables in next loops\n";
 		outputfile << "(= lt_" << i << "_t (+ lt_" << i << "_0 (* 1 time_" << i
 				<< " ))) ";
 		outputfile << "(= gt_" << i << "_t (+ gt_" << i << "_0 (* 1 time_" << i
@@ -705,7 +705,7 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 
 		}
 		//added comment
-		outputfile << "\n;;printing uncontrolled variables in next loops\n";
+		//outputfile << "\n;;printing uncontrolled variables in next loops\n";
 		for (it_uncontrol_var = plant_vars.uncontrol_var.begin();
 				it_uncontrol_var != plant_vars.uncontrol_var.end();
 				++it_uncontrol_var) {
@@ -732,7 +732,7 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 
 		//Controlled variable
 		//added comment
-		outputfile << "\n;;printing integration of controlled, uncontrolled variables in next loops\n";
+		//outputfile << "\n;;printing integration of controlled, uncontrolled variables in next loops\n";
 		for (it_control_var = plant_vars.control_var.begin();
 				it_control_var != plant_vars.control_var.end();
 				++it_control_var) {
@@ -789,7 +789,7 @@ void print_nextLoops(std::ofstream &outputfile, hybrid_automata::ptr& my_ha,
 
 		//Condition -
 		//added comment
-		outputfile << "\n;;printing conditions in "<<i<<"th loop\n";
+		//outputfile << "\n;;printing conditions in "<<i<<"th loop\n";
 		//(<= lt_1_t 0.2) (<= lt_1_0 0.2) (= mode_2 1)
 
 		//outputfile << "(assert (and ";

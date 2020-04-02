@@ -1,6 +1,4 @@
-0 2 1
+0 1 1
 Real state_v
-Real state_prev_error_i
 Real next_u
-(= next_u  (*  state_v  451.11 ) )
-(= state_prev_error_i  (+  state_prev_error_i   (*  (- 10  state_v  ) 40 ) ) )
+(= next_u  (- 10  (*  (+  state_v  -10 ) 84101 ) ) )
