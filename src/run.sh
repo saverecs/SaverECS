@@ -1,9 +1,10 @@
 system=steeringControl
+dt=$(date +%FT%T)
 
 
-mkdir benchmarks/$system/outputs/
-echo ./SaVerECS -g "benchmarks/$system/$system.cfg" --plant-file "benchmarks/$system/$system.ha" --controller-file "benchmarks/$system/$system.c" -o "benchmarks/$system/outputs/$system >benchmarks/$system/outputs/$system.log"
-./SaVerECS -g "benchmarks/$system/$system.cfg" --plant-file "benchmarks/$system/$system.ha" --controller-file "benchmarks/$system/$system.c" -o "benchmarks/$system/outputs/$system" >benchmarks/$system/outputs/$system.log &
+mkdir benchmarks/$system/outputs-$dt/
+echo ./SaVerECS -g "benchmarks/$system/$system.cfg" --plant-file "benchmarks/$system/$system.ha" --controller-file "benchmarks/$system/$system.c" -o "benchmarks/$system/outputs-$dt/$system >benchmarks/$system/outputs-$dt/$system-$dt.log"
+./SaVerECS -g "benchmarks/$system/$system.cfg" --plant-file "benchmarks/$system/$system.ha" --controller-file "benchmarks/$system/$system.c" -o "benchmarks/$system/outputs-$dt/$system" >benchmarks/$system/outputs-$dt/$system-$dt.log &
 
 
 #########################################################################################################################################################################################################################################

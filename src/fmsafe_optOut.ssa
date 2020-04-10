@@ -1,4 +1,4 @@
 0 1 1
 Real state_v
 Real next_u
-(= next_u  (- 10  (*  (+  state_v  -10 ) 84101 ) ) )
+(= next_u  (- 10  (*  (+  state_v  -10 ) 56260 ) ) )

@@ -14,7 +14,7 @@ entry:
   call void @llvm.dbg.value(metadata double 0.000000e+00, metadata !28, metadata !DIExpression()), !dbg !40
   call void @llvm.dbg.value(metadata double 2.948890e+01, metadata !29, metadata !DIExpression()), !dbg !41
   call void @llvm.dbg.value(metadata double 1.000000e+00, metadata !30, metadata !DIExpression()), !dbg !42
-  call void @llvm.dbg.value(metadata double 8.410100e+04, metadata !31, metadata !DIExpression()), !dbg !43
+  call void @llvm.dbg.value(metadata double 5.626000e+04, metadata !31, metadata !DIExpression()), !dbg !43
   call void @llvm.dbg.value(metadata double 4.000000e+01, metadata !32, metadata !DIExpression()), !dbg !44
   call void @llvm.dbg.value(metadata double 1.000000e+01, metadata !33, metadata !DIExpression()), !dbg !45
   %state_v = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 0, !dbg !46
@@ -22,7 +22,7 @@ entry:
   call void @llvm.dbg.value(metadata double %0, metadata !36, metadata !DIExpression()), !dbg !52
   call void @llvm.dbg.value(metadata %struct.INPUT_VAL* %input, metadata !37, metadata !DIExpression(DW_OP_plus_uconst, 8, DW_OP_deref, DW_OP_stack_value)), !dbg !53
   %sub1 = fadd double %0, -1.000000e+01, !dbg !54
-  %mul = fmul double %sub1, 8.410100e+04, !dbg !55
+  %mul = fmul double %sub1, 5.626000e+04, !dbg !55
   %add15 = fsub double 1.000000e+01, %mul, !dbg !55
   %next_u = getelementptr inbounds %struct.RETURN_VAL, %struct.RETURN_VAL* %ret_val, i64 0, i32 0, !dbg !56
   store double %add15, double* %next_u, align 8, !dbg !57, !tbaa !58
@@ -70,33 +70,33 @@ attributes #1 = { nounwind readnone speculatable }
 !28 = !DILocalVariable(name: "pid_op", scope: !9, file: !1, line: 6, type: !18)
 !29 = !DILocalVariable(name: "K", scope: !9, file: !1, line: 7, type: !18)
 !30 = !DILocalVariable(name: "Nbar", scope: !9, file: !1, line: 8, type: !18)
-!31 = !DILocalVariable(name: "KP", scope: !9, file: !1, line: 10, type: !18)
-!32 = !DILocalVariable(name: "KI", scope: !9, file: !1, line: 11, type: !18)
-!33 = !DILocalVariable(name: "ref", scope: !9, file: !1, line: 12, type: !18)
-!34 = !DILocalVariable(name: "error", scope: !9, file: !1, line: 13, type: !18)
-!35 = !DILocalVariable(name: "error_i", scope: !9, file: !1, line: 13, type: !18)
-!36 = !DILocalVariable(name: "v", scope: !9, file: !1, line: 15, type: !18)
-!37 = !DILocalVariable(name: "prev_error_i", scope: !9, file: !1, line: 17, type: !18)
+!31 = !DILocalVariable(name: "KP", scope: !9, file: !1, line: 11, type: !18)
+!32 = !DILocalVariable(name: "KI", scope: !9, file: !1, line: 12, type: !18)
+!33 = !DILocalVariable(name: "ref", scope: !9, file: !1, line: 13, type: !18)
+!34 = !DILocalVariable(name: "error", scope: !9, file: !1, line: 14, type: !18)
+!35 = !DILocalVariable(name: "error_i", scope: !9, file: !1, line: 14, type: !18)
+!36 = !DILocalVariable(name: "v", scope: !9, file: !1, line: 16, type: !18)
+!37 = !DILocalVariable(name: "prev_error_i", scope: !9, file: !1, line: 18, type: !18)
 !38 = !DILocation(line: 4, column: 29, scope: !9)
 !39 = !DILocation(line: 4, column: 48, scope: !9)
 !40 = !DILocation(line: 6, column: 10, scope: !9)
 !41 = !DILocation(line: 7, column: 10, scope: !9)
 !42 = !DILocation(line: 8, column: 10, scope: !9)
-!43 = !DILocation(line: 10, column: 10, scope: !9)
-!44 = !DILocation(line: 11, column: 10, scope: !9)
-!45 = !DILocation(line: 12, column: 10, scope: !9)
-!46 = !DILocation(line: 15, column: 21, scope: !9)
+!43 = !DILocation(line: 11, column: 10, scope: !9)
+!44 = !DILocation(line: 12, column: 10, scope: !9)
+!45 = !DILocation(line: 13, column: 10, scope: !9)
+!46 = !DILocation(line: 16, column: 21, scope: !9)
 !47 = !{!48, !49, i64 0}
 !48 = !{!"", !49, i64 0, !49, i64 8}
 !49 = !{!"double", !50, i64 0}
 !50 = !{!"omnipotent char", !51, i64 0}
 !51 = !{!"Simple C/C++ TBAA"}
-!52 = !DILocation(line: 15, column: 10, scope: !9)
-!53 = !DILocation(line: 17, column: 12, scope: !9)
-!54 = !DILocation(line: 27, column: 29, scope: !9)
-!55 = !DILocation(line: 27, column: 26, scope: !9)
-!56 = !DILocation(line: 27, column: 14, scope: !9)
-!57 = !DILocation(line: 27, column: 21, scope: !9)
+!52 = !DILocation(line: 16, column: 10, scope: !9)
+!53 = !DILocation(line: 18, column: 12, scope: !9)
+!54 = !DILocation(line: 28, column: 29, scope: !9)
+!55 = !DILocation(line: 28, column: 26, scope: !9)
+!56 = !DILocation(line: 28, column: 14, scope: !9)
+!57 = !DILocation(line: 28, column: 21, scope: !9)
 !58 = !{!59, !49, i64 0}
 !59 = !{!"", !49, i64 0}
-!60 = !DILocation(line: 30, column: 5, scope: !9)
+!60 = !DILocation(line: 31, column: 5, scope: !9)

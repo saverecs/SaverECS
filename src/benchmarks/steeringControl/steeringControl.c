@@ -7,7 +7,8 @@ void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
   double K= 29.4889;
   double Nbar=425690/425690;
   //double KP = 22040;
-  double KP = 84101;
+  //double KP = 84101;
+  double KP = 56260;
   double KI = 40;
   double ref= 10;
   double error, error_i;

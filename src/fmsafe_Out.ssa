@@ -7,6 +7,6 @@ Real state_v
 Real next_u
 (= tmp state_v )
 (= sub1 (+ tmp -10 ))
-(= mul (* sub1 84101 ))
+(= mul (* sub1 56260 ))
 (= add15 (- 10 mul ))
 (= next_u add15 )
