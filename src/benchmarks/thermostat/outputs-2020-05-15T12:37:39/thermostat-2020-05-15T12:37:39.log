@@ -1,0 +1,161 @@
+
+**** Running tool SaVerECS (Safety Verification of Embedded Control Software) ... ****
+
+Configuration File: parsing Done...
+[FV]: fileName = benchmarks/thermostat/thermostat.ha
+Model File Selected for reading!!
+HASLAC input model: parsing ... 
+--------------------AUTOMATON H1: Before Splitting ----------------------
+--------------------AUTOMATON H1: Printed Successfully ------------------
+--------------------Displaying user's input parameters ----------------------
+Maximum bound value for variables = 100
+Sampling Time = 0.2
+Release Time = 0.1
+Sampling Jitter = 0.1
+Time horizon = 4
+Precision = 0.1
+Noise Data:
+List of Noise/Disturbance Parameters:
+Disturbance Data:
+List of Noise/Disturbance Parameters:
+Upper bound = 10
+Lower bound = 1
+deadline_miss : 0 out of 0
+List of MinMaxBounds Parameters:
+			temperature: [0,100]
+			u: [20,100]
+			chat_detect: [0,10]
+			previous_cmd_to_heater: [0,5]
+			on_count: [0,25]
+			off_count: [0,25]
+			cmd_to_heater: [0,5]
+Plant file name = benchmarks/thermostat/thermostat.ha
+Controller file name = benchmarks/thermostat/thermostat.c
+Configuration file name = benchmarks/thermostat/thermostat.cfg
+Goal constraints(Infix):
+			temperature<52
+Goal constraints(Prefix):
+			 <  temperature 52
+output file name = benchmarks/thermostat/outputs-2020-05-15T12:37:39/thermostat
+-------------Parameters Parsed Successfully -------------
+
+Plant model: parsing Done...
+List of Control Variables:
+		temperature  [0 , 100]
+List of UnControl Variables:
+		u  [20 , 100]
+
+
+===================Displaying Plant Model===================
+Automaton name=thermostat
+The variable to index mapping is:
+Variable name = temperature Dimension index = 0
+Variable name = u Dimension index = 1
+List of Locations of the automata
+loc_id=0 Loc Name=loc
+Invariants: 
+Flow Equations: 
+	 Infix: temperature' == 0.5 * u - 0.5 * temperature
+	 Prefix: (= d/dt[temperature] (-(* 0.5 u)(* 0.5 temperature)))
+Transitions: 
+Assignment: it is kept empty now for controller-program 's output.
+
+Initial Symbolic state(s): 
+		 Initial Loc-ID: 0
+		 Initial Set (Infix): 
+				u == 20
+				temperature <= 75
+				temperature >= 55
+
+		 Initial Set (Prefix): 
+				== u 20
+				<= temperature 75
+				>= temperature 55
+
+Controller Program: parsing Done...
+
+Controller Program: 
+	Intermediate Variables: 
+		Int	.  [-100 , 100]
+		Int	command_to_heater.0  [-100 , 100]
+		Int	chatter_detect.0  [-100 , 100]
+		Int	inc  [-100 , 100]
+		Int	command_to_heater.1  [-100 , 100]
+		Int	off_counter.0  [-100 , 100]
+		Int	on_counter.0  [-100 , 100]
+		Real	spec.select85  [-100 , 100]
+		Real	uVal.0  [-100 , 100]
+
+	Input Variables: 
+		Real	state_temperature  [0 , 100]
+		Int	chat_detect  [0 , 10]
+		Int	previous_cmd_to_heater  [0 , 5]
+		Int	on_count  [0 , 25]
+		Int	off_count  [0 , 25]
+		Int	cmd_to_heater  [0 , 5]
+
+	Output Variables: 
+		Real	next_u  [20 , 100]
+
+
+	SSA Statements: 
+		(=> (not  (and  (>=   state_temperature  66 )   (<   state_temperature  70 )  ) )
+		(and 
+		(=>  (<   state_temperature  70 )  
+		(and 
+		(ite  (<   state_temperature  66 )  (= . 2 )(= .  previous_cmd_to_heater  ) )
+		 )
+		 )
+		 )
+		 )
+		(=>  (and  (>=   state_temperature  66 )   (<   state_temperature  70 )  ) (= command_to_heater.0 3 ))
+		(=> (not  (<   state_temperature  70 )  ) (= command_to_heater.0 1 ))
+		(=>  (<   state_temperature  70 )  (= command_to_heater.0 . ))
+		(ite  (or  (>   on_count  4 )   (>   off_count  4 )  ) (= chatter_detect.0 0 )(= chatter_detect.0  chat_detect  ) )
+		(ite  (not (=  command_to_heater.0  previous_cmd_to_heater  ))  (= inc 1 ) (= inc 0 ))
+		(ite  (>   (+ chatter_detect.0 inc ) 4 )  (= command_to_heater.1  previous_cmd_to_heater  )(= command_to_heater.1 command_to_heater.0 ) )
+		(ite  (=  command_to_heater.1 1 )  (= off_counter.0  (+  off_count  1 ) )(= off_counter.0 0 ) )
+		(ite  (=  command_to_heater.1 1 )  (= on_counter.0 0 )(= on_counter.0  (+  on_count  1 ) ) )
+		(ite  (=  command_to_heater.1 3 )  (= spec.select85 70 )(= spec.select85 100 ) )
+		(ite  (=  command_to_heater.1 1 )  (= uVal.0 20 )(= uVal.0 spec.select85 ) )
+		(= next_u uVal.0 )
+		(= cmd_to_heater command_to_heater.1 )
+		(= chat_detect  (+ chatter_detect.0 inc ) )
+		(= previous_cmd_to_heater command_to_heater.1 )
+		(= on_count on_counter.0 )
+		(= off_count off_counter.0 )
+
+File benchmarks/thermostat/outputs-2020-05-15T12:37:39/thermostat_1.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.024
+System is SAFE for unrolling(bound): 1
+
+File benchmarks/thermostat/outputs-2020-05-15T12:37:39/thermostat_2.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.097
+System is SAFE for unrolling(bound): 2
+
+File benchmarks/thermostat/outputs-2020-05-15T12:37:39/thermostat_3.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.51
+System is SAFE for unrolling(bound): 3
+
+File benchmarks/thermostat/outputs-2020-05-15T12:37:39/thermostat_4.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 4.346
+System is SAFE for unrolling(bound): 4
+
+File benchmarks/thermostat/outputs-2020-05-15T12:37:39/thermostat_5.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 46.896
+System is SAFE for unrolling(bound): 5
+
+File benchmarks/thermostat/outputs-2020-05-15T12:37:39/thermostat_6.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 37.111
+Safety violation detected in unrolling(bound): 6
+
+Output file(benchmarks/thermostat/outputs-2020-05-15T12:37:39/thermostat_6.smt2.json) generated. To view the trace of counter example, visualize data.json in ODE_Visualization folder.
+Visualize counter example in localhost (Y/N)?Open localhost:8000. Once visualized, run ./shut_websvr.sh
+
+Total Running Time (in seconds): 89032

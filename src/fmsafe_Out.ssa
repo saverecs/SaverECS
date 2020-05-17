@@ -1,12 +1,15 @@
-4 1 1
+5 2 1
 Real tmp
-Real sub1
+Real tmp1
 Real mul
-Real add15
-Real state_v
+Real mul1
+Real sub
+Real state_x2
+Real state_w
 Real next_u
-(= tmp state_v )
-(= sub1 (+ tmp -10 ))
-(= mul (* sub1 56260 ))
-(= add15 (- 10 mul ))
-(= next_u add15 )
+(= tmp state_x2 )
+(= tmp1 state_w )
+(= mul (* tmp 2.34 ))
+(= mul1 (* tmp1 0.468 ))
+(= sub (- mul mul1 ))
+(= next_u sub )

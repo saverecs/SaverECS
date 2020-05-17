@@ -1,0 +1,132 @@
+
+**** Running tool SaVerECS (Safety Verification of Embedded Control Software) ... ****
+
+Configuration File: parsing Done...
+[FV]: fileName = benchmarks/yawDamper/yawDamper.ha
+Model File Selected for reading!!
+HASLAC input model: parsing ... 
+--------------------AUTOMATON H1: Before Splitting ----------------------
+--------------------AUTOMATON H1: Printed Successfully ------------------
+--------------------Displaying user's input parameters ----------------------
+Maximum bound value for variables = 100
+Sampling Time = 0.035
+Release Time = 0
+Sampling Jitter = 0
+Time horizon = 20
+Precision = 0.001
+Noise Data:
+List of Noise/Disturbance Parameters:
+Disturbance Data:
+List of Noise/Disturbance Parameters:
+Upper bound = 200
+Lower bound = 150
+deadline_miss : 0 out of 0
+List of MinMaxBounds Parameters:
+			x1: [-10,10]
+			x2: [-10,10]
+			x3: [-10,10]
+			x4: [-10,10]
+			w: [-10,10]
+			u: [-1,10]
+Plant file name = benchmarks/yawDamper/yawDamper.ha
+Controller file name = benchmarks/yawDamper/yawDamper.c
+Configuration file name = benchmarks/yawDamper/yawDamper.cfg
+Goal constraints(Infix):
+			x4<=0.08
+Goal constraints(Prefix):
+			 <=  x4 0.08
+output file name = benchmarks/yawDamper/outputs-2020-05-15T14:20:29/yawDamper
+-------------Parameters Parsed Successfully -------------
+
+Plant model: parsing Done...
+List of Control Variables:
+		x1  [-10 , 10]
+		x2  [-10 , 10]
+		x3  [-10 , 10]
+		x4  [-10 , 10]
+		w  [-10 , 10]
+List of UnControl Variables:
+		u  [-1 , 10]
+
+
+===================Displaying Plant Model===================
+Automaton name=dcmotor
+The variable to index mapping is:
+Variable name = u Dimension index = 5
+Variable name = w Dimension index = 4
+Variable name = x1 Dimension index = 0
+Variable name = x2 Dimension index = 1
+Variable name = x3 Dimension index = 2
+Variable name = x4 Dimension index = 3
+List of Locations of the automata
+loc_id=0 Loc Name=loc
+Invariants: 
+Flow Equations: 
+	 Infix: x1' == -0.0558 * x1 - 0.9968 * x2 + 0.0802 * x3 + 0.0415 * x4 + 0.017058599999999997 * x2 - 0.0034117199999999996 * w
+	 Infix: x2' == 0.598 * x1 - 0.115 * x2 - 0.0318 * x3 - 1.1115 * x2 + 0.2223 * w
+	 Infix: x3' == -3.05 * x1 + 0.388 * x2 - 0.465 * x3 + 0.35801999999999995 * x2 - 0.07160399999999999 * w
+	 Infix: x4' == 0.0805 * x2 + x3
+	 Infix: w' == x2 - 0.2 * w
+	 Prefix: (= d/dt[x1] (-(*(- 0.0558) x1)(+(* 0.9968 x2)(+(* 0.0802 x3)(+(* 0.0415 x4)(-(* 0.017058599999999997 x2)(* 0.0034117199999999996 w)))))))
+	 Prefix: (= d/dt[x2] (-(* 0.598 x1)(-(* 0.115 x2)(-(* 0.0318 x3)(+(* 1.1115 x2)(* 0.2223 w))))))
+	 Prefix: (= d/dt[x3] (+(*(- 3.05) x1)(-(* 0.388 x2)(+(* 0.465 x3)(-(* 0.35801999999999995 x2)(* 0.07160399999999999 w))))))
+	 Prefix: (= d/dt[x4] (+(* 0.0805 x2) x3))
+	 Prefix: (= d/dt[w] (- x2(* 0.2 w)))
+Transitions: 
+Assignment: it is kept empty now for controller-program 's output.
+
+Initial Symbolic state(s): 
+		 Initial Loc-ID: 0
+		 Initial Set (Infix): 
+				u >= 0.226891
+				u <= 0.318401
+				w >= 1.384075
+				w <= 1.625669
+				x4 >= 1.384075
+				x4 <= 1.625669
+				x3 >= 0.226891
+				x3 <= 0.318401
+				x2 >= 1.384075
+				x2 <= 1.625669
+				x1 >= 0.226891
+				x1 <= 0.318401
+
+		 Initial Set (Prefix): 
+				>= u 0.226891
+				<= u 0.318401
+				>= w 1.384075
+				<= w 1.625669
+				>= x4 1.384075
+				<= x4 1.625669
+				>= x3 0.226891
+				<= x3 0.318401
+				>= x2 1.384075
+				<= x2 1.625669
+				>= x1 0.226891
+				<= x1 0.318401
+
+Controller Program: parsing Done...
+
+Controller Program: 
+	Intermediate Variables: 
+
+	Input Variables: 
+		Real	state_x2  [-10 , 10]
+		Real	state_w  [-10 , 10]
+
+	Output Variables: 
+		Real	next_u  [-1 , 10]
+
+
+	SSA Statements: 
+		(= next_u  (-  (*  state_x2  2.34 )  (*  state_w  0.468 ) ) )
+
+File benchmarks/yawDamper/outputs-2020-05-15T14:20:29/yawDamper_150.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 60911.7
+Safety violation detected in unrolling(bound): 150
+
+Output file(benchmarks/yawDamper/outputs-2020-05-15T14:20:29/yawDamper_150.smt2.json) generated. To view the trace of counter example, visualize data.json in ODE_Visualization folder.
+Visualize counter example in localhost (Y/N)?Open localhost:8000. Once visualized, run ./shut_websvr.sh
+
+Total Running Time (in seconds): 60930162

@@ -1,0 +1,131 @@
+
+**** Running tool SaVerECS (Safety Verification of Embedded Control Software) ... ****
+
+Configuration File: parsing Done...
+[FV]: fileName = benchmarks/powerTrainSimple/powerTrainSimple.ha
+Model File Selected for reading!!
+HASLAC input model: parsing ... 
+--------------------AUTOMATON H1: Before Splitting ----------------------
+--------------------AUTOMATON H1: Printed Successfully ------------------
+--------------------Displaying user's input parameters ----------------------
+Maximum bound value for variables = 100
+Sampling Time = 0.01
+Release Time = 0.01
+Sampling Jitter = 0.007
+Time horizon = 100
+Precision = 0.001
+Noise Data:
+List of Noise/Disturbance Parameters:
+Disturbance Data:
+List of Noise/Disturbance Parameters:
+Upper bound = 60
+Lower bound = 50
+deadline_miss : 0 out of 0
+List of MinMaxBounds Parameters:
+Plant file name = benchmarks/powerTrainSimple/powerTrainSimple.ha
+Controller file name = benchmarks/powerTrainSimple/powerTrainSimple.c
+Configuration file name = benchmarks/powerTrainSimple/powerTrainSimple.cfg
+Goal constraints(Infix):
+			p_airbyfuel_meas>15
+Goal constraints(Prefix):
+			 >  p_airbyfuel_meas 15
+output file name = benchmarks/powerTrainSimple/outputs-2020-05-15T16:11:33/powerTrainSimple
+-------------Parameters Parsed Successfully -------------
+
+Plant model: parsing Done...
+List of Control Variables:
+		p_engine_speed  [-100 , 100]
+		p_throttle_angle  [-100 , 100]
+		p_manifold_pressure  [-100 , 100]
+		p_airbyfuel_meas  [-100 , 100]
+		in_thetaI  [-100 , 100]
+		c_commanded_fuel_gps  [-100 , 100]
+		p_air_estimate  [-100 , 100]
+		p_pi  [-100 , 100]
+List of UnControl Variables:
+
+
+===================Displaying Plant Model===================
+Automaton name=powertrain
+The variable to index mapping is:
+Variable name = c_commanded_fuel_gps Dimension index = 5
+Variable name = in_thetaI Dimension index = 4
+Variable name = p_air_estimate Dimension index = 7
+Variable name = p_airbyfuel_meas Dimension index = 3
+Variable name = p_engine_speed Dimension index = 0
+Variable name = p_manifold_pressure Dimension index = 2
+Variable name = p_pi Dimension index = 6
+Variable name = p_throttle_angle Dimension index = 1
+List of Locations of the automata
+loc_id=0 Loc Name=loc
+Invariants: 
+Flow Equations: 
+	 Infix: p_engine_speed' == 0
+	 Infix: p_throttle_angle' == ( 10 * ( in_thetaI - p_throttle_angle ) )
+	 Infix: p_manifold_pressure' == 0.41328 * ( ( 2 * ( 2.821 + ( ( 0 - 0.05231 ) * p_throttle_angle ) + ( 0.10299 * p_throttle_angle * p_throttle_angle ) + ( ( 0 - 0.00063 ) * p_throttle_angle * p_throttle_angle * p_throttle_angle ) ) * ( ( ( 0 - 2.3421 ) * p_manifold_pressure * p_manifold_pressure ) + ( 2.7799 * p_manifold_pressure ) + ( 0 - 0.3273 ) ) ) - ( 0.9 * ( ( 0 - 0.366 ) + ( 0.08979 * p_engine_speed * p_manifold_pressure ) + ( ( 0 - 0.0337 ) * p_engine_speed * p_manifold_pressure * p_manifold_pressure ) + ( 0.0001 * p_engine_speed * p_engine_speed * p_manifold_pressure ) ) ) )
+	 Infix: p_airbyfuel_meas' == 4.0 * ( ( 13.893 + ( ( 0 - 35.2518 ) * 1.0 * c_commanded_fuel_gps ) + ( 20.7364 * 1.0 * 1.0 * c_commanded_fuel_gps * c_commanded_fuel_gps ) + ( 2.6287 * ( 0.9 * ( ( 0 - 0.366 ) + ( 0.08979 * p_engine_speed * p_manifold_pressure ) + ( ( 0 - 0.0337 ) * p_engine_speed * p_manifold_pressure * p_manifold_pressure ) + ( 0.0001 * p_engine_speed * p_engine_speed * p_manifold_pressure ) ) ) ) + ( ( 0 - 1.592 ) * ( 0.9 * ( ( 0 - 0.366 ) + ( 0.08979 * p_engine_speed * p_manifold_pressure ) + ( ( 0 - 0.0337 ) * p_engine_speed * p_manifold_pressure * p_manifold_pressure ) + ( 0.0001 * p_engine_speed * p_engine_speed * p_manifold_pressure ) ) ) * 1.0 * c_commanded_fuel_gps ) ) - ( p_airbyfuel_meas ) )
+	 Infix: in_thetaI' == 0
+	 Infix: c_commanded_fuel_gps' == 0
+	 Infix: p_air_estimate' == 0
+	 Infix: p_pi' == 0
+	 Prefix: (= d/dt[p_engine_speed]  0)
+	 Prefix: (= d/dt[p_throttle_angle] (* 10(- in_thetaI p_throttle_angle)))
+	 Prefix: (= d/dt[p_manifold_pressure] (* 0.41328(-(*(* 2(+(+(+ 2.821(*(- 0 0.05231) p_throttle_angle))(*(* 0.10299 p_throttle_angle) p_throttle_angle))(*(*(*(- 0 0.00063) p_throttle_angle) p_throttle_angle) p_throttle_angle)))(+(+(*(*(- 0 2.3421) p_manifold_pressure) p_manifold_pressure)(* 2.7799 p_manifold_pressure))(- 0 0.3273)))(* 0.9(+(+(+(- 0 0.366)(*(* 0.08979 p_engine_speed) p_manifold_pressure))(*(*(*(- 0 0.0337) p_engine_speed) p_manifold_pressure) p_manifold_pressure))(*(*(* 0.0001 p_engine_speed) p_engine_speed) p_manifold_pressure))))))
+	 Prefix: (= d/dt[p_airbyfuel_meas] (* 4.0(-(+(+(+(+ 13.893(*(*(- 0 35.2518) 1.0) c_commanded_fuel_gps))(*(*(*(* 20.7364 1.0) 1.0) c_commanded_fuel_gps) c_commanded_fuel_gps))(* 2.6287(* 0.9(+(+(+(- 0 0.366)(*(* 0.08979 p_engine_speed) p_manifold_pressure))(*(*(*(- 0 0.0337) p_engine_speed) p_manifold_pressure) p_manifold_pressure))(*(*(* 0.0001 p_engine_speed) p_engine_speed) p_manifold_pressure)))))(*(*(*(- 0 1.592)(* 0.9(+(+(+(- 0 0.366)(*(* 0.08979 p_engine_speed) p_manifold_pressure))(*(*(*(- 0 0.0337) p_engine_speed) p_manifold_pressure) p_manifold_pressure))(*(*(* 0.0001 p_engine_speed) p_engine_speed) p_manifold_pressure)))) 1.0) c_commanded_fuel_gps)) p_airbyfuel_meas)))
+	 Prefix: (= d/dt[in_thetaI]  0)
+	 Prefix: (= d/dt[c_commanded_fuel_gps]  0)
+	 Prefix: (= d/dt[p_air_estimate]  0)
+	 Prefix: (= d/dt[p_pi]  0)
+Transitions: 
+Assignment: it is kept empty now for controller-program 's output.
+
+Initial Symbolic state(s): 
+		 Initial Loc-ID: 0
+		 Initial Set (Infix): 
+				p_pi == 0
+				p_air_estimate == 0.784
+				c_commanded_fuel_gps == 0.3517
+				in_thetaI == 10
+				p_airbyfuel_meas == 14.7
+				p_manifold_pressure == 0.7840
+				p_throttle_angle == 9.9
+				p_engine_speed <= 115.19
+				p_engine_speed >= 94.25
+
+		 Initial Set (Prefix): 
+				== p_pi 0
+				== p_air_estimate 0.784
+				== c_commanded_fuel_gps 0.3517
+				== in_thetaI 10
+				== p_airbyfuel_meas 14.7
+				== p_manifold_pressure 0.7840
+				== p_throttle_angle 9.9
+				<= p_engine_speed 115.19
+				>= p_engine_speed 94.25
+
+Controller Program: parsing Done...
+
+Controller Program: 
+	Intermediate Variables: 
+
+	Input Variables: 
+		Real	state_p_engine_speed  [-100 , 100]
+		Real	state_p_throttle_angle  [-100 , 100]
+		Real	state_p_manifold_pressure  [-100 , 100]
+		Real	state_p_airbyfuel_meas  [-100 , 100]
+		Real	state_p_air_estimate  [-100 , 100]
+		Real	state_p_pi  [-100 , 100]
+
+	Output Variables: 
+		Real	next_c_commanded_fuel_gps  [-100 , 100]
+		Real	next_p_air_estimate  [-100 , 100]
+		Real	next_p_pi  [-100 , 100]
+
+
+	SSA Statements: 
+		(= next_c_commanded_fuel_gps  (/  (*  (+  (*  (+  state_p_airbyfuel_meas  -14.7 ) 0.04 )  (+  state_p_pi  1 ) )  (+  (*  (*  state_p_engine_speed   (*  state_p_engine_speed  0.0001 ) )  state_p_air_estimate  )  (+  (+  (*  (*  state_p_engine_speed  0.08979 )  state_p_air_estimate  ) -0.366 )  (*  state_p_air_estimate   (*  (*  state_p_engine_speed  -0.0337 )  state_p_air_estimate  ) ) ) ) ) 14.7 ) )
+		(= next_p_air_estimate  (+  state_p_air_estimate   (*  (-  (*  (*  (+  (+  (- 2.821  (*  state_p_throttle_angle  0.05231 ) )  (*  state_p_throttle_angle   (*  state_p_throttle_angle  0.10299 ) ) )  (*  state_p_throttle_angle   (*  state_p_throttle_angle   (*  state_p_throttle_angle  -0.00063 ) ) ) ) 2 )  (+  (+  (*  state_p_manifold_pressure  2.7799 )  (*  state_p_manifold_pressure   (*  state_p_manifold_pressure  -2.3421 ) ) ) -0.3273 ) )  (+  (*  (*  state_p_engine_speed   (*  state_p_engine_speed  0.0001 ) )  state_p_air_estimate  )  (+  (+  (*  (*  state_p_engine_speed  0.08979 )  state_p_air_estimate  ) -0.366 )  (*  state_p_air_estimate   (*  (*  state_p_engine_speed  -0.0337 )  state_p_air_estimate  ) ) ) ) ) 0.0041328 ) ) )
+		(= next_p_pi  (+  state_p_pi   (*  (+  state_p_airbyfuel_meas  -14.7 ) 0.0014 ) ) )
+
+File benchmarks/powerTrainSimple/outputs-2020-05-15T16:11:33/powerTrainSimple_50.smt2 created .....
+Running solver please wait ... 

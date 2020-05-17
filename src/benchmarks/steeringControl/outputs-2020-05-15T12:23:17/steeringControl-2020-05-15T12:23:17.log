@@ -19,7 +19,7 @@ List of Noise/Disturbance Parameters:
 Disturbance Data:
 List of Noise/Disturbance Parameters:
 Upper bound = 50
-Lower bound = 31
+Lower bound = 1
 deadline_miss : 0 out of 0
 List of MinMaxBounds Parameters:
 			v: [-1e+07,1e+07]
@@ -28,12 +28,10 @@ Plant file name = benchmarks/steeringControl/steeringControl.ha
 Controller file name = benchmarks/steeringControl/steeringControl.c
 Configuration file name = benchmarks/steeringControl/steeringControl.cfg
 Goal constraints(Infix):
-			gt>=1
-			v>12
+			gt>=0.16
 Goal constraints(Prefix):
-			 >=  gt 1
-			 >  v 12
-output file name = benchmarks/steeringControl/outputs-2020-04-06T14:50:07/steeringControl
+			 >=  gt 0.16
+output file name = benchmarks/steeringControl/outputs-2020-05-15T12:23:17/steeringControl
 -------------Parameters Parsed Successfully -------------
 
 Plant model: parsing Done...
@@ -86,5 +84,25 @@ Controller Program:
 	SSA Statements: 
 		(= next_u  (- 10  (*  (+  state_v  -10 ) 56260 ) ) )
 
-File benchmarks/steeringControl/outputs-2020-04-06T14:50:07/steeringControl_31.smt2 created .....
+File benchmarks/steeringControl/outputs-2020-05-15T12:23:17/steeringControl_1.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.011
+System is SAFE for unrolling(bound): 1
+
+File benchmarks/steeringControl/outputs-2020-05-15T12:23:17/steeringControl_2.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.013
+System is SAFE for unrolling(bound): 2
+
+File benchmarks/steeringControl/outputs-2020-05-15T12:23:17/steeringControl_3.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.015
+System is SAFE for unrolling(bound): 3
+
+File benchmarks/steeringControl/outputs-2020-05-15T12:23:17/steeringControl_4.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.018
+System is SAFE for unrolling(bound): 4
+
+File benchmarks/steeringControl/outputs-2020-05-15T12:23:17/steeringControl_5.smt2 created .....
 Running solver please wait ... 

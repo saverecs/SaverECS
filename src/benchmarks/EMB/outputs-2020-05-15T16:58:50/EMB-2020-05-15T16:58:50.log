@@ -1,0 +1,127 @@
+
+**** Running tool SaVerECS (Safety Verification of Embedded Control Software) ... ****
+
+Configuration File: parsing Done...
+[FV]: fileName = benchmarks/EMB/EMB.ha
+Model File Selected for reading!!
+HASLAC input model: parsing ... 
+--------------------AUTOMATON H1: Before Splitting ----------------------
+--------------------AUTOMATON H1: Printed Successfully ------------------
+--------------------Displaying user's input parameters ----------------------
+Maximum bound value for variables = 1000
+Sampling Time = 0.001
+Release Time = 0
+Sampling Jitter = 0
+Time horizon = 1.5
+Precision = 0.001
+Noise Data:
+List of Noise/Disturbance Parameters:
+Disturbance Data:
+List of Noise/Disturbance Parameters:
+Upper bound = 25
+Lower bound = 20
+deadline_miss : 0 out of 0
+List of MinMaxBounds Parameters:
+Plant file name = benchmarks/EMB/EMB.ha
+Controller file name = benchmarks/EMB/EMB.c
+Configuration file name = benchmarks/EMB/EMB.cfg
+Goal constraints(Infix):
+			Caliper_Position>0.052
+			gt<0.146
+Goal constraints(Prefix):
+			 >  Caliper_Position 0.052
+			 <  gt 0.146
+output file name = benchmarks/EMB/outputs-2020-05-15T16:58:50/EMB
+-------------Parameters Parsed Successfully -------------
+
+Plant model: parsing Done...
+List of Control Variables:
+		Motor_Current  [-1000 , 1000]
+		Caliper_Position  [-1000 , 1000]
+List of UnControl Variables:
+		Voltage  [-1000 , 1000]
+		Xc  [-1000 , 1000]
+
+
+===================Displaying Plant Model===================
+Automaton name=doubleIntegrator
+The variable to index mapping is:
+Variable name = Caliper_Position Dimension index = 1
+Variable name = Motor_Current Dimension index = 0
+Variable name = Voltage Dimension index = 2
+Variable name = Xc Dimension index = 3
+List of Locations of the automata
+loc_id=0 Loc Name=loc
+Invariants: 
+Flow Equations: 
+	 Infix: Motor_Current' == ( 1 / 0.001 ) * ( Voltage - ( Motor_Current * ( 0.3 + ( ( 0.02 * 0.02 ) / 0.1 ) ) ) )
+	 Infix: Caliper_Position' == ( 0.02 / ( 113.1167 * 0.1 ) ) * Motor_Current
+	 Prefix: (= d/dt[Motor_Current] (*(/ 1 0.001)(- Voltage(* Motor_Current(+ 0.3(/(* 0.02 0.02) 0.1))))))
+	 Prefix: (= d/dt[Caliper_Position] (*(/ 0.02(* 113.1167 0.1)) Motor_Current))
+Transitions: 
+Assignment: it is kept empty now for controller-program 's output.
+
+Initial Symbolic state(s): 
+		 Initial Loc-ID: 0
+		 Initial Set (Infix): 
+				Xc == 0
+				Voltage == 0
+				Caliper_Position == 0
+				Motor_Current == 0
+
+		 Initial Set (Prefix): 
+				== Xc 0
+				== Voltage 0
+				== Caliper_Position 0
+				== Motor_Current 0
+
+Controller Program: parsing Done...
+
+Controller Program: 
+	Intermediate Variables: 
+
+	Input Variables: 
+		Real	state_Caliper_Position  [-1000 , 1000]
+		Real	prev_Xc  [-1000 , 1000]
+
+	Output Variables: 
+		Real	next_Xc  [-1000 , 1000]
+		Real	next_Voltage  [-1000 , 1000]
+
+
+	SSA Statements: 
+		(= prev_Xc  (+  prev_Xc   (*  (- 0.05  state_Caliper_Position  ) 0.001 ) ) )
+		(= next_Xc  (+  prev_Xc   (*  (- 0.05  state_Caliper_Position  ) 0.001 ) ) )
+		(= next_Voltage  (+  (*  (- 0.05  state_Caliper_Position  ) 10000 )  (*  (+  prev_Xc   (*  (- 0.05  state_Caliper_Position  ) 0.001 ) ) 1000 ) ) )
+
+File benchmarks/EMB/outputs-2020-05-15T16:58:50/EMB_20.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.542
+System is SAFE for unrolling(bound): 20
+
+File benchmarks/EMB/outputs-2020-05-15T16:58:50/EMB_21.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.413
+System is SAFE for unrolling(bound): 21
+
+File benchmarks/EMB/outputs-2020-05-15T16:58:50/EMB_22.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.53
+System is SAFE for unrolling(bound): 22
+
+File benchmarks/EMB/outputs-2020-05-15T16:58:50/EMB_23.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.509
+System is SAFE for unrolling(bound): 23
+
+File benchmarks/EMB/outputs-2020-05-15T16:58:50/EMB_24.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.5
+System is SAFE for unrolling(bound): 24
+
+File benchmarks/EMB/outputs-2020-05-15T16:58:50/EMB_25.smt2 created .....
+Running solver please wait ... 
+Boost/Wall clock time  taken: (in Seconds) = 0.575
+System is SAFE for unrolling(bound): 25
+
+Total Running Time (in seconds): 3136
