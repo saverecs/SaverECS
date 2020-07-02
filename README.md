@@ -48,8 +48,8 @@ If the .l and .y (present in the project src folder) files are modified, then ex
 -----------------------------------
 - Configuration File
 Parameters are: 
-	1) MinMax-bounds of variables (plant and controller) 
-	2)comments line begin with # or // 
+	1) Comments line begin with # or // 
+	2) MinMax-bounds of variables (plant and controller)
 	3) max-value 
 	4) sampling-time 
 	5) release-time 
@@ -57,7 +57,7 @@ Parameters are:
 	7) upper-bound  
 	8) lower-bound  
 	9) time-horizon 
-	10)  goal   
+	10) goal   
 	11) noise-params 
 	12) disturbance
 	
@@ -194,12 +194,12 @@ To execute the project with a sample test inputs,
 		$ cd src
 		$ ./run
 
-   where the script file 'run' includes sample test cases commands. The details of the commands with examples are shown below.
+   where the script file 'run' includes the commands, details of which are explained as part of **CLI** section.
    
-  - output files:
- 	.log files:	with execution time logs,
-	.smt2 files: 	containing tool generated smt formula in smt-lib 2.0 format,
- 	.json files:      to visualize counter examples (instructions given in .log file)
+- output files:
+ 	>>	.log files:	with execution time logs,
+		.smt2 files:	containing tool generated smt formula in smt-lib 2.0 format,
+ 		.json files:	to visualize counter examples (instructions given in .log file)
 
 
 *Note*:
