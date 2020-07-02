@@ -1,3 +1,5 @@
+# *Sa*fety *Ver*ification of *E*mbedded *C*ontrol *S*oftware Tool-chain
+-------------------------------------------------------------------------------------
 
 *****************************************************************************************************************************************************
 *****************************************************************************************************************************************************
@@ -10,7 +12,7 @@
 
 	Copyright (c) 2018 Formal Methods Lab, Indian Institute of Technology Kharagpur, India.
 
-	Tool Developer:
+	Tool Developers:
 
                Jay Thakkar, 
                Amit Gurung,
@@ -20,7 +22,14 @@
 *****************************************************************************************************************************************************
 *****************************************************************************************************************************************************
 
-
+Prerequisite (for running the tool):
+================
+	1) clang and llvm 
+	$ sudo apt-get install clang
+	$ sudo apt-get install llvm
+	2) boost library for c++
+	$ sudo apt-get install libboost-all-dev
+	
 How to build: 
 ================
 	To generate the executable, type the following command in the terminal:
@@ -29,68 +38,59 @@ How to build:
 		$ ./compile-cpp
 
   If the source code is modified, or a new file.cpp is added, it must also be added in the compile-cpp file before executing it.
-
-How to Run:
-================
-	To execute the project with a sample test inputs, type the below command in the terminal:
-
-		$ ./run
-
-   where the script file 'run' includes sample test cases commands. The details of the commands with examples are shown below.
-
-Prerequisite (for running the tool):
-================
-	1) clang and llvm 
-	$ sudo apt-get install clang
-	$ sudo apt-get install llvm
-	2) boost library for c++
-	$ sudo apt-get install libboost-all-dev
-
-
-Detailed Command Line Interface (CLI):
-=========================================
-		-h [ --help ]                produce help message
-		-m [ --max-value ] arg       Assumed maximum [-m, +m] constant value that the plant and the controller can take
-		-t [ --sampling-time ] arg   Sets the sampling time of the controller
-		-r [ --release-time ] arg    Sets the release time of the controller
-		-d [ --sensing-time ] arg    Sets the sensing time of the controller
-		--precision arg              set precision for the SMT solver (default 0.001)
-		-u [ --upper-bound ] arg     Set the depth or upper-bound of exploration for unrolling
-		-l [ --lower-bound ] arg     Set the depth or lower-bound of exploration for unrolling
-		-Z [ --time-horizon ] arg    Set the global time horizon of computation.
-		-F [ --goal ] arg            Goal property to test, syntax: 'expr-1 & 
-                                   expr-2'; For e.g. expr-1 is x>=2 expr-2 is x<=(-2)
-		--noise-params arg           Sets the noise injecting parameters, syntax: 
-                                   'var1:[t1,t2]=>[n1,n2] & ...'where t1 and t2 are start and end time duration of 
-                                   the noise on var1 and the noise values can be fix [n1,n1] or range [n1,n2]
-		--disturbance arg            Sets the disturbance parameters, syntax: 
-                                   'var1:[t1,t2]=>[d1,d2] & ...'where t1 and t2 are start and end time duration of 
-                                   the disturbance on var1 and the disturbance values can be fix [d1,d1] or range [d1,d2]
-		-I [ --include-path ] arg    include file path
-		-p [ --plant-file ] arg      include plant model file
-		-c [ --controller-file ] arg include controller C program file
-		-g [ --config-file ] arg     include configuration file (for future use)
-		-o [ --output-file ] arg     output file name for redirecting the outputs (example .smt2 file)
-
-	1) For example to get help on using the tool's CLI commands type the following:
-
-		$ ./SaVerECS  --help
-
-	2) To run the tool with the plant model as "benchmarks/thermostat.ha" and controller program as "benchmarks/thermostat.c" having the header file "thermostat.h" in the same "benchmarks", with the sampling time of the controller as "0.2", for the time-horizon of "3" units, type the command as given below. The output is generated in the file "test.smt2" using the -o flag. The number of depth for unrolling is specified by -u and -l, where u is the upper-bound and l the lower-bound. The flag -m is to supply a maximum bounds for all variables (both plant and controller) within which the variables always lies. The flag -d is used to input the sensing time. For simple goal/property to test use the --goal flag.
-
-		$ ./SaVerECS -m 100 -t 0.2 -d 0.001 -u 10 -l 5 --time-horizon 3 --goal "x>=5 & y>=3" --plant-file "benchmarks/thermostat.ha" --controller-file "benchmarks/thermostat.c" -o test.smt2
-
-
-
-Note:
+  
+*Note*:
 ================
 The files with the extensions .l and .y are the lex and yacc files. They are use to parse the input plant model file having the extension .ha (The language use to model the input plant is referred as HASLAC).
 If the .l and .y (present in the project src folder) files are modified, then execute the script file "build" before execute the above commands.
 
-Input Format:
-================
-The input format of the plant model is taken using the HASLAC specification (for the language HASLAC please refer to http://cse.iitkgp.ac.in/~bdcaa/ForFET/ref.pdf).
-However, for the contorller program, we lay down the following program structure:
+
+# Input Format:
+-----------------------------------
+- Configuration File
+>> Possible values here are: 
+	1) MinMax-bounds of variables (plant and controller) 
+	2)comments line begin with # or // 
+	3) max-value 
+	4) sampling-time 
+	5) release-time 
+	6) sensing-time or sampling jitter 
+	7) upper-bound  
+	8) lower-bound  
+	9) time-horizon 
+	10)  goal   
+	11) noise-params 
+	12) disturbance
+	
+- Plant Description
+>> module modelname(state,control variables...)
+    output output variables...;
+
+	%location details
+	    mode loc
+		begin
+		ddt x1  = (-50/1000)*v + (1/1000)*u;% flow equation
+		.
+		.
+		% other flow equations
+		end
+	% initial states
+	    initial begin
+		set begin
+		    mode == loc;
+		    x1 <= 80;
+		    x1 >= 50;
+		    .
+		    .
+		% other state,control input initializations
+		end
+	    end
+	endmodule
+	
+This input format of the plant model is taken using the HASLAC specification. For more details refer [ForFET: A Formal Feature Evaluation Tool for Hybrid Systems](https://link.springer.com/chapter/10.1007/978-3-319-68167-2_28) or http://cse.iitkgp.ac.in/~bdcaa/ForFET/ref.pdf
+
+
+- Contorller program
 		
 		1) The input and the output argument variables are declare in a structure within a header file (controller.h) which is included in the controller program (controller.c). The names of the structure should be INPUT_VAL and RETURN_VAL as shown below:
 
@@ -140,6 +140,61 @@ However, for the contorller program, we lay down the following program structure
 					input->otherControllerVarName = vj;	//e.t.c.,
 
 				}
+
+
+Detailed Command Line Interface (CLI):
+=========================================
+		-h [ --help ]                produce help message
+		-m [ --max-value ] arg       Assumed maximum [-m, +m] constant value that the plant and the controller can take
+		-t [ --sampling-time ] arg   Sets the sampling time of the controller
+		-r [ --release-time ] arg    Sets the release time of the controller
+		-d [ --sensing-time ] arg    Sets the sensing time of the controller
+		--precision arg              set precision for the SMT solver (default 0.001)
+		-u [ --upper-bound ] arg     Set the depth or upper-bound of exploration for unrolling
+		-l [ --lower-bound ] arg     Set the depth or lower-bound of exploration for unrolling
+		-Z [ --time-horizon ] arg    Set the global time horizon of computation.
+		-F [ --goal ] arg            Goal property to test, syntax: 'expr-1 & 
+                                   expr-2'; For e.g. expr-1 is x>=2 expr-2 is x<=(-2)
+		--noise-params arg           Sets the noise injecting parameters, syntax: 
+                                   'var1:[t1,t2]=>[n1,n2] & ...'where t1 and t2 are start and end time duration of 
+                                   the noise on var1 and the noise values can be fix [n1,n1] or range [n1,n2]
+		--disturbance arg            Sets the disturbance parameters, syntax: 
+                                   'var1:[t1,t2]=>[d1,d2] & ...'where t1 and t2 are start and end time duration of 
+                                   the disturbance on var1 and the disturbance values can be fix [d1,d1] or range [d1,d2]
+		-I [ --include-path ] arg    include file path
+		-p [ --plant-file ] arg      include plant model file
+		-c [ --controller-file ] arg include controller C program file
+		-g [ --config-file ] arg     include configuration file (for future use)
+		-o [ --output-file ] arg     output file name for redirecting the outputs (example .smt2 file)
+
+	1) For example to get help on using the tool's CLI commands type the following:
+
+		$ ./SaVerECS  --help
+
+	2) To run the tool with the plant model as "benchmarks/thermostat/thermostat.ha" and controller program as "benchmarks/thermostat/thermostat.c" having the header file "thermostat.h" in the same "benchmarks/thermostat/", with the sampling time of the controller as "0.2", for the time-horizon of "3" units, type the command as given below. The output is generated in the file "test.smt2" using the -o flag. The number of depth for unrolling is specified by -u and -l, where u is the upper-bound and l the lower-bound. The flag -m is to supply a maximum bounds for all variables (both plant and controller) within which the variables always lies. The flag -d is used to input the sensing time. For simple goal/property to test use the --goal flag.
+
+		$ ./SaVerECS -m 100 -t 0.2 -d 0.001 -u 10 -l 5 --time-horizon 3 --goal "x>=5 & y>=3" --plant-file "benchmarks/thermostat.ha" --controller-file "benchmarks/thermostat.c" -o test.smt2
+		
+	3) Else one can simply input all these values in configuration file as ` benchmarks/thermostat/thermostat.cfg ` and run the following to verify the goal property,
+	
+		$ ./SaVerECS -g "benchmarks/thermostat/thermostat.cfg" --plant-file "benchmarks/thermostat/thermostat.ha" --controller-file "benchmarks/thermostat/thermostat.c" -o benchmarks/thermostat/outputs/thermostat
+
+
+
+
+How to Run:
+================
+To execute the project with a sample test inputs, 
+- Add a folder in benchmarks directory with model name. Keep All the input files with same name inside that folder (they will have different extensions),
+- Add the system name in '.run' file as the value of ` $system` variable e.g.
+		
+		$ system= thermostat
+		
+- type the below command in the terminal:
+
+		$ ./run
+
+   where the script file 'run' includes sample test cases commands. The details of the commands with examples are shown below.
 
 Benchmarks
 =========================
