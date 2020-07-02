@@ -1,5 +1,4 @@
 # *Sa*fety *Ver*ification of *E*mbedded *C*ontrol *S*oftware Tool-chain
--------------------------------------------------------------------------------------
 
 *****************************************************************************************************************************************************
 *****************************************************************************************************************************************************
@@ -48,7 +47,7 @@ If the .l and .y (present in the project src folder) files are modified, then ex
 # Input Format:
 -----------------------------------
 - Configuration File
->> Possible values here are: 
+Parameters are: 
 	1) MinMax-bounds of variables (plant and controller) 
 	2)comments line begin with # or // 
 	3) max-value 
@@ -63,9 +62,10 @@ If the .l and .y (present in the project src folder) files are modified, then ex
 	12) disturbance
 	
 - Plant Description
->> module modelname(state,control variables...)
-    output output variables...;
+This input format of the plant model is taken using the HASLAC specification. For more details refer [ForFET: A Formal Feature Evaluation Tool for Hybrid Systems](https://link.springer.com/chapter/10.1007/978-3-319-68167-2_28) or http://cse.iitkgp.ac.in/~bdcaa/ForFET/ref.pdf .
 
+	module modelname(state,control variables...)
+	output output variables...;
 	%location details
 	    mode loc
 		begin
@@ -87,7 +87,6 @@ If the .l and .y (present in the project src folder) files are modified, then ex
 	    end
 	endmodule
 	
-This input format of the plant model is taken using the HASLAC specification. For more details refer [ForFET: A Formal Feature Evaluation Tool for Hybrid Systems](https://link.springer.com/chapter/10.1007/978-3-319-68167-2_28) or http://cse.iitkgp.ac.in/~bdcaa/ForFET/ref.pdf
 
 
 - Contorller program
@@ -188,13 +187,31 @@ To execute the project with a sample test inputs,
 - Add a folder in benchmarks directory with model name. Keep All the input files with same name inside that folder (they will have different extensions),
 - Add the system name in '.run' file as the value of ` $system` variable e.g.
 		
-		$ system= thermostat
+		$ system = thermostat
 		
-- type the below command in the terminal:
-
+- enter the `src/` directory and type the below command in the terminal:
+		
+		$ cd src
 		$ ./run
 
    where the script file 'run' includes sample test cases commands. The details of the commands with examples are shown below.
+   
+  - output files:
+ 	.log files:	with execution time logs,
+	.smt2 files: 	containing tool generated smt formula in smt-lib 2.0 format,
+ 	.json files:      to visualize counter examples (instructions given in .log file)
+
+
+*Note*:
+================
+To visualize the output counter example trace follow the on-screen instructions i.e. Copy the .json file content to `../ODE_Visualization/data.json` and run in terminal and view in `localhost:8000` url.
+	
+	$ ./run_websvr.sh 
+
+Don't forget to run the following in the end.
+	
+	$ ./shut_websvr.sh
+	
 
 Benchmarks
 =========================
