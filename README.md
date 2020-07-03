@@ -1,25 +1,5 @@
 # *Sa*fety *Ver*ification of *E*mbedded *C*ontrol *S*oftware Tool-chain
-
-*****************************************************************************************************************************************************
-*****************************************************************************************************************************************************
-	Indian Institute of Technology Kharagpur, India,
-	Formal Methods Lab,
-	Project Title: "FMSAFE: A Networked Centre for Formal Methods in Validation and Certification Procedures for Safety Critical ICT Systems"
-
-	Funded by IMPRINT, a MHRD supported Pan-IIT + IISc joint initiative for addressing major science and engineering challenges that are relevant in the national context.
-
-
-	Copyright (c) 2018 Formal Methods Lab, Indian Institute of Technology Kharagpur, India.
-
-	Tool Developers:
-
-               Jay Thakkar, 
-               Amit Gurung,
-               Sunandan Adhikary,
-               Antonio Bruto da Costa 
-
-*****************************************************************************************************************************************************
-*****************************************************************************************************************************************************
+--------------------------------------------------------------------------------------------------------
 
 Prerequisite (for running the tool):
 ================
@@ -40,8 +20,9 @@ How to build:
   
 *Note*:
 ================
-The files with the extensions .l and .y are the lex and yacc files. They are use to parse the input plant model file having the extension .ha (The language use to model the input plant is referred as HASLAC).
-If the .l and .y (present in the project src folder) files are modified, then execute the script file "build" before execute the above commands.
+- The files with the extensions .l and .y are the lex and yacc files. They are use to parse the input plant model file having the extension .ha (The language use to model the input plant is referred as HASLAC).
+- If the .l and .y (present in the project src folder) files are modified, then execute the script file "build" before execute the above commands.
+- If the llvm pass in our repository in `src/lib/` does not work/ throws an error while executing, please go to our [another repository](https://github.com/saverecs/CProgramToSMT.git), follow the instructions there and finally paste newly created llvm pass inside `src/lib/` folder.
 
 
 # Input Format:
