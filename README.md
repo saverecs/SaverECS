@@ -70,7 +70,7 @@ Parameters are:
 	
 
 
-- Contorller program
+- Controller program
 		
 		1) The input and the output argument variables are declare in a structure within a header file (controller.h) which is included in the controller program (controller.c). The names of the structure should be INPUT_VAL and RETURN_VAL as shown below:
 
@@ -80,7 +80,7 @@ Parameters are:
 				}RETURN_VAL;
 
 				typedef struct{
-					datatype plantVarName; //The value sensed from the plant (remember to follow the same naming convension in the plant model as well. In addition, we use the key word "state_" as a prefix before the sensed variables of the plant and prefix by the key word "next_" to the output variables that is returned from the controller program.)
+					datatype plantVarName; //The value sensed from the plant (remember to follow the same naming convention in the plant model as well. In addition, we use the key word "state_" as a prefix before the sensed variables of the plant and prefix by the key word "next_" to the output variables that is returned from the controller program.)
 
 					datatype otherControllerVarName;   
 
@@ -88,36 +88,36 @@ Parameters are:
 
 		2)	The header file (for eg controller.h) should also include the declaration of the controller function as shown below:
 
-				datatype controller(INPUT_VAL* iv, RETURN_VAL* rv);	//here the return datatype can be void, e.t.c.
+				datatype controller(INPUT_VAL* iv, RETURN_VAL* rv);	//here the return datatype can be void, etc.
 			Note that we assume all controller program begin with the function name as "controller()" just like a C/C++ program begin with the function main().
 
 
-		3) We also assume that the definition of the function follows the following usual pattern as reflected below. Note that we pass the arguments as reference variables, so we do not use the return statement to return the paramter.
+		3) We also assume that the definition of the function follows the following usual pattern as reflected below. Note that we pass the arguments as reference variables, so we do not use the return statement to return the parameter.
 
 				
 				#include "controller.h"	//contains the structure declaration as shown in 1) and 2) above.
 				
 				void controller(INPUT_VAL* input, RETURN_VAL* ret_val) {
 
-					local varaible declaration 
+					local variable declaration 
 					============================
 						datatype v1,v2, ...., vn;
 					
-					retrieving values from the input varaibles onto the local variables
+					retrieving values from the input variables onto the local variables
 					====================================================================
 					v1 = input->plantVarName;
 					v2 = input->otherControllerVarName
 
 					performing the logic of the controller program
 					====================================================================
-					actual calculation and taking logical decisions, etc
+					actual calculation and taking logical decisions, etc.
 
 					....
 					
 					Finally, update the computed values to the output variable and changing the current state of the controller(input variables) in the data structures
 					==============================================================================================================================================
 					ret_val->outputVarName = vn;
-					input->otherControllerVarName = vj;	//e.t.c.,
+					input->otherControllerVarName = vj;	//etc.,
 
 				}
 
