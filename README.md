@@ -190,11 +190,11 @@ To execute the project with a sample test inputs,
 
 *Note*:
 ================
-To visualize the output counter example trace follow the on-screen instructions i.e. Copy the .json file content to `../ODE_Visualization/data.json` and run in terminal and view in `localhost:8000` url.
+To visualize the output counter example trace, follow the on-screen instructions i.e. Copy the .json file content to `../ODE_Visualization/data.json` and run the following in terminal and view in `localhost:8000` url.
 	
 	$ ./run_websvr.sh 
 
-Don't forget to run the following in the end.
+Don't forget to run the following in the end to shut down the localhost.
 	
 	$ ./shut_websvr.sh
 	
