@@ -204,17 +204,16 @@ Benchmarks
 
 Benchmarks Run using our Tool-chain is in [this repository](https://github.com/saverecs/Benchmark_SaverECS.git). You can also visit [this link](https://sites.google.com/view/benchmarkssafeemc/home) for details.
 
-Mathematical Representation
+Example of SMT Encoding
 ==============================
 Mathematical formulae to represent closed-loop system flow in SMT format is explained here. Due to space constraints, we could not show an example SMT formation in paper. So here we demonstrate the generated SMT formula for the plant flow equations of a **DC Motor** system [(refer this work)](https://dl.acm.org/doi/10.1145/2883817.2883819). This DC Motor system has two *states (x)*, i.e. **angular velocity (angVal)** and **armature current (i)**, being controlled by a PI controller using a *control variable (u)* i.e. **voltage**. The goal of the PI controller is to reduce the error in plant output, caused by **bounded additive noise introduced (w)** while running .  
 
-- Note: The presented SMT-LIB2 format of the formula contains Plant and Controller flow during the first sampling instance. **gt** and **lt** are to variables denoting global time and local time of the system. The *first suffix i.e. 0* introduced in each variable corresponds to the *first iteration/sampling period*. The second suffix i.e. *0 or t* corresponds to *flow of the variables*, eg. `angVal_0_0` and `angVal_0_t`  are values of angular velocity at the start of the zeroth iteration and at the end of the zeroth iteration respectively.]
+- Note: The presented SMT-LIB2 format of the formula contains Plant and Controller flow during the first sampling instance. **gt** and **lt** are to variables denoting **global time and local time** of the system. The *first suffix i.e. 0* introduced in each variable corresponds to the *first iteration/sampling period*. The second suffix i.e. *0 or t* corresponds to *flow of the variables*, eg. `angVal_0_0` and `angVal_0_t`  are values of angular velocity at the start of the zeroth iteration and at the end of the zeroth iteration respectively.]
 
 
 
 1.	The Initial Condition for each variables are :
-	>
-		0=< angVal <=0.2,
+	>	0=< angVal <=0.2,
 		i=0
 		voltage= 1.0
 	
@@ -226,8 +225,7 @@ Mathematical formulae to represent closed-loop system flow in SMT format is expl
 		(and (lt_0_0= 0) ( gt_0_0 =0) (voltage_0_0= 1.0 )(i_0_0>= 0 )(i_0_0<= 10 )(angVal_0_0 >= 0 )(angVal_0_0 <= 1 )(mode_0= 1) (state_error_i_previous_0= 0 )
 
 2.	The flow equations and noise parameters are as follows:
-	>
-        	d/dt (angVal) =  (-0.1/0.01)*angVal + (0.01/0.01)*i
+	>	d/dt (angVal) =  (-0.1/0.01)*angVal + (0.01/0.01)*i
 		d/dt (i) = ((0.01/0.5)*angVal - (1/0.5)*i) + (voltage/0.5)
 		voltage=pid(K_p, K_i) [Discrete PI Controller is written as a C code with K_p=40, K_i=1]
 		0.08<=environmental disturbance on output  angVal (w)<=0.1
@@ -238,8 +236,13 @@ Mathematical formulae to represent closed-loop system flow in SMT format is expl
 	
 	This part of the formula in SMT-LIB2 format:
 
-		(define-ode flow_1 (( d/dt[gt]= 1) (d/dt[lt]= 1) ( d/dt[angVal] =((((- 0.1)/0.01)* angVal)+(( 0.01/ 0.01)* i))) (d/dt[i]= ((((0.01/0.5)*angVal)-(*(1/0.5)*i))+(voltage/0.5))) (d/dt[voltage]= 0)))
-	(assert  and ( [gt_0_t lt_0_t angVal_0_t i_0_t voltage_0_t ]= (integral 0. time_0 [gt_0_0 lt_0_0 angVal_0_0 i_0_0 voltage_0_0 ] flow_1)))```
+		(define-ode flow_1 (( d/dt[gt]= 1) (d/dt[lt]= 1)
+		( d/dt[angVal] =((((- 0.1)/0.01)* angVal)+(( 0.01/ 0.01)* i)))
+		(d/dt[i]= ((((0.01/0.5)*angVal)-(*(1/0.5)*i))+(voltage/0.5))) 
+		(d/dt[voltage]= 0)))
+		(assert  and ( [gt_0_t lt_0_t angVal_0_t i_0_t voltage_0_t ]= (integral 0. time_0 [gt_0_0 lt_0_0 angVal_0_0 i_0_0 voltage_0_0 ] flow_1)))
+		(= angVal_1_0 (+ angVal_0_t Noise_angVal_0 ) )(= i_1_0 i_0_t)(= state_angVal_0 angVal_0_t )  
+
 
 3.	The unsafe region for the system (and corresponding SMT formula) is:
 	>
@@ -247,7 +250,7 @@ Mathematical formulae to represent closed-loop system flow in SMT format is expl
 
 	This part of the formula in SMT-LIB2 format is: 
 	
-			and((1.0<=i),(i<=1.2),(1=>angVal),(angVal>=10))
+		and((1.0<=i),(i<=1.2),(1=>angVal),(angVal>=10))
 
 4.	For a verification bound` N=50  `the final SMT formula becomes:
 
@@ -255,67 +258,66 @@ Mathematical formulae to represent closed-loop system flow in SMT format is expl
 
 	The SMT-LIB2 version of the formula for `k=0`:
 	
-			(define-ode flow_1 (( d/dt[gt]= 1) (d/dt[lt]= 1) ( d/dt[angVal] =((((- 0.1)/0.01)* angVal)+(( 0.01/ 0.01)* i))) 
-			(d/dt[i]= ((((0.01/0.5)*angVal)-(*(1/0.5)*i))+(voltage/0.5))) 
-			(d/dt[voltage]= 0)))(assert (and (lt_0_0= 0) ( gt_0_0 =0)
-			(voltage_0_0= 1.0 )(i_0_0>= 0 )(i_0_0<= 10 )(angVal_0_0 >= 0 )(angVal_0_0 <= 1 )(mode_0= 1) (state_error_i_previous_0= 0 )
-			(lt_0_t= (lt_0_0+(1* 0))) (gt_0_t =(gt_0_0+(1*0))) (voltage_0_t= (voltage_0_0+(0*0)))
-			( [gt_0_t lt_0_t angVal_0_t i_0_t voltage_0_t ]= (integral 0. time_0 [gt_0_0 lt_0_0 angVal_0_0 i_0_0 voltage_0_0 ] flow_1))
-			(= angVal_1_0 (+ angVal_0_t Noise_angVal_0 ) )(= i_1_0 i_0_t)(= state_angVal_0 angVal_0_t )  
+		(define-ode flow_1 (( d/dt[gt]= 1) (d/dt[lt]= 1) ( d/dt[angVal] =((((- 0.1)/0.01)* angVal)+(( 0.01/ 0.01)* i))) 
+		(d/dt[i]= ((((0.01/0.5)*angVal)-(*(1/0.5)*i))+(voltage/0.5))) 
+		(d/dt[voltage]= 0)))(assert (and (lt_0_0= 0) ( gt_0_0 =0)
+		(voltage_0_0= 1.0 )(i_0_0>= 0 )(i_0_0<= 10 )(angVal_0_0 >= 0 )(angVal_0_0 <= 1 )(mode_0= 1) (state_error_i_previous_0= 0 )
+		(lt_0_t= (lt_0_0+(1* 0))) (gt_0_t =(gt_0_0+(1*0))) (voltage_0_t= (voltage_0_0+(0*0)))
+		( [gt_0_t lt_0_t angVal_0_t i_0_t voltage_0_t ]= (integral 0. time_0 [gt_0_0 lt_0_0 angVal_0_0 i_0_0 voltage_0_0 ] flow_1))
+		(= angVal_1_0 (+ angVal_0_t Noise_angVal_0 ) )(= i_1_0 i_0_t)(= state_angVal_0 angVal_0_t )  
 
 5.	The C code of the PI controller of DC motor:
-	``` C
-	// Must include controller.h
-	#include "dcmotor.h"
-	//#include<stdio.h>
+		``` C
+		// Must include controller.h
+		#include "dcmotor.h"
+		//#include<stdio.h>
 
-	#define SAT (20.0)
-	#define UPPER_SAT (SAT)
-	#define LOWER_SAT (-SAT)
+		#define SAT (20.0)
+		#define UPPER_SAT (SAT)
+		#define LOWER_SAT (-SAT)
 
-	void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
-	{
-	  double pid_op = 0.0;
-	  double KP = 40.0;
-	  double KI = 1.0;
+		void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
+		{
+		  double pid_op = 0.0;
+		  double KP = 40.0;
+		  double KI = 1.0;
 
-	  double error, error_i;
+		  double error, error_i;
 
-	  double y = input->state_angVal;
-	  // get the previous error
-	  double error_i_prev = input->state_error_i_previous;
-	  double ref = 1.0;
+		  double y = input->state_angVal;
+		  // get the previous error
+		  double error_i_prev = input->state_error_i_previous;
+		  double ref = 1.0;
 
-	  // error computation is affected by bounded sensor noise
-	 // error = ref - (y + input->state_angVal);
-	 error = ref - y;
+		  // error computation is affected by bounded sensor noise
+		 // error = ref - (y + input->state_angVal);
+		 error = ref - y;
 
-	  // to illustrate: ei += e*Ki
-	  error_i = error * KI + error_i_prev;
-	  error_i_prev = error_i;
+		  // to illustrate: ei += e*Ki
+		  error_i = error * KI + error_i_prev;
+		  error_i_prev = error_i;
 
-	  pid_op = error * KP + error_i * KI;
+		  pid_op = error * KP + error_i * KI;
 
-	  if(pid_op > UPPER_SAT)
-	    pid_op = UPPER_SAT;
-	  else if(pid_op < LOWER_SAT)
-	    pid_op = LOWER_SAT;
-	  else
-	    pid_op = pid_op;
+		  if(pid_op > UPPER_SAT)
+		    pid_op = UPPER_SAT;
+		  else if(pid_op < LOWER_SAT)
+		    pid_op = LOWER_SAT;
+		  else
+		    pid_op = pid_op;
 
-	  ret_val->next_voltage = pid_op;
-	  input->state_error_i_previous = error_i_prev;
+		  ret_val->next_voltage = pid_op;
+		  input->state_error_i_previous = error_i_prev;
 
-	  return (void*)0;
-	}```
+		  return (void*)0;
+		}```
 	
 	The SMT formula generated from the PI controller of DC motor in SMT-LIB2 fomat for `k=0` is the following:
 	
-		
  		(ite (< (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) -20 )
 		(= .add3_0 -20 )(= .add3_0 (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) ) ) 
 		(ite (> (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) 20 ) (= pid_op.0_0 20 )(= pid_op.0_0 .add3_0 ) ) 
 		(= next_voltage_1 pid_op.0_0 ) 
 		(= state_error_i_previous_1 (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) 
 
-The overall SMT-LIB2 version of the dcmotor for 1 iteration can be found in this file [dcmotor_1.smt2](https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/outputs-2020-05-15T180821/dcmotor_1.smt2)This SMT constraint is input to the dReal SMT solver, which eventually solves the ODEs. dReal SMT solver uses CAPD library to solve the ODEs over Reals.
+The overall SMT-LIB2 version of the dcmotor for 1 iteration can be found in this file [dcmotor_1.smt2](https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/outputs-2020-05-15T180821/dcmotor_1.smt2). This SMT constraint is input to the dReal SMT solver, which eventually solves the ODEs. dReal SMT solver uses CAPD library to solve the ODEs over Reals.
