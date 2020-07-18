@@ -215,7 +215,7 @@ __Note__: The presented SMT-LIB2 format of the formula contains Plant and Contro
 
 1.	The Initial Condition for each variables are :
 	>	0=< angVal <=0.2,
-		i=0
+		i=0,
 		voltage= 1.0
 	
 	The corresponding SMT formula is (Init() in overall equation):
@@ -229,11 +229,11 @@ __Note__: The presented SMT-LIB2 format of the formula contains Plant and Contro
 
 
 2.	The flow equations and noise parameters are as follows:
-	>	d/dt (angVal) =  (-0.1/0.01)*angVal + (0.01/0.01)*i
-		d/dt (i) = ((0.01/0.5)*angVal - (1/0.5)*i) + (voltage/0.5)
-		voltage=pid(K_p, K_i) [Discrete PI Controller is written as a C code with K_p=40, K_i=1]
-		0.08<=environmental disturbance on output  angVal (w)<=0.1
-		0.1<=Quantisation error on voltage(voltage)<=0.12
+	>	d/dt (angVal) =  (-0.1/0.01)*angVal + (0.01/0.01)*i,
+		d/dt (i) = ((0.01/0.5)*angVal - (1/0.5)*i) + (voltage/0.5),
+		voltage=pid(K_p, K_i) [Discrete PI Controller is written as a C code with K_p=40, K_i=1],
+		0.08<=environmental disturbance on output  angVal (w)<=0.1,
+		0.1<=Quantisation error on voltage(voltage)<=0.12,
 
 	The corresponding SMT formula for k-th sampling instance considering the `sampling period=0.02` is:
 	
