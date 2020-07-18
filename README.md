@@ -227,7 +227,8 @@ __Note__: The presented SMT-LIB2 format of the formula contains **Plant** and **
 			initial begin
 				set begin
 					mode == loc;
-					angVal==0;
+					angVal>=0;
+					angVal<=0.2;
 					i==0;
 					voltage==1.0;
 				end
