@@ -208,64 +208,51 @@ Mathematical Representation
 ==============================
 Mathematical formulae to represent closed-loop system flow in SMT format is explained here. Due to space constraints, we could not show an example SMT formation in paper. So here we demonstrate the generated SMT formula for the plant flow equations of a DC Motor system [refer this work](https://dl.acm.org/doi/10.1145/2883817.2883819). This DC Motor system has two states (x), i.e. angular velocity (angVal) and armature current (i), being controlled by a PI controller using a control variable (u) i.e. voltage. The goal of the PI controller is to reduce the error in plant output, caused by bounded additive noise introduced (w) while running .  
 
+- [The presented SMT-LIB2 format of the formula contains Plant and Controller flow during the first sampling instance. gt and lt are to variables denoting global time and local time of the system. The *first suffix i.e. 0* introduced in each variable corresponds to the *first iteration/sampling period*. The second suffix i.e. *0 or t* corresponds to *flow of the variables*, eg. `angVal_0_0` and `angVal_0_t`  are values of angular velocity at the start of the zeroth iteration and at the end of the zeroth iteration respectively.]
+
+
+
 1.	The Initial Condition for each variables are :
-	0=< angVal <=0.2,
-	i=0
-	voltage= 1.0
+		0=< angVal <=0.2,
+		i=0
+		voltage= 1.0
+	
 	The corresponding SMT formula is (Init() in overall equation):
+	![init]
+	(https://github.com/saverecs/SaverECS/blob/master/images/init.png)
 
+	This part of the formula in SMT-LIB2 format:
 
-	This part of the formula in SMTLIB2 format:
-
-	(and (lt_0_0= 0) ( gt_0_0 =0) (voltage_0_0= 1.0 )(i_0_0>= 0 )(i_0_0<= 10 )(angVal_0_0 >= 0 )(angVal_0_0 <= 1 )(mode_0= 1) (state_error_i_previous_0= 0 )
+	`(and (lt_0_0= 0) ( gt_0_0 =0) (voltage_0_0= 1.0 )(i_0_0>= 0 )(i_0_0<= 10 )(angVal_0_0 >= 0 )(angVal_0_0 <= 1 )(mode_0= 1) (state_error_i_previous_0= 0 )`
 
 2.	The flow equations and noise parameters are as follows:
-        d/dt (angVal) =  (-0.1/0.01)*angVal + (0.01/0.01)*i
-	d/dt (i) = ((0.01/0.5)*angVal - (1/0.5)*i) + (voltage/0.5)
-	voltage=pid(K_p, K_i) [Discrete PI Controller is written as a C code with K_p=40, K_i=1]
-	0.08<=environmental disturbance on output  angVal (w)<=0.1
-	0.1<=Quantisation error on voltage(voltage)<=0.12
+        	d/dt (angVal) =  (-0.1/0.01)*angVal + (0.01/0.01)*i
+		d/dt (i) = ((0.01/0.5)*angVal - (1/0.5)*i) + (voltage/0.5)
+		voltage=pid(K_p, K_i) [Discrete PI Controller is written as a C code with K_p=40, K_i=1]
+		0.08<=environmental disturbance on output  angVal (w)<=0.1
+		0.1<=Quantisation error on voltage(voltage)<=0.12
 
-	The corresponding SMT formula for k-th sampling instance considering the sampling period=0.02 is:
+	The corresponding SMT formula for k-th sampling instance considering the `sampling period=0.02` is:
+	![flow]
+	(https://github.com/saverecs/SaverECS/blob/master/images/flow.png)
+	
+	This part of the formula in SMT-LIB2 format:
 
+	```(define-ode flow_1 (( d/dt[gt]= 1) (d/dt[lt]= 1) ( d/dt[angVal] =((((- 0.1)/0.01)* angVal)+(( 0.01/ 0.01)* i))) (d/dt[i]= ((((0.01/0.5)*angVal)-(*(1/0.5)*i))+(voltage/0.5))) (d/dt[voltage]= 0)))
+	`(assert  and ( [gt_0_t lt_0_t angVal_0_t i_0_t voltage_0_t ]= (integral 0. time_0 [gt_0_0 lt_0_0 angVal_0_0 i_0_0 voltage_0_0 ] flow_1)))```
 
-	This part of the formula in SMTLIB2 format:
+3.	The unsafe region for the system (and corresponding SMT formula) is:
+		(1.0<=i<=1.2) & (1=>angVal>=10)
 
-	(define-ode flow_1 (( d/dt[gt]= 1) (d/dt[lt]= 1) ( d/dt[angVal] =((((- 0.1)/0.01)* angVal)+(( 0.01/ 0.01)* i))) (d/dt[i]= ((((0.01/0.5)*angVal)-(*(1/0.5)*i))+(voltage/0.5))) (d/dt[voltage]= 0)))
-	(assert  and ( [gt_0_t lt_0_t angVal_0_t i_0_t voltage_0_t ]= (integral 0. time_0 [gt_0_0 lt_0_0 angVal_0_0 i_0_0 voltage_0_0 ] flow_1)))
+	The corresponding part of the formula in SMT-LIB2 format is: 
+	`and((1.0<=i),(i<=1.2),(1=>angVal),(angVal>=10))`
 
-3.	The unsafe region for the system is:
-	1.0<=i<=1.2 & 1=>angVal>=10
+4.	For a verification bound` N=50  `the final SMT formula becomes:
 
-	The corresponding SMT clause is: 
+	![overall]
+	(https://github.com/saverecs/SaverECS/blob/master/images/whole.png)
 
-
-4.	For a verification bound N=50  the final SMT formula becomes:
-
-
+	The SMT-LIB2 version of the formula for `k=0`:
+	```(define-ode flow_1 (( d/dt[gt]= 1) (d/dt[lt]= 1) ( d/dt[angVal] =((((- 0.1)/0.01)* angVal)+(( 0.01/ 0.01)* i))) (d/dt[i]= ((((0.01/0.5)*angVal)-(*(1/0.5)*i))+(voltage/0.5))) (d/dt[voltage]= 0)))(assert (and (lt_0_0= 0) ( gt_0_0 =0) (voltage_0_0= 1.0 )(i_0_0>= 0 )(i_0_0<= 10 )(angVal_0_0 >= 0 )(angVal_0_0 <= 1 )(mode_0= 1) (state_error_i_previous_0= 0 ) (lt_0_t= (lt_0_0+(1* 0))) (gt_0_t =(gt_0_0+(1*0))) (voltage_0_t= (voltage_0_0+(0*0))) ( [gt_0_t lt_0_t angVal_0_t i_0_t voltage_0_t ]= (integral 0. time_0 [gt_0_0 lt_0_0 angVal_0_0 i_0_0 voltage_0_0 ] flow_1)) ```
 
 This SMT constraint is input to the dReal SMT solver, which eventually solves the ODEs. dReal SMT solver uses CAPD library to solve the ODEs over Reals.
-
-gt and lt are to variables denoting global time and local time of the system. The first suffix i.e. 0 introduced in each variable corresponds to the first iteration/sampling period. The second suffixes i.e. 0 or t corresponds to flow of the variables, eg. angVal_0_0 and angVal_0_t  are values of angular velocity at the start of the zeroth iteration and at the end of the zeroth iteration respectively. Following is the SMT formula :
-
-(define-ode flow_1 (( d/dt[gt]= 1) (d/dt[lt]= 1) ( d/dt[angVal] =((((- 0.1)/0.01)* angVal)+(( 0.01/ 0.01)* i))) (d/dt[i]= ((((0.01/0.5)*angVal)-(*(1/0.5)*i))+(voltage/0.5))) (d/dt[voltage]= 0)))
-(assert (and (lt_0_0= 0) ( gt_0_0 =0) (voltage_0_0= 1.0 )(i_0_0>= 0 )(i_0_0<= 10 )(angVal_0_0 >= 0 )(angVal_0_0 <= 1 )(mode_0= 1) (state_error_i_previous_0= 0 )  
- (lt_0_t= (lt_0_0+(1* 0))) (gt_0_t =(gt_0_0+(1*0))) (voltage_0_t= (voltage_0_0+(0*0))) 
- ( [gt_0_t lt_0_t angVal_0_t i_0_t voltage_0_t ]= (integral 0. time_0 [gt_0_0 lt_0_0 angVal_0_0 i_0_0 voltage_0_0 ] flow_1))  
-  
- 
-This SMT formula contains Plant and Controller flow during the first sampling instance. Depending on the verification bound such SMT formulae from multiple sampling instances are anded into one big SMT formula as shown in the expression of . 
-
-  To answer the reviewer’s question we separate the SMT encoded plant variable flow(ODEs) part from the overall SMT formula skipping the control equation part (CP() in the mathematical formula). 
-
-(define-ode flow_1 (( d/dt[gt]= 1) (d/dt[lt]= 1) ( d/dt[angVal] =((((- 0.1)/0.01)* angVal)+(( 0.01/ 0.01)* i))) (d/dt[i]= ((((0.01/0.5)*angVal)-(*(1/0.5)*i))+(voltage/0.5))) (d/dt[voltage]= 0))) 
----- This part defines the different flow equations for different variables eg. plant variables, control variables, timing variables.
-
-(and (lt_0_0= 0) ( gt_0_0 =0) (voltage_0_0= 1.0 )(i_0_0>= 0 )(i_0_0<= 10 )(angVal_0_0 >= 0 )(angVal_0_0 <= 1 )(mode_0= 1) (state_error_i_previous_0= 0 )
- ---- This part corresponds to Init(x0,u0,w0) i.e. initialisation of all variables.
-
- (lt_0_t= (lt_0_0+(1* 0))) (gt_0_t =(gt_0_0+(1*0))) (voltage_0_t= (voltage_0_0+(0*0))) 
-	---- This part corresponds to constant flow of the timing and control variables.
-
- ( [gt_0_t lt_0_t angVal_0_t i_0_t voltage_0_t ]= (integral 0. time_0 [gt_0_0 lt_0_0 angVal_0_0 i_0_0 voltage_0_0 ] flow_1))
----- This part corresponds to the plant variable flows and expresses ODEs as SMT constraints. time_0 is the timing variable used to integrate the ODEs. 
