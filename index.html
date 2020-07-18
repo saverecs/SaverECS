@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Saverecs : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Saverecs</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/saverecs/SaverECS">View on GitHub</a>
+
+          <h1 id="project_title">Saverecs</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/saverecs/SaverECS/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/saverecs/SaverECS/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="safety-verification-of-embedded-control-software-tool-chain" class="anchor" href="#safety-verification-of-embedded-control-software-tool-chain" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><em>Sa</em>fety <em>Ver</em>ification of <em>E</em>mbedded <em>C</em>ontrol <em>S</em>oftware Tool-chain</h1>
+<hr>
+<h1>
+<a id="prerequisite-for-running-the-tool" class="anchor" href="#prerequisite-for-running-the-tool" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prerequisite (for running the tool):</h1>
+<pre><code>1) clang and llvm 
+$ sudo apt-get install clang
+$ sudo apt-get install llvm
+2) boost library for c++
+$ sudo apt-get install libboost-all-dev
+</code></pre>
+<h1>
+<a id="how-to-build" class="anchor" href="#how-to-build" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to build:</h1>
+<pre><code>To generate the executable, type the following command in the terminal:
+
+	$ cd fmsafe/src
+	$ ./compile-cpp
+</code></pre>
+<p>If the source code is modified, or a new file.cpp is added, it must also be added in the compile-cpp file before executing it.</p>
+<h1>
+<a id="note" class="anchor" href="#note" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><em>Note</em>:</h1>
+<ul>
+<li>The files with the extensions .l and .y are the lex and yacc files. They are use to parse the input plant model file having the extension .ha (The language use to model the input plant is referred as HASLAC).</li>
+<li>If the .l and .y (present in the project src folder) files are modified, then execute the script file "build" before execute the above commands.</li>
+<li>If the llvm pass in our repository in <code>src/lib/</code> does not work/ throws an error while executing, please go to our <a href="https://github.com/saverecs/CProgramToSMT.git">another repository</a>, follow the instructions there and finally paste newly created llvm pass inside <code>src/lib/</code> folder.</li>
+</ul>
+<h1>
+<a id="input-format" class="anchor" href="#input-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Input Format:</h1>
+<hr>
+<ul>
+<li>
+<p>Configuration File
+Parameters are:</p>
+<ol>
+<li>Comments line begin with # or //</li>
+<li>MinMax-bounds of variables (plant and controller)</li>
+<li>max-value</li>
+<li>sampling-time</li>
+<li>release-time</li>
+<li>sensing-time or sampling jitter</li>
+<li>upper-bound</li>
+<li>lower-bound</li>
+<li>time-horizon</li>
+<li>goal</li>
+<li>noise-params</li>
+<li>disturbance</li>
+</ol>
+</li>
+<li>
+<p>Plant Description</p>
+</li>
+</ul>
+<blockquote>
+<p>This input format of the plant model is taken using the HASLAC specification. For more details refer <a href="https://link.springer.com/chapter/10.1007/978-3-319-68167-2_28">ForFET: A Formal Feature Evaluation Tool for Hybrid Systems</a> or <a href="http://cse.iitkgp.ac.in/~bdcaa/ForFET/ref.pdf">http://cse.iitkgp.ac.in/~bdcaa/ForFET/ref.pdf</a> .</p>
+</blockquote>
+<pre><code>module modelname(state,control variables...)
+output output variables...;
+%location details
+    mode loc
+	begin
+	ddt x1  = (-50/1000)*v + (1/1000)*u;% flow equation
+	.
+	.
+	% other flow equations
+	end
+% initial states
+    initial begin
+	set begin
+	    mode == loc;
+	    x1 &lt;= 80;
+	    x1 &gt;= 50;
+	    .
+	    .
+	% other state,control input initializations
+	end
+    end
+endmodule
+</code></pre>
+<ul>
+<li>Controller program</li>
+</ul>
+<ol>
+<li>
+<p>The input and the output argument variables are declare in a structure within a header file (controller.h) which is included in the controller program (controller.c). The names of the structure should be INPUT_VAL and RETURN_VAL as shown below:</p>
+<pre><code>		typedef struct{
+			datatype outputVarName;
+
+		}RETURN_VAL;
+
+		typedef struct{
+			datatype plantVarName; //The value sensed from the plant (remember to follow the same naming convention in the plant model as well. In addition, we use the key word "state_" as a prefix before the sensed variables of the plant and prefix by the key word "next_" to the output variables that is returned from the controller program.)
+
+			datatype otherControllerVarName;   
+
+		}INPUT_VAL;
+</code></pre>
+</li>
+<li>
+<p>The header file (for eg controller.h) should also include the declaration of the controller function as shown below:</p>
+<pre><code>		datatype controller(INPUT_VAL* iv, RETURN_VAL* rv);	//here the return datatype can be void, etc.
+	Note that we assume all controller program begin with the function name as "controller()" just like a C/C++ program begin with the function main().
+</code></pre>
+</li>
+<li>
+<p>We also assume that the definition of the function follows the following usual pattern as reflected below. Note that we pass the arguments as reference variables, so we do not use the return statement to return the parameter.</p>
+<pre><code>		#include "controller.h"	//contains the structure declaration as shown in 1) and 2) above.
+		
+		void controller(INPUT_VAL* input, RETURN_VAL* ret_val) {
+
+			local variable declaration 
+			============================
+				datatype v1,v2, ...., vn;
+			
+			retrieving values from the input variables onto the local variables
+			====================================================================
+			v1 = input-&gt;plantVarName;
+			v2 = input-&gt;otherControllerVarName
+
+			performing the logic of the controller program
+			====================================================================
+			actual calculation and taking logical decisions, etc.
+
+			....
+			
+			Finally, update the computed values to the output variable and changing the current state of the controller(input variables) in the data structures
+			==============================================================================================================================================
+			ret_val-&gt;outputVarName = vn;
+			input-&gt;otherControllerVarName = vj;	//etc.,
+
+		}
+</code></pre>
+</li>
+</ol>
+<h1>
+<a id="detailed-command-line-interface-cli" class="anchor" href="#detailed-command-line-interface-cli" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Detailed Command Line Interface (CLI):</h1>
+<pre><code>	-h [ --help ]                produce help message
+	-m [ --max-value ] arg       Assumed maximum [-m, +m] constant value that the plant and the controller can take
+	-t [ --sampling-time ] arg   Sets the sampling time of the controller
+	-r [ --release-time ] arg    Sets the release time of the controller
+	-d [ --sensing-time ] arg    Sets the sensing time of the controller
+	--precision arg              set precision for the SMT solver (default 0.001)
+	-u [ --upper-bound ] arg     Set the depth or upper-bound of exploration for unrolling
+	-l [ --lower-bound ] arg     Set the depth or lower-bound of exploration for unrolling
+	-Z [ --time-horizon ] arg    Set the global time horizon of computation.
+	-F [ --goal ] arg            Goal property to test, syntax: 'expr-1 &amp; 
+                               expr-2'; For e.g. expr-1 is x&gt;=2 expr-2 is x&lt;=(-2)
+	--noise-params arg           Sets the noise injecting parameters, syntax: 
+                               'var1:[t1,t2]=&gt;[n1,n2] &amp; ...'where t1 and t2 are start and end time duration of 
+                               the noise on var1 and the noise values can be fix [n1,n1] or range [n1,n2]
+	--disturbance arg            Sets the disturbance parameters, syntax: 
+                               'var1:[t1,t2]=&gt;[d1,d2] &amp; ...'where t1 and t2 are start and end time duration of 
+                               the disturbance on var1 and the disturbance values can be fix [d1,d1] or range [d1,d2]
+	-I [ --include-path ] arg    include file path
+	-p [ --plant-file ] arg      include plant model file
+	-c [ --controller-file ] arg include controller C program file
+	-g [ --config-file ] arg     include configuration file (for future use)
+	-o [ --output-file ] arg     output file name for redirecting the outputs (example .smt2 file)
+
+1) For example to get help on using the tool's CLI commands type the following:
+
+	$ ./SaVerECS  --help
+
+2) To run the tool with the plant model as "benchmarks/thermostat/thermostat.ha" and controller program as "benchmarks/thermostat/thermostat.c" having the header file "thermostat.h" in the same "benchmarks/thermostat/", with the sampling time of the controller as "0.2", for the time-horizon of "3" units, type the command as given below. The output is generated in the file "test.smt2" using the -o flag. The number of depth for unrolling is specified by -u and -l, where u is the upper-bound and l the lower-bound. The flag -m is to supply a maximum bounds for all variables (both plant and controller) within which the variables always lies. The flag -d is used to input the sensing time. For simple goal/property to test use the --goal flag.
+
+	$ ./SaVerECS -m 100 -t 0.2 -d 0.001 -u 10 -l 5 --time-horizon 3 --goal "x&gt;=5 &amp; y&gt;=3" --plant-file "benchmarks/thermostat.ha" --controller-file "benchmarks/thermostat.c" -o test.smt2
+	
+3) Else one can simply input all these values in configuration file as ` benchmarks/thermostat/thermostat.cfg ` and run the following to verify the goal property,
+
+	$ ./SaVerECS -g "benchmarks/thermostat/thermostat.cfg" --plant-file "benchmarks/thermostat/thermostat.ha" --controller-file "benchmarks/thermostat/thermostat.c" -o benchmarks/thermostat/outputs/thermostat
+</code></pre>
+<h1>
+<a id="how-to-run" class="anchor" href="#how-to-run" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to Run:</h1>
+<p>To execute the project with a sample test inputs,</p>
+<ul>
+<li>
+<p>Add a folder in benchmarks directory with model name. Keep All the input files with same name inside that folder (they will have different extensions),</p>
+</li>
+<li>
+<p>Add the system name in '.run' file as the value of <code> $system</code> variable e.g.</p>
+<pre><code>  $ system = thermostat
+</code></pre>
+</li>
+<li>
+<p>enter the <code>src/</code> directory and type the below command in the terminal:</p>
+<pre><code>  $ cd src
+  $ ./run
+</code></pre>
+<p>where the script file 'run' includes the commands, details of which are explained as part of <strong>CLI</strong> section.</p>
+</li>
+<li>
+<p>output files:</p>
+<blockquote>
+</blockquote>
+<pre><code>  .log files:	with execution time logs,
+
+  .smt2 files:	containing tool generated smt formula in smt-lib 2.0 format,
+  
+  .json files:	to visualize counter examples (instructions given in .log file)
+</code></pre>
+</li>
+</ul>
+<h1>
+<a id="note-1" class="anchor" href="#note-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><em>Note</em>:</h1>
+<p>To visualize the output counter example trace, follow the on-screen instructions i.e. Copy the .json file content to <code>../ODE_Visualization/data.json</code> and run the following in terminal and view in <code>localhost:8000</code> url.</p>
+<pre><code>$ ./run_websvr.sh 
+</code></pre>
+<p>Don't forget to run the following in the end to shut down the localhost.</p>
+<pre><code>$ ./shut_websvr.sh
+</code></pre>
+<h1>
+<a id="benchmarks" class="anchor" href="#benchmarks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Benchmarks</h1>
+<p>Benchmarks Run using our Tool-chain is in <a href="https://github.com/saverecs/Benchmark_SaverECS.git">this repository</a>. You can also visit <a href="https://sites.google.com/view/benchmarkssafeemc/home">this link</a> for details.</p>
+<h1>
+<a id="an-example-of-smt-encoding" class="anchor" href="#an-example-of-smt-encoding" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>An Example of SMT Encoding</h1>
+<p>Mathematical formulae to represent a closed-loop system into SMT encoding is shown below.
+The process of generating the SMT formula for a <strong>DC Motor</strong> system <a href="https://dl.acm.org/doi/10.1145/2883817.2883819">(refer this work)</a> is presented as an example.
+This DC Motor system has two <em>states (x)</em>, i.e. <strong>angular velocity (angVal)</strong> and <strong>armature current (i)</strong>, being controlled by a PI controller using a <em>control variable (u)</em> i.e. <strong>voltage</strong>. The goal of the PI controller is to reduce error in plant's output, caused by <strong>bounded additive noise (w)</strong> introduced during run-time.</p>
+<p><strong>Note</strong>: The presented SMT-LIB2 format of the formula contains <strong>Plant</strong> and <strong>Controller</strong> flow during the first sampling instance. <code>gt</code> and <code>lt</code> are two variables denoting <strong>global time and local time</strong> of the system. The <em>first suffix i.e. 0</em> introduced in each variable corresponds to the <em>first iteration/sampling period</em>. The second suffix i.e. <em>0 or t</em> corresponds to <em>flow of the variables</em>, eg. <code>angVal_0_0</code> and <code>angVal_0_t</code> are values of angular velocity at the start of the zeroth iteration and at the end of the zeroth iteration respectively.]</p>
+<ol>
+<li>
+<p>The Plant model (using the HASLAC format) is:</p>
+<pre><code>module dcmotor(angVal, i, voltage)
+
+	output angVal, i;
+	
+	mode loc
+		begin
+			ddt angVal =  (-0.1/0.01)*angVal + (0.01/0.01)*i;
+			ddt i = ((0.01/0.5)*angVal - (1/0.5)*i) + (voltage/0.5);
+		end
+	initial begin
+		set begin
+			mode == loc;
+			angVal==0;
+			i==0;
+			voltage==1.0;
+		end
+	end
+endmodule
+</code></pre>
+</li>
+</ol>
+<ul>
+<li>
+<p>Initial range of state variables :</p>
+<blockquote>
+<p>0=&lt; angVal &lt;=0.2,
+i=0,
+voltage= 1.0</p>
+</blockquote>
+<p>The corresponding SMT formula is (<em>Init()</em> in overall equation):</p>
+<p><img src="https://github.com/saverecs/SaverECS/blob/master/images/init.png?raw=true" alt="init"></p>
+<p>This part of the formula in SMT-LIB2 format:</p>
+<pre><code>(and (lt_0_0= 0) ( gt_0_0 =0) (voltage_0_0= 1.0 )(i_0_0= 0 )(angVal_0_0 &gt;= 0 )(angVal_0_0 &lt;= 1 )(mode_0= 1) (state_error_i_previous_0= 0 )
+</code></pre>
+</li>
+<li>
+<p>The flow equations are as follows:</p>
+<blockquote>
+<p>d/dt (angVal) =  (-0.1/0.01)*angVal + (0.01/0.01)*i,
+d/dt (i) = ((0.01/0.5)*angVal - (1/0.5)*i) + (voltage/0.5),</p>
+</blockquote>
+<p>This part of the formula that defines the flow equations in SMT-LIB2 format:</p>
+<pre><code>(define-ode flow_1 (( d/dt[gt]= 1) (d/dt[lt]= 1)
+( d/dt[angVal] =((((- 0.1)/0.01)* angVal)+(( 0.01/ 0.01)* i)))
+(d/dt[i]= ((((0.01/0.5)*angVal)-(*(1/0.5)*i))+(voltage/0.5))) 
+(d/dt[voltage]= 0)))
+</code></pre>
+</li>
+</ul>
+<ol start="2">
+<li>The PI Controller as a C-Program.</li>
+</ol>
+<ul>
+<li>The C-Program:  <a href="https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/dcmotor.c">dcmotor.c</a>
+</li>
+</ul>
+<div class="highlight highlight-source-c"><pre><span class="pl-c"><span class="pl-c">//</span> Must include controller.h</span>
+#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">"</span>dcmotor.h<span class="pl-pds">"</span></span>
+<span class="pl-c"><span class="pl-c">//</span>#include&lt;stdio.h&gt;</span>
+
+#<span class="pl-k">define</span> <span class="pl-en">SAT</span> (<span class="pl-c1">20.0</span>)
+#<span class="pl-k">define</span> <span class="pl-en">UPPER_SAT</span> (SAT)
+#<span class="pl-k">define</span> <span class="pl-en">LOWER_SAT</span> (-SAT)
+
+<span class="pl-k">void</span>* <span class="pl-en">controller</span>(INPUT_VAL* input, RETURN_VAL* ret_val)
+{
+  <span class="pl-k">double</span> pid_op = <span class="pl-c1">0.0</span>;
+  <span class="pl-k">double</span> KP = <span class="pl-c1">40.0</span>;
+  <span class="pl-k">double</span> KI = <span class="pl-c1">1.0</span>;
+
+  <span class="pl-k">double</span> error, error_i;
+
+  <span class="pl-k">double</span> y = input-&gt;<span class="pl-smi">state_angVal</span>;
+  <span class="pl-c"><span class="pl-c">//</span> get the previous error</span>
+  <span class="pl-k">double</span> error_i_prev = input-&gt;<span class="pl-smi">state_error_i_previous</span>;
+  <span class="pl-k">double</span> ref = <span class="pl-c1">1.0</span>;
+
+  <span class="pl-c"><span class="pl-c">//</span> error computation is affected by bounded sensor noise</span>
+ <span class="pl-c"><span class="pl-c">//</span> error = ref - (y + input-&gt;state_angVal);</span>
+ error = ref - y;
+
+  <span class="pl-c"><span class="pl-c">//</span> to illustrate: ei += e*Ki</span>
+  error_i = error * KI + error_i_prev;
+  error_i_prev = error_i;
+
+  pid_op = error * KP + error_i * KI;
+
+  <span class="pl-k">if</span>(pid_op &gt; UPPER_SAT)
+    pid_op = UPPER_SAT;
+  <span class="pl-k">else</span> <span class="pl-k">if</span>(pid_op &lt; LOWER_SAT)
+    pid_op = LOWER_SAT;
+  <span class="pl-k">else</span>
+    pid_op = pid_op;
+
+  ret_val-&gt;<span class="pl-smi">next_voltage</span> = pid_op;
+  input-&gt;<span class="pl-smi">state_error_i_previous</span> = error_i_prev;
+
+  <span class="pl-k">return</span> (<span class="pl-k">void</span>*)<span class="pl-c1">0</span>;
+}</pre></div>
+<ul>
+<li>The Header Program:  <a href="https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/dcmotor.h">dcmotor.h</a>
+</li>
+</ul>
+<div class="highlight highlight-source-c"><pre><span class="pl-c"><span class="pl-c">//</span> ***** The Header Program:  dcmotor.h *****</span>
+<span class="pl-k">typedef</span> <span class="pl-k">struct</span>{
+    <span class="pl-k">double</span> next_voltage;
+}RETURN_VAL;
+
+<span class="pl-k">typedef</span> <span class="pl-k">struct</span>{
+    <span class="pl-k">double</span> state_angVal;
+    <span class="pl-k">double</span> state_error_i_previous;
+}INPUT_VAL;
+
+<span class="pl-k">void</span>* <span class="pl-en">controller</span>(INPUT_VAL* iv, RETURN_VAL* rv);
+
+<span class="pl-c"><span class="pl-c">//</span> ***** End of The Header Program: dcmotor.h *****</span></pre></div>
+<ul>
+<li>
+<p>The SMT formula generated from the PI controller of DC motor in SMT-LIB2 fomat for <code>k=0</code> is the following (in prefix format):</p>
+<pre><code>(ite (&lt; (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) -20 )
+(= .add3_0 -20 )(= .add3_0 (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) ) ) 
+(ite (&gt; (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) 20 ) (= pid_op.0_0 20 )(= pid_op.0_0 .add3_0 ) ) 
+(= next_voltage_1 pid_op.0_0 ) 
+(= state_error_i_previous_1 (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) 
+</code></pre>
+</li>
+</ul>
+<ol start="3">
+<li>
+<p>The Configuration file  :</p>
+<pre><code>max-value = "1000"
+minmax-bounds = "i:[0,2] &amp; angval:[1,30]"
+sampling-time = 0.02
+release-time = 0
+sensing-time = 0
+Noise-params = "angVal:[0.02,1]=&gt;[0.1,0.5]"
+time-horizon = 3
+upper-bound = 50
+lower-bound = 1
+goal ="i&lt;=1.2 &amp; i&gt;=1.0 &amp; angVal&gt;=10 &amp; angVal&lt;=11"
+</code></pre>
+</li>
+</ol>
+<ul>
+<li>
+<p>The unsafe region for the system (and corresponding SMT formula) is:</p>
+<blockquote>
+</blockquote>
+<pre><code>(1.0&lt;=i&lt;=1.2) &amp; (1=&gt;angVal&gt;=10)
+</code></pre>
+<p>This part of the formula in SMT-LIB2 format is:</p>
+<pre><code>(and((1.0&lt;=i),(i&lt;=1.2),(1=&gt;angVal),(angVal&gt;=10)))
+</code></pre>
+</li>
+<li>
+<p>The Noise Parameters:</p>
+<blockquote>
+</blockquote>
+<pre><code>0.08&lt;=environmental disturbance on output  angVal (w)&lt;=0.1
+</code></pre>
+<p>The corresponding SMT formula of system flow with noise, for k-th sampling instance considering the <code>sampling period=0.02</code> is:</p>
+<p><img src="https://github.com/saverecs/SaverECS/blob/master/images/flow.png?raw=true" alt="flow"></p>
+<p>The SMT-LIB2 version of the formula for <code>k=0</code>:</p>
+<pre><code>(assert (and (lt_0_0= 0) ( gt_0_0 =0)
+(voltage_0_0= 1.0 )(i_0_0&gt;= 0 )(i_0_0&lt;= 10 )(angVal_0_0 &gt;= 0 )(angVal_0_0 &lt;= 1 )(mode_0= 1) (state_error_i_previous_0= 0 )
+(lt_0_t= (lt_0_0+(1* 0))) (gt_0_t =(gt_0_0+(1*0))) (voltage_0_t= (voltage_0_0+(0*0)))
+( [gt_0_t lt_0_t angVal_0_t i_0_t voltage_0_t ]= (integral 0. time_0 [gt_0_0 lt_0_0 angVal_0_0 i_0_0 voltage_0_0 ] flow_1))
+(= angVal_1_0 (+ angVal_0_t Noise_angVal_0 ) )(= i_1_0 i_0_t)(= state_angVal_0 angVal_0_t )  
+</code></pre>
+</li>
+</ul>
+<ol start="4">
+<li>
+<p>For a verification bound<code>N=50 </code>the final SMT formula becomes:</p>
+<p><img src="https://github.com/saverecs/SaverECS/blob/master/images/whole.png?raw=true" alt="overall"></p>
+</li>
+</ol>
+<ul>
+<li>
+<p>The overall SMT-LIB2 version of the dcmotor for 1st iteration can be found in this file <a href="https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/outputs-2020-05-15T180821/dcmotor_1.smt2">dcmotor_1.smt2</a>:</p>
+<pre><code>(set-logic QF_NRA_ODE)
+(declare-fun angVal () Real [-10000, 10000])
+(declare-fun i () Real [-10000, 10000])
+(declare-fun voltage () Real [-10000, 10000])
+(declare-fun lt () Real [0.000000, 0.02])
+(declare-fun gt () Real [0.000000, 3])
+(declare-fun .add3_0 () Real [-10000, 10000] )
+(declare-fun pid_op.0_0 () Real [-10000, 10000] )
+(declare-fun state_angVal_0 () Real [-10000, 10000] )
+(declare-fun state_error_i_previous_0 () Real [-10000, 10000] )
+(declare-fun next_voltage_0 () Real [-10000, 10000] )
+(declare-fun angVal_0_0 () Real [-10000, 10000])
+(declare-fun angVal_0_t () Real [-10000, 10000])
+(declare-fun i_0_0 () Real [-10000, 10000])
+(declare-fun i_0_t () Real [-10000, 10000])
+(declare-fun voltage_0_0 () Real [-10000, 10000])
+(declare-fun voltage_0_t () Real [-10000, 10000])
+(declare-fun lt_0_0 () Real [0.000000, 0.02])
+(declare-fun lt_0_t () Real [0.000000, 0.02])
+(declare-fun gt_0_0 () Real [0.000000, 3])
+(declare-fun gt_0_t () Real [0.000000, 3])
+(declare-fun time_0 () Real [0.000000, 0])
+(declare-fun mode_0 () Real [1.000000, 1.000000])
+(declare-fun .add3_1 () Real [-10000, 10000] )
+(declare-fun pid_op.0_1 () Real [-10000, 10000] )
+(declare-fun state_angVal_1 () Real [-10000, 10000] )
+(declare-fun state_error_i_previous_1 () Real [-10000, 10000] )
+(declare-fun next_voltage_1 () Real [-10000, 10000] )
+(declare-fun angVal_1_0 () Real [-10000, 10000])
+(declare-fun angVal_1_t () Real [-10000, 10000])
+(declare-fun i_1_0 () Real [-10000, 10000])
+(declare-fun i_1_t () Real [-10000, 10000])
+(declare-fun voltage_1_0 () Real [-10000, 10000])
+(declare-fun voltage_1_t () Real [-10000, 10000])
+(declare-fun lt_1_0 () Real [0.000000, 0.02])
+(declare-fun lt_1_t () Real [0.000000, 0.02])
+(declare-fun gt_1_0 () Real [0.000000, 3])
+(declare-fun gt_1_t () Real [0.000000, 3])
+(declare-fun time_1 () Real [0.000000, 0.02])
+(declare-fun mode_1 () Real [1.000000, 1.000000])
+(declare-fun Noise_angVal_0 () Real [0.1, 0.5])
+(define-ode flow_1 ((= d/dt[gt] 1) (= d/dt[lt] 1) (= d/dt[angVal] (+(*(/(- 0.1) 0.01) angVal)(*(/ 0.01 0.01) i))) (= d/dt[i] (+(-(*(/ 0.01 0.5) angVal)(*(/ 1 0.5) i))(/ voltage 0.5))) (= d/dt[voltage] 0)))
+(assert (and (= lt_0_0 0) (= gt_0_0 0) (= voltage_0_0 1.0 )(= i_0_0 0 )(= angVal_0_0 0 )(= mode_0 1) (= state_error_i_previous_0 0 )  
+ (= lt_0_t (+ lt_0_0 (* 1 0))) (= gt_0_t (+ gt_0_0 (* 1 0))) (= voltage_0_t (+ voltage_0_0 (* 0 0))) 
+ (= [gt_0_t lt_0_t angVal_0_t i_0_t voltage_0_t ] (integral 0. time_0 [gt_0_0 lt_0_0 angVal_0_0 i_0_0 voltage_0_0 ] flow_1))  
+ (= mode_1 1) (= lt_0_t 0) (= gt_1_0 gt_0_t) (= lt_1_0 0)  
+ (= angVal_1_0 (+ angVal_0_t Noise_angVal_0 ) )(= i_1_0 i_0_t)(= state_angVal_0 angVal_0_t )  
+ (ite (&lt; (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) -20 ) (= .add3_0 -20 )(= .add3_0 (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) ) ) 
+(ite (&gt; (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) 20 ) (= pid_op.0_0 20 )(= pid_op.0_0 .add3_0 ) ) 
+(= next_voltage_1 pid_op.0_0 ) 
+(= state_error_i_previous_1 (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) 
+
+ (= next_voltage_1 voltage_1_0 )  
+ (= lt_1_t (+ lt_1_0 (* 1 time_1 ))) (= gt_1_t (+ gt_1_0 (* 1 time_1 ))) (= voltage_1_t (+ voltage_1_0 (* 0 time_1 ))) 
+ (= [gt_1_t lt_1_t angVal_1_t i_1_t voltage_1_t ] (integral 0. time_1 [gt_1_0 lt_1_0 angVal_1_0 i_1_0 voltage_1_0 ] flow_1))  
+ (forall_t 1 [0 time_1] (&lt;= lt_1_t 0.02))   
+ (&lt;= lt_1_t 0.02) (&lt;= lt_1_0 0.02) (= mode_1 1)  
+ (&gt; gt_1_t 0.8  ) ))
+ (check-sat)
+(exit)
+</code></pre>
+</li>
+</ul>
+<ol start="5">
+<li>This SMT constraint is input to the <a href="https://github.com/dreal/dreal3">dReal SMT solver</a>, which eventually solves the ODEs. dReal SMT solver uses <a href="http://capd.sourceforge.net/capdDynSys/docs/html/index.html">CAPD DynSys library</a> to solve the ODEs over Reals.</li>
+</ol>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Saverecs maintained by <a href="https://github.com/saverecs">saverecs</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
