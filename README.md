@@ -205,7 +205,7 @@ Benchmarks
 Benchmarks Run using our Tool-chain is in [this repository](https://github.com/saverecs/Benchmark_SaverECS.git). You can also visit [this link](https://sites.google.com/view/benchmarkssafeemc/home) for details.
 
 
-An Example SMT Encoding
+An Example of SMT Encoding
 ==============================
 Mathematical formulae to represent a closed-loop system into SMT encoding is shown below. 
 The process of generating the SMT formula for a **DC Motor** system [(refer this work)](https://dl.acm.org/doi/10.1145/2883817.2883819) is presented as an example. 
@@ -277,7 +277,7 @@ __Note__: The presented SMT-LIB2 format of the formula contains **Plant** and **
 	
 2.	The PI Controller as a C-Program.
 
-The C-Program:  [dcmotor.c](https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/dcmotor.c)
+-	The C-Program:  [dcmotor.c](https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/dcmotor.c)
 
 ``` C
 // Must include controller.h
@@ -323,9 +323,9 @@ void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
 
   return (void*)0;
 }```
-	
-	
-The Header Program:  [dcmotor.h](https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/dcmotor.h)
+
+
+-	The Header Program:  [dcmotor.h](https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/dcmotor.h)
 
 ```C
 // ***** The Header Program:  dcmotor.h *****
