@@ -207,14 +207,118 @@ Benchmarks Run using our Tool-chain is in [this repository](https://github.com/s
 
 An Example SMT Encoding
 ==============================
-Mathematical formulae to represent closed-loop system flow in SMT format is explained here. Due to space constraints, we could not show an example SMT formation in paper. So here we demonstrate the generated SMT formula for the plant flow equations of a **DC Motor** system [(refer this work)](https://dl.acm.org/doi/10.1145/2883817.2883819). This DC Motor system has two *states (x)*, i.e. **angular velocity (angVal)** and **armature current (i)**, being controlled by a PI controller using a *control variable (u)* i.e. **voltage**. The goal of the PI controller is to reduce the error in plant output, caused by **bounded additive noise introduced (w)** while running .  
+Mathematical formulae to represent a closed-loop system into SMT encoding is shown below. 
+The process of generating the SMT formula for a **DC Motor** system [(refer this work)](https://dl.acm.org/doi/10.1145/2883817.2883819) is presented as an example. 
+This DC Motor system has two *states (x)*, i.e. **angular velocity (angVal)** and **armature current (i)**, being controlled by a PI controller using a *control variable (u)* i.e. **voltage**. The goal of the PI controller is to reduce error in plant's output, caused by **bounded additive noise (w)** introduced during run-time.
 
-__Note__: The presented SMT-LIB2 format of the formula contains Plant and Controller flow during the first sampling instance. **gt** and **lt** are to variables denoting **global time and local time** of the system. The *first suffix i.e. 0* introduced in each variable corresponds to the *first iteration/sampling period*. The second suffix i.e. *0 or t* corresponds to *flow of the variables*, eg. `angVal_0_0` and `angVal_0_t`  are values of angular velocity at the start of the zeroth iteration and at the end of the zeroth iteration respectively.]
+__Note__: The presented SMT-LIB2 format of the formula contains **Plant** and **Controller** flow during the first sampling instance. **gt** and **lt** are two variables denoting **global time and local time** of the system. The *first suffix i.e. 0* introduced in each variable corresponds to the *first iteration/sampling period*. The second suffix i.e. *0 or t* corresponds to *flow of the variables*, eg. `angVal_0_0` and `angVal_0_t` are values of angular velocity at the start of the zeroth iteration and at the end of the zeroth iteration respectively.]
+
+1.	The Plant model (using the HASLAC format) is:
+
+		module dcmotor(angVal, i, voltage)
+
+			output angVal, i;
+			
+			mode loc
+				begin
+					ddt angVal =  (-0.1/0.01)*angVal + (0.01/0.01)*i;
+					ddt i = ((0.01/0.5)*angVal - (1/0.5)*i) + (voltage/0.5);
+				end
+			initial begin
+				set begin
+					mode == loc;
+					angVal==0;
+					i==0;
+					voltage==1.0;
+				end
+			end
+		endmodule
+	
+2.	The PI Controller as a C-Program.
+
+The C-Program:  dcmotor.c
+
+		// ***** The Controller C-Program *****
+		#include "dcmotor.h"
+		
+		#define SAT (20.0)
+		#define UPPER_SAT (SAT)
+		#define LOWER_SAT (-SAT)
+
+		void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
+		{
+		  double pid_op = 0.0;
+		  double KP = 40.0;
+		  double KI = 1.0;
+
+		  double error, error_i;
+
+		  double y = input->state_angVal;
+		  // get the previous error
+		  double error_i_prev = input->state_error_i_previous;
+		  double ref = 1.0;
+
+		  // error computation is affected by bounded sensor noise
+		 // error = ref - (y + input->state_angVal);
+		 error = ref - y;
+
+		  // to illustrate: ei += e*Ki
+		  error_i = error * KI + error_i_prev;
+		  error_i_prev = error_i;
+
+		  pid_op = error * KP + error_i * KI;
+
+		  if(pid_op > UPPER_SAT)
+		    pid_op = UPPER_SAT;
+		  else if(pid_op < LOWER_SAT)
+		    pid_op = LOWER_SAT;
+		  else
+		    pid_op = pid_op;
+
+		  ret_val->next_voltage = pid_op;
+		  input->state_error_i_previous = error_i_prev;
+
+		  return (void*)0;
+		}
+		// ***** End of C-Program *****
+
+
+The Header Program:  dcmotor.h 
+
+		// ***** The Header Program:  dcmotor.h *****
+		typedef struct{
+		    double next_voltage;
+		}RETURN_VAL;
+
+		typedef struct{
+		    double state_angVal;
+		    double state_error_i_previous;
+		}INPUT_VAL;
+
+		void* controller(INPUT_VAL* iv, RETURN_VAL* rv);
+		
+		// ***** End of The Header Program: dcmotor.h *****
+
+
+3.	The Configuration file with "initial condition" for each variables are :
+
+		max-value = "100"
+		minmax-bounds = "i:[0,2] & angval:[1,30]"
+		sampling-time = 0.02
+		release-time = 0.01
+		sensing-time = 0.001
+		time-horizon = 3
+		upper-bound = 50
+		lower-bound = 1
+		goal ="i<=1.2 & i>=1.0 & angVal>=10 & angVal<=11"
 
 
 
-1.	The Initial Condition for each variables are :
-	>	0=< angVal <=0.2,
+
+
+3.	Initial setup :
+		
+		0=< angVal <=0.2,
 		i=0,
 		voltage= 1.0
 	
