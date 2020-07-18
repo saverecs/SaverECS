@@ -234,11 +234,13 @@ __Note__: The presented SMT-LIB2 format of the formula contains **Plant** and **
 			end
 		endmodule
 	
-	- Initial setup :
-		
-		0=< angVal <=0.2,
+	
+	
+-	Initial setup :
+	> 	0=< angVal <=0.2,
 		i=0,
 		voltage= 1.0
+	
 	
 	The corresponding SMT formula is (*Init()* in overall equation):
 	
@@ -248,7 +250,12 @@ __Note__: The presented SMT-LIB2 format of the formula contains **Plant** and **
 
 		(and (lt_0_0= 0) ( gt_0_0 =0) (voltage_0_0= 1.0 )(i_0_0>= 0 )(i_0_0<= 10 )(angVal_0_0 >= 0 )(angVal_0_0 <= 1 )(mode_0= 1) (state_error_i_previous_0= 0 )
 
-	- The flow equations are as follows:
+
+
+
+-	The flow equations are as follows:
+	
+	
 	>	d/dt (angVal) =  (-0.1/0.01)*angVal + (0.01/0.01)*i,
 		d/dt (i) = ((0.01/0.5)*angVal - (1/0.5)*i) + (voltage/0.5),
 		
@@ -272,71 +279,72 @@ __Note__: The presented SMT-LIB2 format of the formula contains **Plant** and **
 
 The C-Program:  [dcmotor.c](https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/dcmotor.c)
 
-	``` C
-	// Must include controller.h
-	#include "dcmotor.h"
-	//#include<stdio.h>
+``` C
+// Must include controller.h
+#include "dcmotor.h"
+//#include<stdio.h>
 
-	#define SAT (20.0)
-	#define UPPER_SAT (SAT)
-	#define LOWER_SAT (-SAT)
+#define SAT (20.0)
+#define UPPER_SAT (SAT)
+#define LOWER_SAT (-SAT)
 
-	void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
-	{
-	  double pid_op = 0.0;
-	  double KP = 40.0;
-	  double KI = 1.0;
+void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
+{
+  double pid_op = 0.0;
+  double KP = 40.0;
+  double KI = 1.0;
 
-	  double error, error_i;
+  double error, error_i;
 
-	  double y = input->state_angVal;
-	  // get the previous error
-	  double error_i_prev = input->state_error_i_previous;
-	  double ref = 1.0;
+  double y = input->state_angVal;
+  // get the previous error
+  double error_i_prev = input->state_error_i_previous;
+  double ref = 1.0;
 
-	  // error computation is affected by bounded sensor noise
-	 // error = ref - (y + input->state_angVal);
-	 error = ref - y;
+  // error computation is affected by bounded sensor noise
+ // error = ref - (y + input->state_angVal);
+ error = ref - y;
 
-	  // to illustrate: ei += e*Ki
-	  error_i = error * KI + error_i_prev;
-	  error_i_prev = error_i;
+  // to illustrate: ei += e*Ki
+  error_i = error * KI + error_i_prev;
+  error_i_prev = error_i;
 
-	  pid_op = error * KP + error_i * KI;
+  pid_op = error * KP + error_i * KI;
 
-	  if(pid_op > UPPER_SAT)
-	    pid_op = UPPER_SAT;
-	  else if(pid_op < LOWER_SAT)
-	    pid_op = LOWER_SAT;
-	  else
-	    pid_op = pid_op;
+  if(pid_op > UPPER_SAT)
+    pid_op = UPPER_SAT;
+  else if(pid_op < LOWER_SAT)
+    pid_op = LOWER_SAT;
+  else
+    pid_op = pid_op;
 
-	  ret_val->next_voltage = pid_op;
-	  input->state_error_i_previous = error_i_prev;
+  ret_val->next_voltage = pid_op;
+  input->state_error_i_previous = error_i_prev;
 
-	  return (void*)0;
-	}```
+  return (void*)0;
+}```
 	
 	
 The Header Program:  [dcmotor.h](https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/dcmotor.h)
-	```C
-	// ***** The Header Program:  dcmotor.h *****
-	typedef struct{
-	    double next_voltage;
-	}RETURN_VAL;
 
-	typedef struct{
-	    double state_angVal;
-	    double state_error_i_previous;
-	}INPUT_VAL;
+```C
+// ***** The Header Program:  dcmotor.h *****
+typedef struct{
+    double next_voltage;
+}RETURN_VAL;
 
-	void* controller(INPUT_VAL* iv, RETURN_VAL* rv);
+typedef struct{
+    double state_angVal;
+    double state_error_i_previous;
+}INPUT_VAL;
 
-	// ***** End of The Header Program: dcmotor.h *****
-	```
+void* controller(INPUT_VAL* iv, RETURN_VAL* rv);
+
+// ***** End of The Header Program: dcmotor.h *****
+```
 
 	
-- The SMT formula generated from the PI controller of DC motor in SMT-LIB2 fomat for `k=0` is the following (in prefix format):
+- 	The SMT formula generated from the PI controller of DC motor in SMT-LIB2 fomat for `k=0` is the following (in prefix format):
 	
 		(ite (< (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) -20 )
 		(= .add3_0 -20 )(= .add3_0 (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) ) ) 
@@ -360,7 +368,7 @@ The Header Program:  [dcmotor.h](https://github.com/saverecs/SaverECS/blob/maste
 		goal ="i<=1.2 & i>=1.0 & angVal>=10 & angVal<=11"
 
 
-- The unsafe region for the system (and corresponding SMT formula) is:
+- 	The unsafe region for the system (and corresponding SMT formula) is:
 	>
 		(1.0<=i<=1.2) & (1=>angVal>=10)
 
@@ -384,7 +392,7 @@ The Header Program:  [dcmotor.h](https://github.com/saverecs/SaverECS/blob/maste
 		( [gt_0_t lt_0_t angVal_0_t i_0_t voltage_0_t ]= (integral 0. time_0 [gt_0_0 lt_0_0 angVal_0_0 i_0_0 voltage_0_0 ] flow_1))
 		(= angVal_1_0 (+ angVal_0_t Noise_angVal_0 ) )(= i_1_0 i_0_t)(= state_angVal_0 angVal_0_t )  
 
-- The overall SMT-LIB2 version of the dcmotor for 1st iteration can be found in this file [dcmotor_1.smt2](https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/outputs-2020-05-15T180821/dcmotor_1.smt2):
+- 	The overall SMT-LIB2 version of the dcmotor for 1st iteration can be found in this file [dcmotor_1.smt2](https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/outputs-2020-05-15T180821/dcmotor_1.smt2):
 
 		(set-logic QF_NRA_ODE)
 		(declare-fun angVal () Real [1, 30])
@@ -449,5 +457,4 @@ The Header Program:  [dcmotor.h](https://github.com/saverecs/SaverECS/blob/maste
 
 
 
-
-- This SMT constraint is input to the [dReal SMT solver](https://github.com/dreal/dreal3), which eventually solves the ODEs. dReal SMT solver uses [CAPD DynSys library](http://capd.sourceforge.net/capdDynSys/docs/html/index.html) to solve the ODEs over Reals.
+5. 	This SMT constraint is input to the [dReal SMT solver](https://github.com/dreal/dreal3), which eventually solves the ODEs. dReal SMT solver uses [CAPD DynSys library](http://capd.sourceforge.net/capdDynSys/docs/html/index.html) to solve the ODEs over Reals.
