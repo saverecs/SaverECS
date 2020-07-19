@@ -249,37 +249,39 @@ __Note__: The presented SMT-LIB2 format of the formula contains **Plant** and **
 
 	This part of the formula in SMT-LIB2 format:
 
-		(and (lt_0_0= 0) ( gt_0_0 =0) (voltage_0_0= 1.0 )(i_0_0= 0 )(angVal_0_0 >= 0 )(angVal_0_0 <= 1 )(mode_0= 1) (state_error_i_previous_0= 0 )
-
-
-
+		(and 	(= lt_0_0  0) 
+			(= gt_0_0  0) 
+			(= voltage_0_0  1.0)
+			(= i_0_0  0)
+			(>= angVal  0) (<= angVal  1)
+			(= mode_0   1) 
+			(= state_error_i_previous_0  0)
+		)
 
 -	The flow equations are as follows:
-	
-	
-	>	d/dt (angVal) =  (-0.1/0.01)*angVal + (0.01/0.01)*i,
-		d/dt (i) = ((0.01/0.5)*angVal - (1/0.5)*i) + (voltage/0.5),
 		
-
+	>	d/dt (angVal) =  (-0.1/0.01)*angVal + (0.01/0.01)*i,
+		d/dt (i) = ((0.01/0.5)*angVal - (1/0.5)*i) + (voltage/0.5),	
 	
 	This part of the formula that defines the flow equations in SMT-LIB2 format:
-
-		(define-ode flow_1 (( d/dt[gt]= 1) (d/dt[lt]= 1)
-		( d/dt[angVal] =((((- 0.1)/0.01)* angVal)+(( 0.01/ 0.01)* i)))
-		(d/dt[i]= ((((0.01/0.5)*angVal)-(*(1/0.5)*i))+(voltage/0.5))) 
-		(d/dt[voltage]= 0)))
-		
 	
-	
+		(define-ode 
+			flow_1 (
+				(= d/dt[gt] 1) 
+				(= d/dt[lt] 1) 
+				(= d/dt[angVal] (+(*(/(- 0.1) 0.01) angVal)(*(/ 0.01 0.01) i))) 
+				(= d/dt[i] (+(-(*(/ 0.01 0.5) angVal)(*(/ 1 0.5) i))(/ voltage 0.5))) 
+				(= d/dt[voltage] 0)
+			       )
+		)
+**Note that the SMT-LIB2 format is a prefix notation.**
 	
 2.	The PI Controller as a C-Program.
 
 -	The C-Program:  [dcmotor.c](https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/dcmotor.c)
 
-``` C
-// Must include controller.h
+``` C - Program
 #include "dcmotor.h"
-//#include<stdio.h>
 
 #define SAT (20.0)
 #define UPPER_SAT (SAT)
@@ -325,7 +327,6 @@ void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
 
 -	The Header Program:  [dcmotor.h](https://github.com/saverecs/SaverECS/blob/master/src/benchmarks/dcmotor/dcmotor.h)
 
-
 ```C
 // ***** The Header Program:  dcmotor.h *****
 typedef struct{
@@ -343,15 +344,13 @@ void* controller(INPUT_VAL* iv, RETURN_VAL* rv);
 ```
 
 	
-- 	The SMT formula generated from the PI controller of DC motor in SMT-LIB2 fomat for `k=0` is the following (in prefix format):
+- 	The SMT formula generated from the PI controller of DC motor in SMT-LIB2 fomat for `k=0` is the following (in prefix format). We perform this conversion of C-Program into SMT encoding by using Clang/LLVM library. Therefore, we see a number of extra variables which are introduced by the library in order to formulate an equivalent SSA of the input C-program.
 	
 		(ite (< (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) -20 )
 		(= .add3_0 -20 )(= .add3_0 (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) ) ) 
 		(ite (> (+ (* (- 1 state_angVal_0 ) 40 ) (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) 20 ) (= pid_op.0_0 20 )(= pid_op.0_0 .add3_0 ) ) 
 		(= next_voltage_1 pid_op.0_0 ) 
 		(= state_error_i_previous_1 (+ (- 1 state_angVal_0 ) state_error_i_previous_0 ) ) 
-
-
 
 3.	The Configuration file  :
 
@@ -369,11 +368,14 @@ void* controller(INPUT_VAL* iv, RETURN_VAL* rv);
 
 - 	The unsafe region for the system (and corresponding SMT formula) is:
 	>
-		(1.0<=i<=1.2) & (1=>angVal>=10)
+		(1.0<=i<=1.2) & (11=>angVal>=10)
 
 	This part of the formula in SMT-LIB2 format is: 
-	
-		(and((1.0<=i),(i<=1.2),(1=>angVal),(angVal>=10)))
+		
+		(and 	(>= i  1.0) 
+			(<= i  1.2) 
+			(>= angVal  10) (<= angVal  11)
+		)
 
 -	The Noise Parameters:
 	>
