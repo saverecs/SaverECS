@@ -1,6 +1,7 @@
 # *Sa*fety *Ver*ification of *E*mbedded *C*ontrol *S*oftware Tool-chain
 
-SaVerECS is a tool to formally verify embedded control software under the influence of environmental noises and timing uncertainties (delay, jitters), before implementing them in real-time systems. Support for non-linear control systems (plant and control software) and real-valued constraints make this tool-chain ideal for verifying real-world hybrid systems. The following are details of the designed tool-chain. Evaluated verification benchmarks can be found in [**this repository**](https://github.com/saverecs/Benchmark_SaverECS).
+SaVerECS is a tool to formally verify embedded control software under the influence of environmental noises and timing uncertainties (delay, jitters), before implementing them in real-time systems. Support for non-linearities in the controlled plant, the controller software, and real-valued constraints make this tool-chain ideal for verifying real-world hybrid systems. Our tool incorporates semantic support for capturing timing uncertainties, like delay, jitters, and value-based uncertainties, like sensor noise, in order to check their effect on performance and safety of the closed-loop. By considering these as separate inputs, we can skip introducing them in the top-level Hybrid Automaton (HA) model and retain HA-based plant dynamics as intuitive representations of the original mathematical model.
+Evaluated verification benchmarks can be found in [**this repository**](https://github.com/saverecs/Benchmark_SaverECS). The following are details of the designed tool-chain.
 
 --------------------------------------------------------------------------------------------------------
 
