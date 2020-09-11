@@ -1,4 +1,7 @@
 # *Sa*fety *Ver*ification of *E*mbedded *C*ontrol *S*oftware Tool-chain
+
+SaVerECS is a tool to formally verify embedded control softwares under the influence of environmental noises and timing uncertainties (delay, jitters), before implementing them in real-time systems. Support for non-linear control-systems (plant and control software) and real-valued constraints make this tool-chain ideal for verification of real-world hybrid systems. Following are details of the designed tool-chain. Evaluated verification benchmarks can be found in [**this repository**](https://github.com/saverecs/Benchmark_SaverECS).
+
 --------------------------------------------------------------------------------------------------------
 
 Prerequisite (for running the tool):
@@ -16,10 +19,10 @@ How to build:
 		$ cd fmsafe/src
 		$ ./compile-cpp
 
-  If the source code is modified, or a new file.cpp is added, it must also be added in the compile-cpp file before executing it.
   
 *Note*:
 ================
+- If the source code is modified, or a new file.cpp is added, it must also be added in the compile-cpp file before executing it.
 - The files with the extensions .l and .y are the lex and yacc files. They are use to parse the input plant model file having the extension .ha (The language use to model the input plant is referred as HASLAC).
 - If the .l and .y (present in the project src folder) files are modified, then execute the script file "build" before execute the above commands.
 - If the llvm pass in our repository in `src/lib/` does not work/ throws an error while executing, please go to our [another repository](https://github.com/saverecs/CProgramToSMT.git), follow the instructions there and finally paste newly created llvm pass inside `src/lib/` folder.
