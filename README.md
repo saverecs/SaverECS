@@ -1,3 +1,26 @@
+
+*****************************************************************************************************************************************************
+*****************************************************************************************************************************************************
+	Indian Institute of Technology Kharagpur, India,
+	Formal Methods Lab,
+	Project Title: "FMSAFE: A Networked Centre for Formal Methods in Validation and Certification Procedures for Safety Critical ICT Systems"
+
+	Funded by IMPRINT, a MHRD supported Pan-IIT + IISc joint initiative for addressing major science and engineering challenges that are relevant in the national context.
+
+
+	Copyright (c) 2018 Formal Methods Lab, Indian Institute of Technology Kharagpur, India.
+
+	Tool Developer:
+	       Amit Gurung,
+               Jay Thakkar,                
+               Sunandan Adhikary,
+               Antonio Bruto da Costa 
+
+*****************************************************************************************************************************************************
+*****************************************************************************************************************************************************
+
+
+
 # *Sa*fety *Ver*ification of *E*mbedded *C*ontrol *S*oftware Tool-chain
 
 **SaVerECS** is an SMT-based verification tool to formally guarantee the performance and safety of an embedded control software under the influence of process or measurement noises and timing uncertainties (delay, jitters), before implementing them in real-time systems. Support for *non-linearities in the controlled plant and the controller software*, *real-valued constraints* and *control software code as input*, make this tool-chain ideal for verifying real-world hybrid systems. Our tool incorporates semantic support for capturing plant specifications, timing and value-based uncertainties (noise, precision errors), and the control software code.
