@@ -11,7 +11,7 @@
 	Copyright (c) 2018 Formal Methods Lab, Indian Institute of Technology Kharagpur, India.
 
 	Tool Developer:
-	       Amit Gurung,
+               Amit Gurung,
                Jay Thakkar,                
                Sunandan Adhikary,
                Antonio Bruto da Costa 
