@@ -1,3 +1,5 @@
+@PHONY: test
+
 deps:
 	sudo apt-get install -y libboost-all-dev libjson-glib-dev
 
@@ -13,8 +15,8 @@ setupSO:
 build:
 	cd src                      \
 		&& chmod +x compile-cpp \
-		&& cp ../$(CProgramToSMT)/llvm-pass-moduleTest/src/build/libTestPass.so lib/. \
-		&& FMSAFE_HOME=${PWD} ./compile-cpp
+		&& cp ../$(CProgramToSMT)/llvm-pass-moduleTest/src/libTestPass.so lib/. \
+		&& FMSAFE_HOME=${PWD} LLVM_DIR=../$(CProgramToSMT)/llvm ./compile-cpp
 
 test:
 	cd src && ./SaVerECS -m 100                                   \
