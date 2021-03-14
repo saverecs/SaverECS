@@ -14,4 +14,6 @@ nohup.out
 .vscode/
 .project
 /.vscode/
-*/*.out
+*/*.out*.ssa
+*.so
+*.bc

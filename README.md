@@ -11,10 +11,12 @@ Copyright (c) 2018 Formal Methods Lab, Indian Institute of Technology Kharagpur,
 Developed by Amit Gurung, Jay Thakkar, Sunandan Adhikary, & Antonio Bruto da Costa 
 ````
 
-This specific *fork* is a refactor by Max von Hippel, built for
+This specific *fork* is a refactor by Max von Hippel, built for:
 * portability,
 * reproducibility, and
 * clarity of documentation.
+
+Please note that while the original authors included a documenting website in their repo, my fork does not copy the website.  So you should refer to the original repository for further documentation.
 
 # *Sa*fety *Ver*ification of *E*mbedded *C*ontrol *S*oftware Tool-chain
 
