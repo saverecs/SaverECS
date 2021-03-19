@@ -26,7 +26,30 @@ Please note that while the original authors included a documenting website in th
 
 --
 
-For more, see:
+TL;DR: the following commands, in order, will build and run the software for you.  You can learn generally how to run the software, once it is built, by inspecting the `make test` target in the [Makefile](Makefile).
+````
+# install some dependencies.
+# should take a few seconds or minutes.
+make deps
+# download and compile LLVM7.0.0 with clang
+# in debug mode, and CProgramToSMT project.
+# Could take hours to complete, even on a modern
+# processor.
+make setupSO
+# Fix some paths in a cpp file which will point to the
+# wrong llvm/clang/lli if you don't have 7.0.0 as your /usr/bin
+# version -- which, most of us do not.
+# Should take milliseconds.
+make fix
+# build the code.  Should take under a minute.
+make build
+# test it. Should take seconds.
+make test
+````
+
+--
+
+For more documentation by the authors, see:
 
 - [Benchmarks](BENCHMARKS.md)
 - [Command Line Interface](CLI.md)
