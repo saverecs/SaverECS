@@ -2,6 +2,8 @@
 
 deps:
 	sudo apt-get install -y libboost-all-dev libjson-glib-dev
+	sudo npm install -g coffee-script
+	cd ODE_visualization && make
 
 CProgramToSMT=../CProgramToSMT
 
@@ -36,6 +38,7 @@ build:
 	cd src                      \
 		&& chmod +x compile-cpp \
 		&& chmod +x ODE_visualization/run_websvr.sh \
+		&& chmod +x src/bin/dReal                   \
 		&& cp ../$(CProgramToSMT)/llvm-pass-moduleTest/src/libTestPass.so lib/. \
 		&& LLVM_DIR=../../$(CProgramToSMT)/llvm ./compile-cpp
 
