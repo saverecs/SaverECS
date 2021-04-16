@@ -42,6 +42,15 @@ build:
 		&& cp ../$(CProgramToSMT)/llvm-pass-moduleTest/src/libTestPass.so lib/. \
 		&& LLVM_DIR=../../$(CProgramToSMT)/llvm ./compile-cpp
 
+tokill:
+	ps -fA | grep python | grep http.server
+	@echo "\n\n--------------------------------------------------------------\n\n\
+		  Suppose the output of the above is, e.g.,\n\n\
+		  \tmax       143014  143013  2 15:11 pts/2    00:00:00 python3 -m http.server\n\n\
+		  Then you next want to run:\n\n\
+		  \tkill 143014\
+		  \n\n--------------------------------------------------------------\n\n"
+
 test:
 	cd src && LLVM_DIR=../$(CProgramToSMT)/llvm ./SaVerECS -m 100 \
 	                     -t 0.2                                   \
@@ -49,7 +58,7 @@ test:
 	                     -u 10                                    \
 	                     -l 5                                     \
 	         --time-horizon 3                                     \
-	                 --goal "x>=5 & y>=3"                         \
+	                 --goal "temperature<=55"                     \
 	           --plant-file "benchmarks/thermostat/thermostat.ha" \
 	      --controller-file "benchmarks/thermostat/thermostat.c"  \
 	                     -o test.smt2
