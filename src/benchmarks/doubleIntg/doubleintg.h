@@ -1,16 +1,15 @@
 
-typedef struct{
+typedef struct {
+
    double next_a;
 
-}RETURN_VAL;
+} RETURN_VAL;
 
-typedef struct{
+typedef struct {
 
    double state_x;
    double state_v;
-	
-}INPUT_VAL;
+   
+} INPUT_VAL;
 
 void* controller(INPUT_VAL* iv, RETURN_VAL* rv);
-
-

@@ -1,8 +1,7 @@
-// Must include controller.h
 #include "smallBenchmark.h"
 
 #ifdef DEBUG
-  #include<stdio.h>
+	#include<stdio.h>
 #endif
 
 void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
@@ -27,10 +26,8 @@ void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
 	else 
 		temp_next_u = 0.01;
 
-//	temp_next_u = 0.6*temp_next_x;
-
 	ret_val->next_u = temp_next_u;
 
-  return ret_val;
+  	return ret_val;
 }
 

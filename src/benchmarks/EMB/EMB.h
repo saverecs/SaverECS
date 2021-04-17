@@ -1,20 +1,17 @@
 
-typedef struct{
-   double next_Xc;
-   double next_Voltage;
+typedef struct {
 
-}RETURN_VAL;
+	double next_Xc;
+	double next_Voltage;
 
-typedef struct{
+} RETURN_VAL;
+
+typedef struct {
 
 	double state_Motor_Current;
 	double state_Caliper_Position;
-
 	double prev_Xc ;
-	
-	
-}INPUT_VAL;
+
+} INPUT_VAL;
 
 void* controller(INPUT_VAL* iv, RETURN_VAL* rv);
-
-

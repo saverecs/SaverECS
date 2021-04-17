@@ -1,11 +1,12 @@
+typedef struct {
 
-typedef struct{
-   double next_u;
+	double next_u;
 
-}RETURN_VAL;
+} RETURN_VAL;
 
-typedef struct{
-   double state_temperature;
+typedef struct {
+
+	double state_temperature;
 
 	int chat_detect;
 	int previous_cmd_to_heater;
@@ -13,7 +14,6 @@ typedef struct{
 	int off_count;
 	int cmd_to_heater;
 
-}INPUT_VAL;
+} INPUT_VAL;
 
 void* controller(INPUT_VAL* iv, RETURN_VAL* rv);
-

@@ -21,3 +21,6 @@ nohup.out
 *.so
 *.bc
 src/SaVerECS
+*.bc
+fmsafe_ssaFile
+xaa
