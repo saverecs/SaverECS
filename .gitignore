@@ -24,3 +24,4 @@ src/SaVerECS
 *.bc
 fmsafe_ssaFile
 xaa
+src/lib/fmsafe_ssaFile*
