@@ -5,24 +5,44 @@
 #
 ##################################################################################
 
-
 export FMSAFE_HOME=$(pwd)
 
+GLIBARGS=$(pkg-config --cflags glib-2.0)
 
-## For compilation for Sunandan
-##g++  -I$FMSAFE_HOME     -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include lex.feature.c featureParser.tab.c lex.haslac.c haslacParser.tab.c spaceExOutputParser.tab.c lex.spaceEx.c drhParser.tab.c lex.drh.c lex.drhOut.c drhOutParser.tab.c structs.c featureCompute.c readCommandLine/user_inputs.cpp readCommandLine/readCommandLine.cpp coreSystem/plant_model/var_mapping.cpp utilities/verifier.cpp       utilities/InToPre.cpp   utilities/node.cpp     coreSystem/plant_model/hybrid_automata.cpp coreSystem/plant_model/safe_location.cpp coreSystem/plant_model/safe_transition.cpp coreSystem/plant_model/initial_sym_state.cpp smtEncoding/smtScript.cpp smtEncoding/smtController.cpp		  coreSystem/controller_program/controller_parser.cpp  coreSystem/controller_program/controller.cpp  utilities/input_output.cpp  utilities/utility_interfaces.cpp maths/miscellaneous.cpp         SafeVerPC.cpp -lboost_chrono -lboost_system -lboost_timer -lboost_program_options  -std=c++11 -o SaVerECS `pkg-config --cflags --libs glib-2.0 json-glib-1.0` 
-
-
-
-
-#Giving -std=c++11 for RegX library
-
-
-## For compilation for Amit
-g++  -fopenmp   -std=c++11   -I $FMSAFE_HOME   lex.feature.c featureParser.tab.c lex.haslac.c haslacParser.tab.c spaceExOutputParser.tab.c lex.spaceEx.c drhParser.tab.c lex.drh.c lex.drhOut.c drhOutParser.tab.c structs.c featureCompute.c readCommandLine/user_inputs.cpp readCommandLine/readCommandLine.cpp coreSystem/plant_model/var_mapping.cpp utilities/verifier.cpp       utilities/InToPre.cpp    utilities/node.cpp    coreSystem/plant_model/hybrid_automata.cpp coreSystem/plant_model/safe_location.cpp coreSystem/plant_model/safe_transition.cpp coreSystem/plant_model/initial_sym_state.cpp smtEncoding/smtScript.cpp smtEncoding/smtController.cpp  coreSystem/controller_program/controller_parser.cpp  coreSystem/controller_program/controller.cpp   utilities/input_output.cpp  utilities/utility_interfaces.cpp   maths/miscellaneous.cpp                  SafeVerPC.cpp -lboost_chrono -lboost_system -lboost_timer -lboost_program_options -lgomp      -o SaVerECS `pkg-config --cflags --libs glib-2.0 json-glib-1.0`  
-
-## For compilation for Jay(local machine)
-##g++  -fopenmp   -std=c++11   -I $FMSAFE_HOME -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include   lex.feature.c featureParser.tab.c lex.haslac.c haslacParser.tab.c spaceExOutputParser.tab.c lex.spaceEx.c drhParser.tab.c lex.drh.c lex.drhOut.c drhOutParser.tab.c structs.c featureCompute.c readCommandLine/user_inputs.cpp readCommandLine/readCommandLine.cpp coreSystem/plant_model/var_mapping.cpp utilities/verifier.cpp       utilities/InToPre.cpp    utilities/node.cpp    coreSystem/plant_model/hybrid_automata.cpp coreSystem/plant_model/safe_location.cpp coreSystem/plant_model/safe_transition.cpp coreSystem/plant_model/initial_sym_state.cpp        smtEncoding/smtScript.cpp smtEncoding/smtController.cpp           coreSystem/controller_program/controller_parser.cpp  coreSystem/controller_program/controller.cpp   utilities/input_output.cpp  utilities/utility_interfaces.cpp   maths/miscellaneous.cpp                  SafeVerPC.cpp -lboost_chrono -lboost_system -lboost_timer -lboost_program_options -lgomp      -o SaVerECS `pkg-config --cflags --libs glib-2.0 json-glib-1.0` 
-
-
-# 
+g++ -I$FMSAFE_HOME \
+    "${GLIBARGS}" \
+    lex.feature.c \
+    featureParser.tab.c \
+    lex.haslac.c \
+    haslacParser.tab.c \
+    spaceExOutputParser.tab.c \
+    lex.spaceEx.c \
+    drhParser.tab.c \
+    lex.drh.c \
+    lex.drhOut.c \
+    drhOutParser.tab.c \
+    structs.c \
+    featureCompute.c \
+    readCommandLine/user_inputs.cpp \
+    readCommandLine/readCommandLine.cpp \
+    coreSystem/plant_model/var_mapping.cpp \
+    utilities/verifier.cpp \
+    utilities/InToPre.cpp   \
+    utilities/node.cpp \
+    coreSystem/plant_model/hybrid_automata.cpp \
+    coreSystem/plant_model/safe_location.cpp \
+    coreSystem/plant_model/safe_transition.cpp \
+    coreSystem/plant_model/initial_sym_state.cpp \
+    smtEncoding/smtScript.cpp smtEncoding/smtController.cpp \
+    coreSystem/controller_program/controller_parser.cpp  \
+    coreSystem/controller_program/controller.cpp \
+    utilities/input_output.cpp \
+    utilities/utility_interfaces.cpp maths/miscellaneous.cpp \
+    SafeVerPC.cpp \
+    -lboost_chrono \
+    -lboost_system \
+    -lboost_timer \
+    -lboost_program_options \
+    -std=c++11 \
+    -o SaVerECS \
+    `pkg-config --cflags --libs glib-2.0 json-glib-1.0` 

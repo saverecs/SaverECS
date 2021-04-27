@@ -14,4 +14,14 @@ nohup.out
 .vscode/
 .project
 /.vscode/
-*/*.out
+*/*.out*.ssa
+*.so
+*.bc
+*.ssa
+*.so
+*.bc
+src/SaVerECS
+*.bc
+fmsafe_ssaFile
+xaa
+src/lib/fmsafe_ssaFile*

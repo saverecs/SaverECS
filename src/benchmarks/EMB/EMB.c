@@ -1,8 +1,7 @@
-// Must include controller.h
 #include "EMB.h"
 
 #ifdef DEBUG
-  #include<stdio.h>
+	#include<stdio.h>
 #endif
 
 #define X0 0.05
@@ -24,14 +23,13 @@ void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
 	prev_Xc_temp = input->prev_Xc;
 
 	out_Xc = prev_Xc_temp + Samp_Time * (X0 - X_temp);
-	out_Voltage = K_P*(X0 - X_temp) + K_I*out_Xc;
+	
+	out_Voltage = K_P * (X0 - X_temp) + K_I * out_Xc;
 
 	input->prev_Xc = out_Xc ;
 
-  	ret_val->next_Xc = out_Xc;
+  	ret_val->next_Xc      = out_Xc;
   	ret_val->next_Voltage = out_Voltage;
   
-  return (void*)0;
+  	return (void*)0;
 }
-
-
